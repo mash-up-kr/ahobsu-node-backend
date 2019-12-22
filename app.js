@@ -1,13 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const filesRouter = require('./routes/files');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -16,21 +17,22 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // connect To DB
-const models = require('./models');
-models.sequelize
-  .sync()
-  .then(() => {
-    console.log('✓ DB connection success.');
-    console.log('  Press CTRL-C to stop\n');
-  })
-  .catch(err => {
-    console.error(err);
-    console.log('✗ DB connection error. Please make sure DB is running.');
-    process.exit();
-  });
+// const models = require('./models');
+// models.sequelize
+//   .sync()
+//   .then(() => {
+//     console.log('✓ DB connection success.');
+//     console.log('  Press CTRL-C to stop\n');
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     console.log('✗ DB connection error. Please make sure DB is running.');
+//     process.exit();
+//   });
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/files', filesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
