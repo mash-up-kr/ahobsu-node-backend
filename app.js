@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const filesRouter = require('./routes/files');
 
+// require('dotenv').config();
 const app = express();
 
 app.use(logger('dev'));
