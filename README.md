@@ -43,7 +43,7 @@ Github: [@Yuni-Q](https://github.com/Yuni-Q)
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/mash-up-kr/Ahobsu-Backend/issues).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/mash-up-kr/Ahobsu-Node-Backend/issues).
 
 ## Show your support
 
