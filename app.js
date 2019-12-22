@@ -8,7 +8,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const filesRouter = require('./routes/files');
 
-// require('dotenv').config();
+require('dotenv').config();
 const app = express();
 
 app.use(logger('dev'));
@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // connect To DB
 // const models = require('./models');
 // models.sequelize
-//   .sync()
+//   .sync({ force: true })
 //   .then(() => {
 //     console.log('✓ DB connection success.');
 //     console.log('  Press CTRL-C to stop\n');
