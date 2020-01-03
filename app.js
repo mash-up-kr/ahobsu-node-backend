@@ -9,6 +9,7 @@ const swaggerDocument = require('./swagger/swagger.js');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const filesRouter = require('./routes/files');
+const siginInRouter = require('./routes/signIn');
 
 require('dotenv').config();
 const app = express();
@@ -37,6 +38,7 @@ app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/files', filesRouter);
+app.use('/signIn', siginInRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

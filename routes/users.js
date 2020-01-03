@@ -10,8 +10,8 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const { email, birthday } = req.body;
-  const users = await db.users.create({ email, birthday });
+  const { name, birthday, email, gender, snsId, snsType } = req.body;
+  const users = await db.users.create({ name, birthday, email, gender, snsId, snsType });
   res.json({ users });
 });
 

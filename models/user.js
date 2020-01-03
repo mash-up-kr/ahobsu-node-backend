@@ -14,19 +14,22 @@ module.exports = (Sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
       },
+      name: {
+        type: DataTypes.STRING,
+      },
       gender: {
         type: DataTypes.STRING,
       },
-      refresh_date: {
+      refreshDate: {
         type: DataTypes.STRING,
       },
-      refresh_token: {
+      refreshToken: {
         type: DataTypes.STRING,
       },
-      sns_id: {
+      snsId: {
         type: DataTypes.STRING,
       },
-      sns_type: {
+      snsType: {
         type: DataTypes.STRING,
       },
     },
