@@ -6,4 +6,6 @@ router.get('/', function(req, res, next) {
   res.json({ name: '유정' });
 });
 
+router.get('/favicon.ico', function(req, res, next) {});
+
 module.exports = router;
