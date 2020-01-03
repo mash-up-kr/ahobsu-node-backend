@@ -8,7 +8,6 @@ const response = require('../lib/response');
 
 const router = express.Router();
 
-/* GET users listing. */
 router.get('/', checkToken, async (req, res, next) => {
   const { id } = req.user;
   const user = await db.sequelize.findOne({
@@ -19,7 +18,7 @@ router.get('/', checkToken, async (req, res, next) => {
   const date = moment()
     .tz('Asia/Seoul')
     .format('YYYY-MM-DD');
-  let mission = JSON.parse(user.mission);
+  const missionObj = JSON.parse(user.mission);
   if (mission.date < date) {
     const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
     const mission = await db.sequelize.query(sql, {
@@ -33,24 +32,40 @@ router.get('/', checkToken, async (req, res, next) => {
         },
       },
     );
-    res.json(response({ date: mission }));
+    res.json(response({ data: mission }));
   } else {
-    res.json(response({ date: mission }));
+    res.json(response({ data: missionObj.mission }));
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', checkToken, async (req, res, next) => {
   const { title, isContent, isImage } = req.body;
-  const missions = await db.missions.create({ title, isContent, isImage });
-  res.json({ missions });
+  if (!title || !isContent || !isImage) {
+    return res.json(response({ status: 412, messgae: '필수 파라이터가 없습니다.' }));
+  }
+  try {
+    const missions = await db.missions.create({ title, isContent, isImage });
+    res.json(response({ status: 201, data: missions }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, messgae: e.message }));
+  }
 });
 
-router.put('/:id', async (req, res, next) => {
-  const { title, isContent, isImage } = req.body;
+router.put('/:id', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
-  const mission = await db.missions.findOne({ where: { id } });
-  console.log(111, mission);
-  if (!!mission) {
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, messgae: 'id가 올바르지 않습니다.' }));
+  }
+  const { title, isContent, isImage } = req.body;
+  if (!title || !isContent || !isImage) {
+    return res.json(response({ status: 412, messgae: '필수 파라이터가 없습니다.' }));
+  }
+  try {
+    const mission = await db.missions.findOne({ where: { id } });
+    if (!mission) {
+      return res.json(response({ status: 400, message: '유효하지 않은 mission id 입니다.' }));
+    }
     await db.missions.update(
       { title: title, isContent: isContent, isImage: isImage },
       {
@@ -60,27 +75,37 @@ router.put('/:id', async (req, res, next) => {
       },
     );
     const newMission = await db.missions.findOne({ where: { id } });
-    return res.json({ mission: newMission });
+    res.json(response({ mission: newMission }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, messgae: e.message }));
   }
-  res.json({ message: '유효하지 않은 mission id 입니다.' });
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
-  const mission = await db.missions.findOne({
-    where: {
-      id,
-    },
-  });
-  if (!!mission) {
-    const missions = await db.missions.destroy({
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, messgae: 'id가 올바르지 않습니다.' }));
+  }
+  try {
+    const mission = await db.missions.findOne({
       where: {
         id,
       },
     });
-    return res.json({ message: '문제를 삭제 했습니다.' });
+    if (!mission) {
+      return res.json({ message: '유효하지 않은 mission id 입니다.' });
+    }
+    await db.missions.destroy({
+      where: {
+        id,
+      },
+    });
+    res.json(response({ message: '문제를 삭제 했습니다.' }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, messgae: e.message }));
   }
-  res.json({ message: '유효하지 않은 mission id 입니다.' });
 });
 
 router.post('/refresh', checkToken, async (req, res, next) => {
