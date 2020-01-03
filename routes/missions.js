@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.get('/', checkToken, async (req, res, next) => {
   const { id } = req.user;
-
   const user = await db.users.findOne({
     where: {
       id,
@@ -44,7 +43,7 @@ router.get('/', checkToken, async (req, res, next) => {
 
 router.post('/', checkToken, async (req, res, next) => {
   const { title, isContent, isImage } = req.body;
-  if (!title || !isContent || !isImage) {
+  if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false)) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
@@ -62,7 +61,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
   const { title, isContent, isImage } = req.body;
-  if (!title || !isContent || !isImage) {
+  if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false)) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
@@ -79,7 +78,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
       },
     );
     const newMission = await db.missions.findOne({ where: { id } });
-    res.json(response({ mission: newMission }));
+    res.json(response({ data: newMission }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));

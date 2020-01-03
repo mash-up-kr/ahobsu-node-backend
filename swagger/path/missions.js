@@ -11,7 +11,7 @@ module.exports = {
           type: 'string',
           description: 'API 인증 키',
           default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjE2OjUwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjE2OjUwLjAwMFoifSwiaWF0IjoxNTc4MDcxODE2LCJleHAiOjE1Nzg2NzY2MTZ9.oq_KDM3EM8mtUdsoSw-kNYQIrHubwEnDrme3ZDwrWeM',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
           required: true,
         },
       ],
@@ -24,18 +24,28 @@ module.exports = {
               message: '',
               data: [
                 {
-                  id: 1,
-                  birthday: '1997-01-16',
-                  email: 'yuchocopie@gmail.com',
-                  name: '유정',
-                  gender: '여',
-                  refreshDate: null,
-                  refreshToken: null,
-                  mission: null,
-                  snsId: '1',
-                  snsType: 'google',
-                  createdAt: '2020-01-03T15:27:18.000Z',
-                  updatedAt: '2020-01-03T15:27:18.000Z',
+                  id: 4,
+                  title: '1111',
+                  isContent: 0,
+                  isImage: 0,
+                  createdAt: '2020-01-03T17:27:53.000Z',
+                  updatedAt: '2020-01-03T17:27:53.000Z',
+                },
+                {
+                  id: 3,
+                  title: '1111',
+                  isContent: 0,
+                  isImage: 0,
+                  createdAt: '2020-01-03T17:27:53.000Z',
+                  updatedAt: '2020-01-03T17:27:53.000Z',
+                },
+                {
+                  id: 2,
+                  title: '1111',
+                  isContent: 0,
+                  isImage: 0,
+                  createdAt: '2020-01-03T17:27:48.000Z',
+                  updatedAt: '2020-01-03T17:27:48.000Z',
                 },
               ],
             },
@@ -45,9 +55,18 @@ module.exports = {
     },
     post: {
       tags: ['missions'],
-      summary: '회원 가입',
+      summary: '미션 등록',
       produces: ['application/json'],
       parameters: [
+        {
+          name: 'Authorization',
+          in: 'header',
+          type: 'string',
+          description: 'API 인증 키',
+          default:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+          required: true,
+        },
         {
           name: 'body',
           in: 'body',
@@ -55,12 +74,9 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              name: '김유정',
-              birthday: '1997-01-16',
-              email: 'yuchochpie@gmail.com',
-              gender: '여',
-              snsId: 1,
-              snsType: 'google',
+              title: '문제',
+              isContent: true,
+              isImage: false,
             },
           },
         },
@@ -70,25 +86,23 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 201,
               message: '',
               data: {
-                id: 2,
-                name: '김유정',
-                birthday: '1997-01-16',
-                email: 'yuchochpie@gmail.com',
-                gender: '여',
-                snsId: 1,
-                snsType: 'google',
-                updatedAt: '2020-01-03T16:46:07.880Z',
-                createdAt: '2020-01-03T16:46:07.880Z',
+                id: 6,
+                title: '문제',
+                isContent: true,
+                isImage: false,
+                updatedAt: '2020-01-03T17:35:02.955Z',
+                createdAt: '2020-01-03T17:35:02.955Z',
               },
             },
           },
         },
       },
     },
-
+  },
+  '/missions/{id}': {
     put: {
       tags: ['missions'],
       summary: '회원 정보 수정',
@@ -100,7 +114,7 @@ module.exports = {
           type: 'string',
           description: 'API 인증 키',
           default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjE2OjUwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjE2OjUwLjAwMFoifSwiaWF0IjoxNTc4MDcxODE2LCJleHAiOjE1Nzg2NzY2MTZ9.oq_KDM3EM8mtUdsoSw-kNYQIrHubwEnDrme3ZDwrWeM',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
           required: true,
         },
         {
@@ -110,14 +124,19 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              name: '김유정',
-              birthday: '1997-01-16',
-              email: 'yuchochpie@gmail.com',
-              gender: '여',
-              snsId: 1,
-              snsType: 'google',
+              title: '문제',
+              isContent: true,
+              isImage: false,
             },
           },
+        },
+        {
+          name: 'id',
+          in: 'path',
+          type: 'integer',
+          default: 1,
+          description: '미션 ID',
+          required: true,
         },
       ],
       responses: {
@@ -128,20 +147,12 @@ module.exports = {
               status: 200,
               message: '',
               data: {
-                user: {
-                  id: 1,
-                  birthday: '1997-01-16',
-                  email: 'yuchochpie@gmail.com',
-                  name: '유정',
-                  gender: '여',
-                  refreshDate: null,
-                  refreshToken: null,
-                  mission: null,
-                  snsId: '1',
-                  snsType: 'google',
-                  createdAt: '2020-01-03T15:27:18.000Z',
-                  updatedAt: '2020-01-03T16:52:18.000Z',
-                },
+                id: 6,
+                title: '문제',
+                isContent: true,
+                isImage: false,
+                createdAt: '2020-01-03T17:35:02.000Z',
+                updatedAt: '2020-01-03T17:43:10.000Z',
               },
             },
           },
@@ -157,7 +168,15 @@ module.exports = {
           type: 'string',
           description: 'API 인증 키',
           default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjE2OjUwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjE2OjUwLjAwMFoifSwiaWF0IjoxNTc4MDcxODE2LCJleHAiOjE1Nzg2NzY2MTZ9.oq_KDM3EM8mtUdsoSw-kNYQIrHubwEnDrme3ZDwrWeM',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+          required: true,
+        },
+        {
+          name: 'id',
+          in: 'path',
+          type: 'integer',
+          default: 1,
+          description: '미션 ID',
           required: true,
         },
       ],
@@ -166,15 +185,10 @@ module.exports = {
         '200': {
           schema: {
             type: 'object',
-            properties: {
-              ok: {
-                type: 'boolean',
-                example: true,
-              },
-              error: {
-                type: 'string',
-                example: null,
-              },
+            example: {
+              status: 200,
+              message: '문제를 삭제 했습니다.',
+              data: null,
             },
           },
         },
