@@ -5,7 +5,24 @@
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": false,
+    "options": {
+      "host": "database-1.c8xxslcbuvmk.us-east-1.rds.amazonaws.com",
+      "timezone": "+09:00",
+      "dialect": "mysql",
+      "define": {
+        "charset": "utf8mb4",
+        "dialectOptions": {
+          "collate": "utf8mb4_general_ci"
+        }
+      },
+      "pool": {
+        "min": 0,
+        "max": 10,
+        "idle": 10000,
+        "acquire": 10000
+      }
+    }
   },
   "test": {
     "username": "root",
