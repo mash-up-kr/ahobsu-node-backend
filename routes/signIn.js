@@ -2,51 +2,55 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const db = require('../models');
+const response = require('../lib/response');
 
 const router = express.Router();
 
 router.post('/', async (req, res, next) => {
   const { snsId } = req.body;
-  const users = await db.users.findOne({ where: { snsId } });
-  if (!users) {
-    return res.json({
-      status: 404,
-      message: '유저가 존재하지 않습니다.',
-      data: null,
-    });
+  if (!snsId) {
+    return res.json(response({ status: 412, messgae: '필수 파라이터가 없습니다.' }));
   }
   try {
-    const token = await jwt.sign(
+    const user = await db.users.findOne({ where: { snsId } });
+    if (!user) {
+      return res.json(
+        response({
+          status: 404,
+          message: '유저가 존재하지 않습니다.',
+        }),
+      );
+    }
+    const accessToken = await jwt.sign(
       {
-        users,
+        user,
       },
       process.env.privateKey,
-      { expiresIn: 60 * 60 },
+      { expiresIn: 7 * 24 * 60 * 60 },
     );
-    res.json({
-      staus: 200,
-      message: '',
-      data: {
-        token,
+    const refreshToken = await jwt.sign(
+      {
+        snsId,
       },
-    });
+      process.env.privateKey,
+      { expiresIn: 30 * 24 * 60 * 60 },
+    );
+    res.json(
+      response({
+        data: {
+          accessToken,
+          refreshToken,
+        },
+      }),
+    );
   } catch (e) {
-    console.log(3, e);
-    return res.json({
-      staus: 500,
-      message: '문제가 있음...',
-      data: {
-        token,
-      },
-    });
+    return res.json(
+      response({
+        staus: 500,
+        message: e.message,
+      }),
+    );
   }
-  res.json({
-    staus: 500,
-    message: '문제가 있음...',
-    data: {
-      token,
-    },
-  });
 });
 
 module.exports = router;
