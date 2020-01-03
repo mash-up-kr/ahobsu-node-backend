@@ -41,25 +41,25 @@ router.get('/', checkToken, async (req, res, next) => {
 router.post('/', checkToken, async (req, res, next) => {
   const { title, isContent, isImage } = req.body;
   if (!title || !isContent || !isImage) {
-    return res.json(response({ status: 412, messgae: '필수 파라이터가 없습니다.' }));
+    return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
     const missions = await db.missions.create({ title, isContent, isImage });
     res.json(response({ status: 201, data: missions }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, messgae: e.message }));
+    res.json(response({ status: 500, message: e.message }));
   }
 });
 
 router.put('/:id', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.json(response({ status: 412, messgae: 'id가 올바르지 않습니다.' }));
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
   const { title, isContent, isImage } = req.body;
   if (!title || !isContent || !isImage) {
-    return res.json(response({ status: 412, messgae: '필수 파라이터가 없습니다.' }));
+    return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
     const mission = await db.missions.findOne({ where: { id } });
@@ -78,14 +78,14 @@ router.put('/:id', checkToken, async (req, res, next) => {
     res.json(response({ mission: newMission }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, messgae: e.message }));
+    res.json(response({ status: 500, message: e.message }));
   }
 });
 
 router.delete('/:id', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.json(response({ status: 412, messgae: 'id가 올바르지 않습니다.' }));
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
   try {
     const mission = await db.missions.findOne({
@@ -104,14 +104,14 @@ router.delete('/:id', checkToken, async (req, res, next) => {
     res.json(response({ message: '문제를 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, messgae: e.message }));
+    res.json(response({ status: 500, message: e.message }));
   }
 });
 
 router.post('/refresh', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.json(response({ status: 412, messgae: 'id가 올바르지 않습니다.' }));
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
   try {
     const user = await db.users.findOne({
@@ -141,11 +141,11 @@ router.post('/refresh', checkToken, async (req, res, next) => {
       );
       res.json(response({ data: mission }));
     } else {
-      res.json(response({ status: 400, messgae: '갱신 횟수가 모자랄 수 있습니다.' }));
+      res.json(response({ status: 400, message: '갱신 횟수가 모자랄 수 있습니다.' }));
     }
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, messgae: e.message }));
+    res.json(response({ status: 500, message: e.message }));
   }
 });
 
