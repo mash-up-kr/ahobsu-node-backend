@@ -20,7 +20,7 @@ router.get('/week/:date', async (req, res, next) => {
   const answers = await db.answers.findAll({
     where: {
       userId,
-      createdAt: {
+      date: {
         [Op.gt]: new Date(firstDay),
         [Op.lt]: new Date(lastDay),
       },
@@ -49,20 +49,11 @@ router.get('/week/:date', async (req, res, next) => {
 });
 
 router.get('/:date', async (req, res, next) => {
-  const { date } = req.params;
-  console.log(123, date);
-  const firstDay = await moment(date).format('YYYY-MM-DD');
-  const lastDay = await moment(date)
-    .add(1, 'days')
-    .format('YYYY-MM-DD');
   const userId = 1;
   const answer = await db.answers.findAll({
     where: {
       userId,
-      createdAt: {
-        [Op.gt]: new Date(firstDay),
-        [Op.lt]: new Date(lastDay),
-      },
+      date: req.params.date,
     },
   });
   res.json({ answer });
@@ -70,7 +61,14 @@ router.get('/:date', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   const { userId, missionId, imageUrl, content } = req.body;
-  const answer = await db.answers.create({ userId, missionId, imageUrl, content });
+  const checkAnswer = await db.answers.findOne({ where: { missionId } });
+  if (!!checkAnswer) {
+    return res.json({ message: '문제에 대한 답변이 존재합니다.' });
+  }
+  const date = moment()
+    .tz('Asia/Seoul')
+    .format('YYYY-MM-DD');
+  const answer = await db.answers.create({ userId, missionId, imageUrl, content, date });
   res.json({ answer });
 });
 
