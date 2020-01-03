@@ -57,6 +57,10 @@ router.post('/', checkToken, async (req, res, next) => {
   for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
   const form = new formidable.IncomingForm();
   form.parse(req, async (err, fields, files) => {
+    const checkMission = await db.missions.findOne({ where: { id: fields.missionId } });
+    if (!checkMission) {
+      return res.json({ message: '존재하지않는 missionId.' });
+    }
     const checkAnswer = await db.answers.findOne({ where: { missionId: fields.missionId } });
     if (!!checkAnswer) {
       return res.json({ message: '문제에 대한 답변이 존재합니다.' });
