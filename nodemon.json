@@ -1,5 +1,4 @@
 {
-  "watch": ["app.js", "nodemon.json"],
   "exec": "node ./bin/www",
   "ext": "js json jsx"
 }
