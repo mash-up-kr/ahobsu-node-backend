@@ -12,7 +12,7 @@ router.post('/refresh', async (req, res, next) => {
     return res.json(
       response({
         status: 400,
-        messgae: '토큰이 필요합니다.',
+        message: '토큰이 필요합니다.',
       }),
     );
   }
@@ -22,7 +22,7 @@ router.post('/refresh', async (req, res, next) => {
       return res.json(
         response({
           status: 500,
-          messgae: '올바르지 못한 토큰 입니다.',
+          message: '올바르지 못한 토큰 입니다.',
         }),
       );
     }
@@ -63,7 +63,7 @@ router.post('/refresh', async (req, res, next) => {
     return res.json(
       response({
         status: 400,
-        messgae: '올바르지 못한 토큰 입니다.',
+        message: '올바르지 못한 토큰 입니다.',
       }),
     );
   }
@@ -72,10 +72,12 @@ router.post('/refresh', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const { snsId } = req.body;
   if (!snsId) {
-    return res.json(response({ status: 412, messgae: '필수 파라이터가 없습니다.' }));
+    return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
+  console.log(333);
   try {
     const user = await db.users.findOne({ where: { snsId } });
+    console.log(888, user);
     if (!user) {
       return res.json(
         response({

@@ -26,6 +26,9 @@ module.exports = (Sequelize, DataTypes) => {
       refreshToken: {
         type: DataTypes.STRING,
       },
+      mission: {
+        type: DataTypes.STRING,
+      },
       snsId: {
         type: DataTypes.STRING,
       },
