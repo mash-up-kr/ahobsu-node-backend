@@ -8,12 +8,12 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', checkToken, async (req, res, next) => {
-  console.log(req.user.users.email);
+  console.log(req.user.email);
   const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
   const result = await db.sequelize.query(sql, {
     type: sequelize.QueryTypes.SELECT,
   });
-  console.log(result);
+  res.json({ result });
 });
 
 router.post('/', async (req, res, next) => {
