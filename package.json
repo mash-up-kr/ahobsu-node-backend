@@ -17,6 +17,7 @@
     "mysql2": "^2.0.2",
     "nodemon": "^2.0.2",
     "sequelize": "^4.42.0",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "swagger-ui-express": "^4.1.2"
   }
 }
