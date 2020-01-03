@@ -30,7 +30,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.put('/:id', checkTokens, async (req, res, next) => {
+router.put('/:id', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const { email, birthday } = req.body;
   if (isNaN(id)) {
