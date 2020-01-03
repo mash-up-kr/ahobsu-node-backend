@@ -6,7 +6,7 @@ const response = require('../lib/response');
 
 const router = express.Router();
 
-router.get('/', checkToken, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const users = await db.users.findAll();
     res.json(response({ data: users }));
