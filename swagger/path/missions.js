@@ -1,8 +1,8 @@
 module.exports = {
-  '/users': {
+  '/missions': {
     get: {
-      tags: ['users'],
-      summary: '유저 조회',
+      tags: ['missions'],
+      summary: '오늘의 미션 조회',
       produces: ['application/json'],
       parameters: [
         {
@@ -44,7 +44,7 @@ module.exports = {
       },
     },
     post: {
-      tags: ['users'],
+      tags: ['missions'],
       summary: '회원 가입',
       produces: ['application/json'],
       parameters: [
@@ -90,7 +90,7 @@ module.exports = {
     },
 
     put: {
-      tags: ['users'],
+      tags: ['missions'],
       summary: '회원 정보 수정',
       produces: ['application/json'],
       parameters: [
@@ -149,7 +149,7 @@ module.exports = {
       },
     },
     delete: {
-      tags: ['users'],
+      tags: ['missions'],
       parameters: [
         {
           name: 'Authorization',

@@ -10,16 +10,20 @@ const router = express.Router();
 
 router.get('/', checkToken, async (req, res, next) => {
   const { id } = req.user;
-  const user = await db.sequelize.findOne({
+
+  const user = await db.users.findOne({
     where: {
       id,
     },
   });
+  if (!user) {
+    return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+  }
   const date = moment()
     .tz('Asia/Seoul')
     .format('YYYY-MM-DD');
-  const missionObj = JSON.parse(user.mission);
-  if (mission.date < date) {
+  const { mission } = user;
+  if (!mission || mission.date < date) {
     const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
     const mission = await db.sequelize.query(sql, {
       type: sequelize.QueryTypes.SELECT,
@@ -34,7 +38,7 @@ router.get('/', checkToken, async (req, res, next) => {
     );
     res.json(response({ data: mission }));
   } else {
-    res.json(response({ data: missionObj.mission }));
+    res.json(response({ data: mission.mission }));
   }
 });
 

@@ -74,8 +74,10 @@ router.post('/', async (req, res, next) => {
   if (!snsId) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
+  console.log(333);
   try {
     const user = await db.users.findOne({ where: { snsId } });
+    console.log(888, user);
     if (!user) {
       return res.json(
         response({
