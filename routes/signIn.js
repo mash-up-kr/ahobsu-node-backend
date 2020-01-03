@@ -62,7 +62,7 @@ router.post('/refresh', async (req, res, next) => {
     console.log(e);
     return res.json(
       response({
-        status: 500,
+        status: 400,
         messgae: '올바르지 못한 토큰 입니다.',
       }),
     );
