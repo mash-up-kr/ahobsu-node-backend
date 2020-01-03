@@ -20,12 +20,6 @@ module.exports = (Sequelize, DataTypes) => {
       content: {
         type: DataTypes.STRING,
       },
-      emotionType: {
-        type: DataTypes.STRING,
-      },
-      emotionHexa: {
-        type: DataTypes.STRING,
-      },
       date: {
         type: DataTypes.DATE,
       },
