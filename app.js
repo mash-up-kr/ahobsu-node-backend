@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const filesRouter = require('./routes/files');
 const siginInRouter = require('./routes/signIn');
+const missionRouter = require('./routes/missions');
 
 require('dotenv').config();
 const app = express();
@@ -39,6 +40,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/files', filesRouter);
 app.use('/signIn', siginInRouter);
+app.use('/missions', missionRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
