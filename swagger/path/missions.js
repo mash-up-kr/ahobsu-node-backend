@@ -251,7 +251,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 400,
               message: '갱신 횟수가 모자랍니다.',
               data: null,
             },

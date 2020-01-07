@@ -1,7 +1,12 @@
 const { paths } = require('./path/base');
+const files = require('./path/files');
 const missions = require('./path/missions');
 const signin = require('./path/signin');
 const users = require('./path/users');
+
+Object.keys(files).forEach(key => {
+  paths[key] = files[key];
+});
 
 Object.keys(missions).forEach(key => {
   paths[key] = missions[key];
