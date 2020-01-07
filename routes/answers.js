@@ -65,6 +65,16 @@ router.post('/', checkToken, async (req, res, next) => {
     if (!!checkAnswer) {
       return res.json({ message: '문제에 대한 답변이 존재합니다.' });
     }
+
+    const beforeAnswer = await db.answers.findAll({
+      where: {
+        userId,
+        date: fields.date,
+      },
+    });
+    if (!!beforeAnswer) {
+      return res.json({ message: '해당날짜에 답변이 존재합니다.' });
+    }
     const image = files.imageUrl;
     if (!image) {
       const answer = await db.answers.create({
