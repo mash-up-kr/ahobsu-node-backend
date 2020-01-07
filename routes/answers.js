@@ -65,17 +65,22 @@ router.post('/', checkToken, async (req, res, next) => {
     if (!!checkAnswer) {
       return res.json({ message: '문제에 대한 답변이 존재합니다.' });
     }
-
+    const date = moment()
+      .tz('Asia/Seoul')
+      .format('YYYY-MM-DD');
     const beforeAnswer = await db.answers.findAll({
       where: {
         userId,
-        date: fields.date,
+        date: date,
       },
     });
-    if (!!beforeAnswer) {
+    if (beforeAnswer.length > 2) {
       return res.json({ message: '해당날짜에 답변이 존재합니다.' });
     }
     const image = files.imageUrl;
+    if (!image && !fields.content) {
+      return res.json({ message: '필수 파라미터가 부족합니다.' });
+    }
     if (!image) {
       const answer = await db.answers.create({
         userId: userId,
@@ -83,7 +88,7 @@ router.post('/', checkToken, async (req, res, next) => {
         content: fields.content,
         date: fields.date,
       });
-      res.json({ imageUrl: answer });
+      res.json({ answer: answer });
     }
     const { imageUrl } = files;
     const defaultPath = fileName;
@@ -103,19 +108,16 @@ router.post('/', checkToken, async (req, res, next) => {
     const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
     const imgUrl = baseUrl + imageUrl2;
 
-    const date = moment()
-      .tz('Asia/Seoul')
-      .format('YYYY-MM-DD');
     const answer = await db.answers.create({
       userId: userId,
       missionId: fields.missionId,
       imageUrl: imgUrl,
       content: fields.content,
-      date: fields.date,
+      date: date,
     });
     // unlink tmp files
     fs.unlinkSync(imageUrl.path);
-    res.json({ imageUrl: answer });
+    res.json({ answer: answer });
   });
 });
 
@@ -154,7 +156,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
       );
       const newAnswer = await db.answers.findOne({ where: { id } });
       console.log(123, newAnswer);
-      return res.json({ imageUrl: newAnswer });
+      return res.json({ answer: newAnswer });
     }
     const { imageUrl } = files;
     const defaultPath = fileName;
@@ -194,7 +196,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
     // unlink tmp files
     fs.unlinkSync(imageUrl.path);
     const newAnswer = await db.answers.findOne({ where: { id } });
-    return res.json({ imageUrl: newAnswer });
+    return res.json({ answer: newAnswer });
   });
 });
 
