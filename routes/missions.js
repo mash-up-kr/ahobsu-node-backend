@@ -22,11 +22,13 @@ router.get('/', checkToken, async (req, res, next) => {
     .tz('Asia/Seoul')
     .format('YYYY-MM-DD');
   const { mission } = user;
-  if (!mission || mission.date < date) {
+  const oldMission = JSON.parse(mission);
+  if (!oldMission || oldMission.date < date) {
     const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
     const mission = await db.sequelize.query(sql, {
       type: sequelize.QueryTypes.SELECT,
     });
+
     await db.users.update(
       { mission: JSON.stringify({ date, mission }) },
       {
@@ -37,7 +39,7 @@ router.get('/', checkToken, async (req, res, next) => {
     );
     res.json(response({ data: mission }));
   } else {
-    res.json(response({ data: mission.mission }));
+    res.json(response({ data: oldMission.mission }));
   }
 });
 
@@ -112,10 +114,7 @@ router.delete('/:id', checkToken, async (req, res, next) => {
 });
 
 router.post('/refresh', checkToken, async (req, res, next) => {
-  const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
+  const { id } = req.user;
   try {
     const user = await db.users.findOne({
       where: {
@@ -129,7 +128,6 @@ router.post('/refresh', checkToken, async (req, res, next) => {
       .tz('Asia/Seoul')
       .format('YYYY-MM-DD');
     if (!user.refreshDate && user.refreshDate < date) {
-      const { id } = req.user;
       const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
       const mission = await db.sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
