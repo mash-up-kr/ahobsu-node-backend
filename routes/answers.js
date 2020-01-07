@@ -8,20 +8,17 @@ const fs = require('fs');
 
 const db = require('../models');
 const checkToken = require('../middleware/checkToken');
+const response = require('../lib/response');
 
 const router = express.Router();
 
-/* GET users listing. */
 router.get('/week/:date', checkToken, async (req, res, next) => {
-  // db에서 해당 날짜 데이터 조회!
   const { date } = req.params;
-  console.log(123, date);
   const userId = req.user.id;
   const firstDay = await moment(date).format('YYYY-MM-DD');
   const lastDay = await moment(date)
     .add(7, 'days')
     .format('YYYY-MM-DD');
-  console.log(333, date);
   const answers = await db.answers.findAll({
     where: {
       userId,
@@ -31,7 +28,7 @@ router.get('/week/:date', checkToken, async (req, res, next) => {
       },
     },
   });
-  res.json({ answers });
+  res.json(response({ data: answers }));
 });
 
 router.get('/:date', checkToken, async (req, res, next) => {
@@ -42,7 +39,7 @@ router.get('/:date', checkToken, async (req, res, next) => {
       date: req.params.date,
     },
   });
-  res.json({ answer });
+  res.json(response({ data: answer }));
 });
 
 router.post('/', checkToken, async (req, res, next) => {
@@ -57,23 +54,35 @@ router.post('/', checkToken, async (req, res, next) => {
   for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
   const form = new formidable.IncomingForm();
   form.parse(req, async (err, fields, files) => {
-    const checkMission = await db.missions.findOne({ where: { id: fields.missionId } });
+    const { missionId, content } = fields;
+    const checkMission = await db.missions.findOne({ where: { id: missionId } });
     if (!checkMission) {
-      return res.json({ message: '존재하지않는 missionId.' });
+      return res.json(response({ status: 404, message: '존재하지않는 missionId.' }));
     }
-    const checkAnswer = await db.answers.findOne({ where: { missionId: fields.missionId } });
-    if (!!checkAnswer) {
-      return res.json({ message: '문제에 대한 답변이 존재합니다.' });
+    const date = moment()
+      .tz('Asia/Seoul')
+      .format('YYYY-MM-DD');
+    const beforeAnswer = await db.answers.findOne({
+      where: {
+        userId,
+        date,
+      },
+    });
+    if (!!beforeAnswer) {
+      return res.json(response({ status: 404, message: '해당날짜에 답변이 존재합니다.' }));
     }
     const image = files.imageUrl;
+    if (!image && !content) {
+      return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
+    }
     if (!image) {
       const answer = await db.answers.create({
-        userId: userId,
-        missionId: fields.missionId,
-        content: fields.content,
-        date: fields.date,
+        userId,
+        missionId,
+        content,
+        date,
       });
-      res.json({ imageUrl: answer });
+      res.json(response({ data: answer }));
     }
     const { imageUrl } = files;
     const defaultPath = fileName;
@@ -93,19 +102,16 @@ router.post('/', checkToken, async (req, res, next) => {
     const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
     const imgUrl = baseUrl + imageUrl2;
 
-    const date = moment()
-      .tz('Asia/Seoul')
-      .format('YYYY-MM-DD');
     const answer = await db.answers.create({
       userId: userId,
-      missionId: fields.missionId,
+      missionId: missionId,
       imageUrl: imgUrl,
       content: fields.content,
-      date: fields.date,
+      date: date,
     });
     // unlink tmp files
     fs.unlinkSync(imageUrl.path);
-    res.json({ imageUrl: answer });
+    res.json(response({ data: answer }));
   });
 });
 
@@ -113,7 +119,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const answer = await db.answers.findOne({ where: { id } });
   if (!answer) {
-    return res.json({ message: '존재하지않는 answerId.' });
+    return res.json(response({ status: 404, message: '존재하지않는 answerId.' }));
   }
   const userId = req.user.id;
   AWS.config.update({
@@ -128,8 +134,6 @@ router.put('/:id', checkToken, async (req, res, next) => {
   form.parse(req, async (err, fields, files) => {
     const image = files.imageUrl;
     if (!image) {
-      console.log(123, '이미지없음');
-      console.log(123, image);
       await db.answers.update(
         {
           userId: userId,
@@ -143,8 +147,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
         },
       );
       const newAnswer = await db.answers.findOne({ where: { id } });
-      console.log(123, newAnswer);
-      return res.json({ imageUrl: newAnswer });
+      return res.json(response({ data: newAnswer }));
     }
     const { imageUrl } = files;
     const defaultPath = fileName;
@@ -166,7 +169,6 @@ router.put('/:id', checkToken, async (req, res, next) => {
     const date = moment()
       .tz('Asia/Seoul')
       .format('YYYY-MM-DD');
-    console.log(11, fields.date);
 
     await db.answers.update(
       {
@@ -184,7 +186,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
     // unlink tmp files
     fs.unlinkSync(imageUrl.path);
     const newAnswer = await db.answers.findOne({ where: { id } });
-    return res.json({ imageUrl: newAnswer });
+    return res.json(response({ data: newAnswer }));
   });
 });
 
@@ -203,9 +205,9 @@ router.delete('/:id', checkToken, async (req, res, next) => {
         id,
       },
     });
-    return res.json({ message: '답변을 삭제 했습니다.' });
+    return res.json(response({ message: '답변을 삭제 했습니다.' }));
   }
-  res.json({ message: '유효하지 않은 answerId' });
+  res.json(response({ status: 404, message: '유효하지 않은 answerId' }));
 });
 
 module.exports = router;
