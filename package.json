@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "deploy": "npm install && pm2 start ecosystem.config.js --env"
+    "deploy": "npm install && pm2 start ecosystem.config.js"
   },
   "dependencies": {
     "aws-sdk": "^2.595.0",
