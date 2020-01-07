@@ -27,7 +27,7 @@ module.exports = (Sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       mission: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       snsId: {
         type: DataTypes.STRING,
