@@ -1,12 +1,18 @@
 const { paths } = require('./path/base');
-const users = require('./path/users');
 const missions = require('./path/missions');
+const signin = require('./path/signin');
+const users = require('./path/users');
+
+Object.keys(missions).forEach(key => {
+  paths[key] = missions[key];
+});
+
+Object.keys(signin).forEach(key => {
+  paths[key] = signin[key];
+});
 
 Object.keys(users).forEach(key => {
   paths[key] = users[key];
-});
-Object.keys(missions).forEach(key => {
-  paths[key] = missions[key];
 });
 
 module.exports = {
