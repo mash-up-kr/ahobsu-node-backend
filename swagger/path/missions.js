@@ -216,16 +216,44 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 201,
+              status: 200,
               message: '',
-              data: {
-                id: 6,
-                title: '문제',
-                isContent: true,
-                isImage: false,
-                updatedAt: '2020-01-03T17:35:02.955Z',
-                createdAt: '2020-01-03T17:35:02.955Z',
-              },
+              data: [
+                {
+                  id: 4,
+                  title: '1111',
+                  isContent: 0,
+                  isImage: 0,
+                  createdAt: '2020-01-03T17:27:53.000Z',
+                  updatedAt: '2020-01-03T17:27:53.000Z',
+                },
+                {
+                  id: 3,
+                  title: '1111',
+                  isContent: 0,
+                  isImage: 0,
+                  createdAt: '2020-01-03T17:27:53.000Z',
+                  updatedAt: '2020-01-03T17:27:53.000Z',
+                },
+                {
+                  id: 2,
+                  title: '1111',
+                  isContent: 0,
+                  isImage: 0,
+                  createdAt: '2020-01-03T17:27:48.000Z',
+                  updatedAt: '2020-01-03T17:27:48.000Z',
+                },
+              ],
+            },
+          },
+        },
+        '400': {
+          schema: {
+            type: 'object',
+            example: {
+              status: 200,
+              message: '갱신 횟수가 모자랍니다.',
+              data: null,
             },
           },
         },

@@ -6,6 +6,20 @@ const response = require('../lib/response');
 
 const router = express.Router();
 
+router.get('/my', checkToken, async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const users = await db.users.findOne({ where: { id } });
+    if (!users) {
+      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+    }
+    res.json(response({ data: users }));
+  } catch (e) {
+    console.log(e);
+    return res.json(response({ status: 500, message: e.message }));
+  }
+});
+
 router.get('/', checkToken, async (req, res, next) => {
   try {
     const users = await db.users.findAll();
