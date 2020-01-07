@@ -9,11 +9,11 @@ const router = express.Router();
 router.get('/my', checkToken, async (req, res, next) => {
   const { id } = req.user;
   try {
-    const users = await db.users.findOne({ where: { id } });
-    if (!users) {
+    const user = await db.users.findOne({ where: { id } });
+    if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
-    res.json(response({ data: users }));
+    res.json(response({ data: user }));
   } catch (e) {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
@@ -97,6 +97,23 @@ router.delete('/', checkToken, async (req, res, next) => {
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
+  }
+});
+
+router.get('/:id', checkToken, async (req, res, next) => {
+  const { id } = req.params.id;
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+  }
+  try {
+    const user = await db.users.findOne({ where: { id } });
+    if (!user) {
+      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+    }
+    res.json(response({ data: user }));
+  } catch (e) {
+    console.log(e);
+    return res.json(response({ status: 500, message: e.message }));
   }
 });
 
