@@ -12,9 +12,7 @@ const response = require('../lib/response');
 
 const router = express.Router();
 
-/* GET users listing. */
 router.get('/week/:date', checkToken, async (req, res, next) => {
-  // db에서 해당 날짜 데이터 조회!
   const { date } = req.params;
   const userId = req.user.id;
   const firstDay = await moment(date).format('YYYY-MM-DD');
@@ -56,36 +54,33 @@ router.post('/', checkToken, async (req, res, next) => {
   for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
   const form = new formidable.IncomingForm();
   form.parse(req, async (err, fields, files) => {
-    const checkMission = await db.missions.findOne({ where: { id: fields.missionId } });
+    const { missionId, content } = fields;
+    const checkMission = await db.missions.findOne({ where: { id: missionId } });
     if (!checkMission) {
       return res.json(response({ status: 404, message: '존재하지않는 missionId.' }));
-    }
-    const checkAnswer = await db.answers.findOne({ where: { missionId: fields.missionId } });
-    if (!!checkAnswer) {
-      return res.json(response({ status: 404, message: '문제에 대한 답변이 존재합니다.' }));
     }
     const date = moment()
       .tz('Asia/Seoul')
       .format('YYYY-MM-DD');
-    const beforeAnswer = await db.answers.findAll({
+    const beforeAnswer = await db.answers.findOne({
       where: {
         userId,
-        date: date,
+        date,
       },
     });
-    if (beforeAnswer.length > 0) {
+    if (!!beforeAnswer) {
       return res.json(response({ status: 404, message: '해당날짜에 답변이 존재합니다.' }));
     }
     const image = files.imageUrl;
-    if (!image && !fields.content) {
+    if (!image && !content) {
       return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
     }
     if (!image) {
       const answer = await db.answers.create({
-        userId: userId,
-        missionId: fields.missionId,
-        content: fields.content,
-        date: fields.date,
+        userId,
+        missionId,
+        content,
+        date,
       });
       res.json(response({ data: answer }));
     }
@@ -109,7 +104,7 @@ router.post('/', checkToken, async (req, res, next) => {
 
     const answer = await db.answers.create({
       userId: userId,
-      missionId: fields.missionId,
+      missionId: missionId,
       imageUrl: imgUrl,
       content: fields.content,
       date: date,
