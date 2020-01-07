@@ -5,13 +5,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.js');
+const connectDB = require('./connectDB');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const filesRouter = require('./routes/files');
-const siginInRouter = require('./routes/signIn');
-const missionRouter = require('./routes/missions');
-const answerRouter = require('./routes/answers.js');
+const reutes = require('./routes');
 
 require('dotenv').config();
 const app = express();
@@ -23,26 +19,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // connect To DB
-// const models = require('./models');
-// models.sequelize
-//   .sync({ force: true })
-//   .then(() => {
-//     console.log('✓ DB connection success.');
-//     console.log('  Press CTRL-C to stop\n');
-//   })
-//   .catch(err => {
-//     console.error(err);
-//     console.log('✗ DB connection error. Please make sure DB is running.');
-//     process.exit();
-//   });
+// connectDB();
 
 app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/files', filesRouter);
-app.use('/signIn', siginInRouter);
-app.use('/missions', missionRouter);
-app.use('/answers', answerRouter);
+app.use('/', reutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

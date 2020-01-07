@@ -3,7 +3,7 @@ const sequelize = require('sequelize');
 const moment = require('moment');
 
 const db = require('../models');
-const checkToken = require('../lib/checkToken');
+const checkToken = require('../middleware/checkToken');
 const response = require('../lib/response');
 
 const router = express.Router();

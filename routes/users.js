@@ -1,7 +1,7 @@
 const express = require('express');
 
 const db = require('../models');
-const checkToken = require('../lib/checkToken');
+const checkToken = require('../middleware/checkToken');
 const response = require('../lib/response');
 
 const router = express.Router();
