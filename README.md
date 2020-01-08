@@ -26,7 +26,24 @@
 
 | 모듈 | 역할 | 사용한 부분 |
 | ---- | ---- | ----------- |
-
+| [aws-sdk](https://github.com/aws/aws-sdk-net) | Amazon Web Services and build scalable solutions with Amazon S3, Amazon DynamoDB, Amazon Glacier |   |
+| [cookie-parser](https://github.com/expressjs/cookie-parser) | 쿠키파서 |   |
+| [debug](https://www.npmjs.com/package/debug/v/2.6.9) | 노드 코어의 디버깅 기술을 모델로 한 작은 node.js 디버깅 유틸리티 |   |
+| [dotenv](https://github.com/motdotla/dotenv) | nodejs 프로젝트를 위해 .env에서 환경 변수를로드 |   |
+| [express](https://github.com/expressjs/express) | 미니멀리스트 웹 프레임 워크 |   |
+| [formidable](https://github.com/node-formidable/node-formidable) | 파일 업로드를 구문 분석하기위한 node.js 모듈 |   |
+| [greenlock-express](https://github.com/stampr/greenlock-express.js/tree/master) | 웹 서버 , 웹 브라우저 및 node.js 미들웨어 시스템을위한 인증서 |   |
+| [http-errors](https://github.com/jshttp/http-errors) | Express, Koa, Connect 등에 대한 HTTP 오류를 쉽게 생성 |   |
+| [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) | JSON 형태로 인증토큰을 만들어 통신할때쓰는 인증방식 |   |
+| [moment](https://github.com/moment/moment) | 날짜관련 작업을 위한 자바스크립트 라이브러리 |   |
+| [morgan] (https://github.com/expressjs/morgan)| node.js 용 HTTP 요청 로거 미들웨어 |   |
+| mysql2 | 데이터베이스 |   |
+| [nodemon](https://github.com/remy/nodemon) | 디렉토리의 파일 변경이 감지되면 노드 응용 프로그램을 자동으로 다시 시작 |   |
+| [pm2](https://github.com/Unitech/pm2) | JavaScript 런타임 Node.js의 프로세스 관리자 |   |
+| redirect-https |   |   |
+| [sequelize](https://github.com/sequelize/sequelize) | Node.js를위한 사용하기 쉬운 다중 SQL 언어 ORM  |   |
+| [sequelize-cli](https://github.com/sequelize/cli) | Sequelize 명령 줄 인터페이스 (CLI) |   |
+| [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) | 일을 기반으로 자동 생성 swagger-ui 생성 API 문서를 명시 적으로 제공 |   |
 
 ## Author
 
