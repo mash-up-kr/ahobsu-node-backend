@@ -18,9 +18,42 @@
 - 로그인 회원가입
   - 구글 로그인
   - 애플 로그인
-- 매일 새로운 미션 제공
+  - 회원 탈퇴
+- 매일 새로운 미션 3가지 제공
   - 미션 재발급 기능(제한적으로 제공)
 - 주별로 새로운 카드 세트 제공
+- 답변작성
+  - 당일 답변 수정
+  - 일주일치 답변 조회
+  - 특정날짜 답변 조회
+- 파일
+  - 이미지 업로드
+  - 일주일치 이미지 제공
+
+### Quick Start
+
+- node : v11.13.0
+- npm : 6.7.0
+
+- 의존성 설치
+
+```sh
+git clone https://github.com/mash-up-kr/Ahobsu-Node-Backend.git
+cd Ahobsu-Node-Backend
+npm install
+```
+
+- 개발 서버 시작
+
+```sh
+  npm start
+```
+
+- 배포 시작
+
+```sh
+  npm run depoly
+```
 
 ### 써드파티 패키지
 
