@@ -30,6 +30,16 @@
   - 이미지 업로드
   - 일주일치 이미지 제공
 
+### 폴더 구조
+bin - 서버에 대한 부가설명
+config - 설정파일
+lib - 공통함수 (helper)
+middleware - 미들웨어 모아둔 곳 
+models - data model
+public - 정적파일
+routes - 라우터
+swagger - api docs and testing
+
 ### Quick Start
 
 - node : v11.13.0
