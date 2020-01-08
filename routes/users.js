@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('../models');
 const checkToken = require('../middleware/checkToken');
 const response = require('../lib/response');
+const moment = require('moment');
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.get('/my', checkToken, async (req, res, next) => {
 });
 
 router.get('/', checkToken, async (req, res, next) => {
+  console.log(33, moment().format('YYYY-MM-DD HH:mm'));
   try {
     const users = await db.users.findAll();
     res.json(response({ data: users }));
