@@ -9,6 +9,8 @@
 
 # MashUp Node JS Project
 
+### 💻 [API](http://ec2-54-175-1-15.compute-1.amazonaws.com/apiDocs/)
+
 ## 매일매일 미션을 수행하며 카드를 수집해 보자
 
 ### 주요 기능
