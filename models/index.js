@@ -11,13 +11,12 @@ const db = {};
 const options = {
   host: config.host,
   dialect: 'mysql',
-  timezone: 'Asia/Seoul',
+  timezone: '+09:00',
   operatorsAliases: false,
   define: {
     timestamps: true,
   },
   dialectOptions: {
-    useUTC: false,
     dateStrings: true,
     typeCast: true,
   },
