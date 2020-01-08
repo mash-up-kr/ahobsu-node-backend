@@ -19,9 +19,7 @@ router.post('/refresh', checkToken, async (req, res, next) => {
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
-    const date = await moment()
-      .tz('Asia/Seoul')
-      .format('YYYY-MM-DD');
+    const date = await moment().format('YYYY-MM-DD');
     if (!user.refreshDate && user.refreshDate < date) {
       const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
       const mission = await db.sequelize.query(sql, {
@@ -55,9 +53,7 @@ router.get('/', checkToken, async (req, res, next) => {
   if (!user) {
     return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
   }
-  const date = moment()
-    .tz('Asia/Seoul')
-    .format('YYYY-MM-DD');
+  const date = moment().format('YYYY-MM-DD');
   const { mission } = user;
   const oldMission = JSON.parse(mission);
   if (!oldMission || oldMission.date < date) {

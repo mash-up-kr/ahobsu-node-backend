@@ -64,7 +64,6 @@ router.post('/', checkToken, async (req, res, next) => {
         return res.json(response({ status: 404, message: '존재하지않는 missionId.' }));
       }
       const date = moment()
-        .tz('Asia/Seoul')
         .format('YYYY-MM-DD');
       const beforeAnswer = await db.answers.findOne({
         where: {

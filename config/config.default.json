@@ -1,31 +1,11 @@
 {
   "development": {
-    "username": "username",
-    "password": "password!",
-    "database": "databaseName",
-    "host": "host",
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false,
-    "options": {
-      "host": "host",
-      "dialect": "mysql",
-      "timezone": "Asia/Seoul",
-      "operatorsAliases": false,
-      "define": {
-        "timestamps": true
-      },
-      "dialectOptions": {
-        "useUTC": false,
-        "dateStrings": true,
-        "typeCast": true
-      },
-      "pool": {
-        "min": 0,
-        "max": 10,
-        "idle": 10000,
-        "acquire": 10000
-      }
-    }
+    "operatorsAliases": false
   },
   "test": {
     "username": "root",
