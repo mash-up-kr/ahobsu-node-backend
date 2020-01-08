@@ -36,7 +36,7 @@
 | [http-errors](https://github.com/jshttp/http-errors) | Express, Koa, Connect 등에 대한 HTTP 오류를 쉽게 생성 |   |
 | [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) | JSON 형태로 인증토큰을 만들어 통신할때쓰는 인증방식 |   |
 | [moment](https://github.com/moment/moment) | 날짜관련 작업을 위한 자바스크립트 라이브러리 |   |
-| [morgan] (https://github.com/expressjs/morgan)| node.js 용 HTTP 요청 로거 미들웨어 |   |
+| [morgan](https://github.com/expressjs/morgan)| node.js 용 HTTP 요청 로거 미들웨어 |   |
 | mysql2 | 데이터베이스 |   |
 | [nodemon](https://github.com/remy/nodemon) | 디렉토리의 파일 변경이 감지되면 노드 응용 프로그램을 자동으로 다시 시작 |   |
 | [pm2](https://github.com/Unitech/pm2) | JavaScript 런타임 Node.js의 프로세스 관리자 |   |
