@@ -21,5 +21,6 @@ router.get('/', checkToken, function(req, res, next) {
 });
 
 router.get('/favicon.ico', function(req, res, next) {});
+router.get('/service-worker.js', function(req, res, next) {});
 
 module.exports = router;

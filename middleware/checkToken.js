@@ -14,7 +14,6 @@ module.exports = async (req, res, next) => {
   }
   try {
     const result = await jwt.verify(token, process.env.privateKey);
-    console.log(result);
     if (!result.user) {
       return res.json(
         response({
