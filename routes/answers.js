@@ -12,10 +12,14 @@ const response = require('../lib/response');
 
 const router = express.Router();
 
+const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
 router.get('/week/:date', checkToken, async (req, res, next) => {
   const { date } = req.params;
   const userId = req.user.id;
-  const firstDay = await moment(date).format('YYYY-MM-DD');
+  const firstDay = await moment(date)
+    .add(-1, 'days')
+    .format('YYYY-MM-DD');
   const lastDay = await moment(date)
     .add(7, 'days')
     .format('YYYY-MM-DD');
@@ -23,8 +27,8 @@ router.get('/week/:date', checkToken, async (req, res, next) => {
     where: {
       userId,
       date: {
-        [Op.gt]: new Date(firstDay),
-        [Op.lt]: new Date(lastDay),
+        [Op.gt]: firstDay,
+        [Op.lt]: lastDay,
       },
     },
   });
@@ -50,7 +54,6 @@ router.post('/', checkToken, async (req, res, next) => {
   });
   const s3 = new AWS.S3();
   let fileName = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
   const form = new formidable.IncomingForm();
   form.parse(req, async (err, fields, files) => {
@@ -83,7 +86,7 @@ router.post('/', checkToken, async (req, res, next) => {
           content,
           date,
         });
-        res.json(response({ data: answer }));
+        return res.json(response({ data: answer }));
       }
       const { imageUrl } = files;
       const defaultPath = fileName;
@@ -136,7 +139,6 @@ router.put('/:id', checkToken, async (req, res, next) => {
   });
   const s3 = new AWS.S3();
   let fileName = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
   const form = new formidable.IncomingForm();
   form.parse(req, async (err, fields, files) => {

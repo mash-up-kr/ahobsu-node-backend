@@ -1,8 +1,13 @@
 const { paths } = require('./path/base');
+const answers = require('./path/answers');
 const files = require('./path/files');
 const missions = require('./path/missions');
 const signin = require('./path/signin');
 const users = require('./path/users');
+
+Object.keys(answers).forEach(key => {
+  paths[key] = answers[key];
+});
 
 Object.keys(files).forEach(key => {
   paths[key] = files[key];

@@ -1,8 +1,8 @@
 module.exports = {
-  '/files': {
+  '/answers': {
     post: {
-      tags: ['files'],
-      summary: 'file 생성',
+      tags: ['answers'],
+      summary: '답 작성',
       consumes: ['multipart/form-data'],
       produces: ['application/json'],
       parameters: [
@@ -16,18 +16,25 @@ module.exports = {
           required: true,
         },
         {
-          name: 'file',
+          name: 'imageUrl',
           in: 'formData',
           description: 'file to upload',
           required: false,
           type: 'file',
         },
         {
-          name: 'date',
+          name: 'missionId',
+          in: 'formData',
+          description: 'file to upload',
+          required: true,
+          type: 'integer',
+        },
+        {
+          name: 'content',
           in: 'formData',
           description: 'file to upload',
           required: false,
-          type: 'text',
+          type: 'string',
         },
       ],
       responses: {
@@ -37,22 +44,27 @@ module.exports = {
             example: {
               status: 200,
               message: '',
-              data: {
-                id: 2,
-                file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/Z2bwdxRF.jpg',
-                date: '2020-01-08',
-                updatedAt: '2020-01-07T12:19:23.971Z',
-                createdAt: '2020-01-07T12:19:23.971Z',
-              },
+              data: [
+                {
+                  id: 39,
+                  userId: 1,
+                  missionId: 18,
+                  imageUrl: null,
+                  content: '123',
+                  date: '2020-01-07',
+                  createdAt: '2020-01-07T12:51:07.000Z',
+                  updatedAt: '2020-01-07T12:51:07.000Z',
+                },
+              ],
             },
           },
         },
-        '500': {
+        '404': {
           schema: {
             type: 'object',
             example: {
-              status: 500,
-              message: '해당날짜에 이미지가 이미 있습니다.',
+              status: 404,
+              message: '해당날짜에 답변이 존재합니다.',
               data: null,
             },
           },
@@ -60,10 +72,10 @@ module.exports = {
       },
     },
   },
-  '/files/{id}': {
+  '/answers/{id}': {
     put: {
-      tags: ['files'],
-      summary: 'file 수정',
+      tags: ['answers'],
+      summary: '답 작성',
       consumes: ['multipart/form-data'],
       produces: ['application/json'],
       parameters: [
@@ -77,19 +89,26 @@ module.exports = {
           required: true,
         },
         {
-          name: 'file',
+          name: 'id',
+          in: 'path',
+          type: 'integer',
+          default: 1,
+          description: '답 ID',
+          required: true,
+        },
+        {
+          name: 'imageUrl',
           in: 'formData',
           description: 'file to upload',
           required: false,
           type: 'file',
         },
         {
-          name: 'id',
-          in: 'path',
-          type: 'integer',
-          default: 2,
-          description: '파일 ID',
-          required: true,
+          name: 'content',
+          in: 'formData',
+          description: 'file to upload',
+          required: false,
+          type: 'string',
         },
       ],
       responses: {
@@ -100,11 +119,14 @@ module.exports = {
               status: 200,
               message: '',
               data: {
-                id: 2,
-                file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/Z2bwdxRF.jpg',
-                date: '2020-01-08',
-                updatedAt: '2020-01-07T12:19:23.971Z',
-                createdAt: '2020-01-07T12:19:23.971Z',
+                id: 39,
+                userId: 1,
+                missionId: 18,
+                imageUrl: null,
+                content: '2222222222',
+                date: '2020-01-07',
+                createdAt: '2020-01-07T12:51:07.000Z',
+                updatedAt: '2020-01-08T01:29:58.000Z',
               },
             },
           },
@@ -112,8 +134,8 @@ module.exports = {
       },
     },
     delete: {
-      tags: ['files'],
-      summary: 'file 삭제',
+      tags: ['answers'],
+      summary: '답 작성',
       produces: ['application/json'],
       parameters: [
         {
@@ -129,8 +151,8 @@ module.exports = {
           name: 'id',
           in: 'path',
           type: 'integer',
-          default: 2,
-          description: '파일 ID',
+          default: 1,
+          description: '답 ID',
           required: true,
         },
       ],
@@ -140,7 +162,7 @@ module.exports = {
             type: 'object',
             example: {
               status: 200,
-              message: '파일을 삭제 했습니다.',
+              message: '답변을 삭제 했습니다.',
               data: null,
             },
           },
@@ -148,10 +170,10 @@ module.exports = {
       },
     },
   },
-  '/files/{date}': {
+  '/answers/week/{date}': {
     get: {
-      tags: ['files'],
-      summary: '일주일치 사진 파일 불러오기',
+      tags: ['answers'],
+      summary: '일주일치 데이터',
       produces: ['application/json'],
       parameters: [
         {
@@ -181,25 +203,14 @@ module.exports = {
               message: '',
               data: [
                 {
-                  id: 1,
-                  file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ZuqMBoYE.jpg',
+                  id: 39,
+                  userId: 1,
+                  missionId: 18,
+                  imageUrl: null,
+                  content: '123',
                   date: '2020-01-07',
-                  createdAt: '2020-01-07T12:13:38.000Z',
-                  updatedAt: '2020-01-07T12:13:38.000Z',
-                },
-                {
-                  id: 3,
-                  file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/HcxlNQyu.jpg',
-                  date: '2020-01-06',
-                  createdAt: '2020-01-08T00:23:34.000Z',
-                  updatedAt: '2020-01-08T00:23:34.000Z',
-                },
-                {
-                  id: 4,
-                  file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/4cyAVfME.jpg',
-                  date: '2020-01-08',
-                  createdAt: '2020-01-08T00:26:01.000Z',
-                  updatedAt: '2020-01-08T00:26:01.000Z',
+                  createdAt: '2020-01-07T12:51:07.000Z',
+                  updatedAt: '2020-01-07T12:51:07.000Z',
                 },
               ],
             },
@@ -207,10 +218,11 @@ module.exports = {
         },
       },
     },
-    delete: {
-      tags: ['files'],
-      summary: 'file 삭제',
-      consumes: ['multipart/form-data'],
+  },
+  '/answers/{date}': {
+    get: {
+      tags: ['answers'],
+      summary: '해당 날짜 데이터',
       produces: ['application/json'],
       parameters: [
         {
@@ -223,11 +235,11 @@ module.exports = {
           required: true,
         },
         {
-          name: 'id',
+          name: 'date',
           in: 'path',
-          type: 'integer',
-          default: 2,
-          description: '파일 ID',
+          type: 'string',
+          default: '2020-01-06',
+          description: '해당 날짜',
           required: true,
         },
       ],
@@ -237,8 +249,19 @@ module.exports = {
             type: 'object',
             example: {
               status: 200,
-              message: '파일을 삭제 했습니다.',
-              data: null,
+              message: '',
+              data: [
+                {
+                  id: 39,
+                  userId: 1,
+                  missionId: 18,
+                  imageUrl: null,
+                  content: '123',
+                  date: '2020-01-07',
+                  createdAt: '2020-01-07T12:51:07.000Z',
+                  updatedAt: '2020-01-07T12:51:07.000Z',
+                },
+              ],
             },
           },
         },
