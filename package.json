@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "env TZ='Asia/Seoul' nodemon ./bin/www",
-    "deploy": "npm install && env TZ='Asia/Seoul' pm2 start ecosystem.config.js"
+    "deploy": "npm install && git pull origin dev && env TZ='Asia/Seoul' pm2 start ecosystem.config.js"
   },
   "dependencies": {
     "aws-sdk": "^2.595.0",
