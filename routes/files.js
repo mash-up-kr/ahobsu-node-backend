@@ -37,11 +37,11 @@ router.post('/', checkToken, async (req, res, next) => {
 
       const { file } = files;
       const defaultPath = fileName;
-      const imageUrl = defaultPath + path.parse(file.name).ext;
+      const imgUrl = defaultPath + path.parse(file.name).ext;
       s3.upload(
         {
           Bucket: process.env.buket,
-          Key: imageUrl,
+          Key: imgUrl,
           ACL: 'public-read',
           Body: fs.createReadStream(file.path),
         },
@@ -51,8 +51,8 @@ router.post('/', checkToken, async (req, res, next) => {
         },
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
-      const imgUrl = baseUrl + imageUrl;
-      const fileObj = await db.files.create({ file: imgUrl, date: fields.date });
+      const imageUrl = baseUrl + imgUrl;
+      const fileObj = await db.files.create({ imageUrl, date: fields.date });
 
       // unlink tmp files
       fs.unlinkSync(file.path);
@@ -82,11 +82,11 @@ router.put('/:id', checkToken, async (req, res, next) => {
     try {
       const { file } = files;
       const defaultPath = fileName;
-      const imageUrl = defaultPath + path.parse(file.name).ext;
+      const imgUrl = defaultPath + path.parse(file.name).ext;
       s3.upload(
         {
           Bucket: process.env.buket,
-          Key: imageUrl,
+          Key: imgUrl,
           ACL: 'public-read',
           Body: fs.createReadStream(file.path),
         },
@@ -96,10 +96,10 @@ router.put('/:id', checkToken, async (req, res, next) => {
         },
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
-      const imgUrl = baseUrl + imageUrl;
+      const imageUrl = baseUrl + imgUrl;
       await db.files.update(
         {
-          file: imgUrl,
+          imageUrl,
         },
         {
           where: {

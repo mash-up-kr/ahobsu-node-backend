@@ -39,7 +39,7 @@ module.exports = {
               message: '',
               data: {
                 id: 2,
-                file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/Z2bwdxRF.jpg',
+                imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/Z2bwdxRF.jpg',
                 date: '2020-01-08',
                 updatedAt: '2020-01-07T12:19:23.971Z',
                 createdAt: '2020-01-07T12:19:23.971Z',
@@ -101,7 +101,7 @@ module.exports = {
               message: '',
               data: {
                 id: 2,
-                file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/Z2bwdxRF.jpg',
+                imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/Z2bwdxRF.jpg',
                 date: '2020-01-08',
                 updatedAt: '2020-01-07T12:19:23.971Z',
                 createdAt: '2020-01-07T12:19:23.971Z',
@@ -182,21 +182,21 @@ module.exports = {
               data: [
                 {
                   id: 1,
-                  file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ZuqMBoYE.jpg',
+                  imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ZuqMBoYE.jpg',
                   date: '2020-01-07',
                   createdAt: '2020-01-07T12:13:38.000Z',
                   updatedAt: '2020-01-07T12:13:38.000Z',
                 },
                 {
                   id: 3,
-                  file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/HcxlNQyu.jpg',
+                  imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/HcxlNQyu.jpg',
                   date: '2020-01-06',
                   createdAt: '2020-01-08T00:23:34.000Z',
                   updatedAt: '2020-01-08T00:23:34.000Z',
                 },
                 {
                   id: 4,
-                  file: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/4cyAVfME.jpg',
+                  imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/4cyAVfME.jpg',
                   date: '2020-01-08',
                   createdAt: '2020-01-08T00:26:01.000Z',
                   updatedAt: '2020-01-08T00:26:01.000Z',

@@ -8,7 +8,7 @@ module.exports = (Sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      file: {
+      imageUrl: {
         type: DataTypes.STRING,
       },
       date: {
