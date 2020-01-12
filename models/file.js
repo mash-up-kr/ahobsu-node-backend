@@ -14,6 +14,9 @@ module.exports = (Sequelize, DataTypes) => {
       date: {
         type: DataTypes.STRING,
       },
+      cycle: {
+        type: DataTypes.INTEGER,
+      },
     },
     {},
   );

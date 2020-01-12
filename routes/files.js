@@ -57,6 +57,10 @@ router.post('/', checkToken, async (req, res, next) => {
       }
 
       const { file } = files;
+      const { date, cycle } = fields;
+      if (!file || !date || !cycle) {
+        return res.json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
+      }
       const defaultPath = fileName;
       const imgUrl = defaultPath + path.parse(file.name).ext;
       s3.upload(
@@ -73,7 +77,7 @@ router.post('/', checkToken, async (req, res, next) => {
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
       const imageUrl = baseUrl + imgUrl;
-      const fileObj = await db.files.create({ imageUrl, date: fields.date });
+      const fileObj = await db.files.create({ imageUrl, date, cycle: parseInt(cycle, 10) });
 
       // unlink tmp files
       fs.unlinkSync(file.path);
@@ -102,6 +106,10 @@ router.put('/:id', checkToken, async (req, res, next) => {
   form.parse(req, async (err, fields, files) => {
     try {
       const { file } = files;
+      const { cycle } = fields;
+      if (!file || !cycle) {
+        return res.json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
+      }
       const defaultPath = fileName;
       const imgUrl = defaultPath + path.parse(file.name).ext;
       s3.upload(
@@ -121,6 +129,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
       await db.files.update(
         {
           imageUrl,
+          cycle: parseInt(cycle, 10),
         },
         {
           where: {
