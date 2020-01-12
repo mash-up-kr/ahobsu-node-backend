@@ -22,10 +22,28 @@ router.get('/refresh', checkToken, async (req, res, next) => {
     }
     const date = await moment().format('YYYY-MM-DD');
     if (!user.refreshDate || user.refreshDate < date) {
-      const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
-      const missions = await db.sequelize.query(sql, {
+      const oneYearAgo = moment()
+        .add(-1, 'years')
+        .format('YYYY-MM-DD');
+      const sql1 = `SELECT * FROM answers  join missions on answers.missionId = missions.id  WHERE (answers.date > '${oneYearAgo}' AND answers.date < '${date}');`;
+      const oneYearData = await db.sequelize.query(sql1, {
         type: sequelize.QueryTypes.SELECT,
       });
+      const ids = [];
+      oneYearData.forEach(a => {
+        if (
+          moment(a.date)
+            .add(a.cycle, 'days')
+            .format('YYYY-MM-DD') >= date
+        ) {
+          ids.push(`'${a.id}'`);
+        }
+      });
+      const sql2 = `SELECT * from missions WHERE NOT missions.id IN (${ids.join(',')}) ORDER BY RAND() LIMIT 3`;
+      const missions = await db.sequelize.query(sql2, {
+        type: sequelize.QueryTypes.SELECT,
+      });
+
       await db.users.update(
         { refreshDate: date, missions: JSON.stringify(date, missions) },
         {
@@ -56,25 +74,31 @@ router.get('/', checkToken, async (req, res, next) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     const date = moment().format('YYYY-MM-DD');
-    const oneYearAgo = moment()
-      .add(-1, 'years')
-      .format('YYYY-MM-DD');
-    const sql = `SELECT * FROM answers  join missions on answers.missionId = missions.id  WHERE (answers.date > '${oneYearAgo}' AND answers.date < '${date}');`;
-    const oneYearData = await db.sequelize.query(sql, {
-      type: sequelize.QueryTypes.SELECT,
-    });
-    console.log(1, oneYearData);
-    oneYearData.forEach(a => {
-      console.log(213, a.id, a.missionId);
-    });
     // const notInId
     const { missions } = user;
     const oldMission = missions && JSON.parse(missions);
     const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
 
     if (!oldMission || (!!oldMission && oldMission.missions.length < 1) || oldMission.date < date) {
-      const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
-      const missions = await db.sequelize.query(sql, {
+      const oneYearAgo = moment()
+        .add(-1, 'years')
+        .format('YYYY-MM-DD');
+      const sql1 = `SELECT * FROM answers  join missions on answers.missionId = missions.id  WHERE (answers.date > '${oneYearAgo}' AND answers.date < '${date}');`;
+      const oneYearData = await db.sequelize.query(sql1, {
+        type: sequelize.QueryTypes.SELECT,
+      });
+      const ids = [];
+      oneYearData.forEach(a => {
+        if (
+          moment(a.date)
+            .add(a.cycle, 'days')
+            .format('YYYY-MM-DD') >= date
+        ) {
+          ids.push(`'${a.id}'`);
+        }
+      });
+      const sql2 = `SELECT * from missions WHERE NOT missions.id IN (${ids.join(',')}) ORDER BY RAND() LIMIT 3`;
+      const missions = await db.sequelize.query(sql2, {
         type: sequelize.QueryTypes.SELECT,
       });
 
