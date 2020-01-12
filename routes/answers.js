@@ -16,12 +16,19 @@ const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 
 router.get('/week', checkToken, async (req, res, next) => {
   const date = moment().format('YYYY-MM-DD');
+  const day = moment().day();
+  let first = -7;
+  let last = 1;
+  if (day != 0) {
+    first = day * -1;
+    last = 8 - day;
+  }
   const userId = req.user.id;
   const firstDay = await moment(date)
-    .add(-1, 'days')
+    .add(first, 'days')
     .format('YYYY-MM-DD');
   const lastDay = await moment(date)
-    .add(7, 'days')
+    .add(last, 'days')
     .format('YYYY-MM-DD');
   const answers = await db.answers.findAll({
     where: {
