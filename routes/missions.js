@@ -20,20 +20,20 @@ router.get('/refresh', checkToken, async (req, res, next) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     const date = await moment().format('YYYY-MM-DD');
-    if (!user.refreshDate && user.refreshDate < date) {
+    if (!user.refreshDate || user.refreshDate < date) {
       const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
-      const mission = await db.sequelize.query(sql, {
+      const missions = await db.sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
       });
       await db.users.update(
-        { refreshDate: date, mission: JSON.stringify(date, mission) },
+        { refreshDate: date, missions: JSON.stringify(date, missions) },
         {
           where: {
             id,
           },
         },
       );
-      res.json(response({ data: mission }));
+      res.json(response({ data: { refresh: false, missions } }));
     } else {
       res.json(response({ status: 400, message: '갱신 횟수가 모자랄 수 있습니다.' }));
     }
@@ -55,25 +55,27 @@ router.get('/', checkToken, async (req, res, next) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     const date = moment().format('YYYY-MM-DD');
-    const { mission } = user;
-    const oldMission = JSON.parse(mission);
-    if (!oldMission || (!!oldMission && oldMission.mission.length < 1) || oldMission.date < date) {
+    const { missions } = user;
+    const oldMission = missions && JSON.parse(missions);
+    const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
+
+    if (!oldMission || (!!oldMission && oldMission.missions.length < 1) || oldMission.date < date) {
       const sql = 'SELECT * from chocopie.missions ORDER BY RAND() LIMIT 3';
-      const mission = await db.sequelize.query(sql, {
+      const missions = await db.sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
       });
 
       await db.users.update(
-        { mission: JSON.stringify({ date, mission }) },
+        { mission: JSON.stringify({ date, missions }) },
         {
           where: {
             id,
           },
         },
       );
-      res.json(response({ data: mission }));
+      res.json(response({ data: { refresh, missions } }));
     } else {
-      res.json(response({ data: oldMission.mission }));
+      res.json(response({ data: refresh, missions: oldMission.missions }));
     }
   } catch (e) {
     console.log(e);
