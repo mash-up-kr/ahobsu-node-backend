@@ -97,7 +97,7 @@ router.get('/', checkToken, async (req, res, next) => {
 });
 
 router.post('/', checkToken, async (req, res, next) => {
-  const { title, isContent, isImage } = req.body;
+  const { title, isContent, isImage, cycle } = req.body;
   if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
@@ -115,7 +115,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
-  const { title, isContent, isImage } = req.body;
+  const { title, isContent, isImage, cycle } = req.body;
   if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
