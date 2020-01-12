@@ -11,7 +11,6 @@ const checkToken = require('../middleware/checkToken');
 const response = require('../lib/response');
 
 const router = express.Router();
-
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 router.get('/week', checkToken, async (req, res, next) => {
@@ -41,6 +40,42 @@ router.get('/week', checkToken, async (req, res, next) => {
   });
 
   res.json(response({ data: answers }));
+});
+
+router.get('/month', checkToken, async (req, res, next) => {
+  const userId = req.user.id;
+  const queryDate = req.query.date;
+  const date = !!queryDate ? moment(queryDate).date(1) : moment().date(1);
+  const day = date.day();
+  let first = -7;
+  let last = 1;
+  if (day != 0) {
+    first = day * -1;
+    last = 8 - day;
+  }
+  let firstDay = await moment(date).add(first, 'days');
+  let lastDay = await moment(date).add(last, 'days');
+  const weeks = [];
+  while (lastDay.month() === date.month()) {
+    firstDay = moment(firstDay).add('days', 7);
+    lastDay = moment(lastDay).add('days', 7);
+    weeks.push([firstDay.format('YYYY-MM-DD'), lastDay.format('YYYY-MM-DD')]);
+  }
+  console.log(9999, weeks);
+  const answers = await Promise.all(
+    weeks.map(([firstDay, lastDay]) => {
+      return db.answers.findAll({
+        where: {
+          userId,
+          date: {
+            [Op.gt]: firstDay,
+            [Op.lt]: lastDay,
+          },
+        },
+      });
+    }),
+  );
+  res.json(response({ data: { date: date.format('YYYY-MM-DD'), answers } }));
 });
 
 router.get('/:date', checkToken, async (req, res, next) => {
@@ -80,7 +115,6 @@ router.post('/', checkToken, async (req, res, next) => {
       });
       const cardFile = await db.files.findOne({ where: { date } });
       const { cardUrl } = cardFile;
-      console.log(11111, cardUrl);
       if (!!beforeAnswer) {
         return res.json(response({ status: 404, message: '해당날짜에 답변이 존재합니다.' }));
       }
