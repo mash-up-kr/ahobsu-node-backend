@@ -8,7 +8,7 @@ module.exports = (Sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      imageUrl: {
+      cardUrl: {
         type: DataTypes.STRING,
       },
       date: {

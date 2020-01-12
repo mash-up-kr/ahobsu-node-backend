@@ -17,6 +17,9 @@ module.exports = (Sequelize, DataTypes) => {
       imageUrl: {
         type: DataTypes.STRING,
       },
+      cardUrl: {
+        type: DataTypes.STRING,
+      },
       content: {
         type: DataTypes.STRING,
       },

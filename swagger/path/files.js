@@ -47,7 +47,7 @@ module.exports = {
               message: '',
               data: {
                 id: 1,
-                imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
                 date: '2020-01-12',
                 cycle: 2,
                 createdAt: '2020-01-12 19:50:35',
@@ -142,7 +142,7 @@ module.exports = {
               message: '',
               data: {
                 id: 1,
-                imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/yzjOM7m5.jpg',
+                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/yzjOM7m5.jpg',
                 date: '2020-01-12',
                 cycle: 1,
                 updatedAt: '2020-01-12T10:50:35.282Z',
@@ -158,56 +158,6 @@ module.exports = {
               status: 500,
               message: '해당날짜에 이미지가 이미 있습니다.',
               data: null,
-            },
-          },
-        },
-      },
-    },
-    get: {
-      tags: ['files'],
-      summary: '일주일치 사진 파일 불러오기',
-      produces: ['application/json'],
-      parameters: [
-        {
-          name: 'Authorization',
-          in: 'header',
-          type: 'string',
-          description: 'API 인증 키',
-          default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
-          required: true,
-        },
-      ],
-      responses: {
-        '200': {
-          schema: {
-            type: 'object',
-            example: {
-              status: 200,
-              message: '',
-              data: [
-                {
-                  id: 1,
-                  imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ZuqMBoYE.jpg',
-                  date: '2020-01-07',
-                  createdAt: '2020-01-07T12:13:38.000Z',
-                  updatedAt: '2020-01-07T12:13:38.000Z',
-                },
-                {
-                  id: 3,
-                  imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/HcxlNQyu.jpg',
-                  date: '2020-01-06',
-                  createdAt: '2020-01-08T00:23:34.000Z',
-                  updatedAt: '2020-01-08T00:23:34.000Z',
-                },
-                {
-                  id: 4,
-                  imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/4cyAVfME.jpg',
-                  date: '2020-01-08',
-                  createdAt: '2020-01-08T00:26:01.000Z',
-                  updatedAt: '2020-01-08T00:26:01.000Z',
-                },
-              ],
             },
           },
         },
