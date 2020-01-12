@@ -14,7 +14,7 @@ module.exports = (Sequelize, DataTypes) => {
       missionId: {
         type: DataTypes.INTEGER,
       },
-      imageUrl: {
+      file: {
         type: DataTypes.STRING,
       },
       content: {
