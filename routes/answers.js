@@ -14,8 +14,8 @@ const router = express.Router();
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-router.get('/week/:date', checkToken, async (req, res, next) => {
-  const { date } = req.params;
+router.get('/week', checkToken, async (req, res, next) => {
+  const date = moment().format('YYYY-MM-DD');
   const userId = req.user.id;
   const firstDay = await moment(date)
     .add(-1, 'days')
@@ -110,7 +110,7 @@ router.post('/', checkToken, async (req, res, next) => {
         missionId: missionId,
         imageUrl,
         content: fields.content,
-        date: date,
+        date,
       });
       // unlink tmp files
       fs.unlinkSync(file.path);
