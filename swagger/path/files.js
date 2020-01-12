@@ -30,13 +30,6 @@ module.exports = {
           description: '파일 ID',
           required: true,
         },
-        {
-          name: 'cycle',
-          in: 'formData',
-          description: 'file to upload',
-          required: false,
-          type: 'text',
-        },
       ],
       responses: {
         '200': {
@@ -49,7 +42,6 @@ module.exports = {
                 id: 1,
                 cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
                 date: '2020-01-12',
-                cycle: 2,
                 createdAt: '2020-01-12 19:50:35',
                 updatedAt: '2020-01-12 19:54:15',
               },
@@ -125,13 +117,6 @@ module.exports = {
           required: false,
           type: 'text',
         },
-        {
-          name: 'cycle',
-          in: 'formData',
-          description: 'file to upload',
-          required: false,
-          type: 'text',
-        },
       ],
       responses: {
         '200': {
@@ -144,7 +129,6 @@ module.exports = {
                 id: 1,
                 cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/yzjOM7m5.jpg',
                 date: '2020-01-12',
-                cycle: 1,
                 updatedAt: '2020-01-12T10:50:35.282Z',
                 createdAt: '2020-01-12T10:50:35.282Z',
               },

@@ -63,8 +63,8 @@ router.post('/', checkToken, async (req, res, next) => {
       }
 
       const { file } = files;
-      const { date, cycle } = fields;
-      if (!file || !date || !cycle) {
+      const { date } = fields;
+      if (!file || !date) {
         return res.json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
       }
       const defaultPath = fileName;
@@ -83,7 +83,7 @@ router.post('/', checkToken, async (req, res, next) => {
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
       const cardUrl = baseUrl + imgUrl;
-      const fileObj = await db.files.create({ cardUrl, date, cycle: parseInt(cycle, 10) });
+      const fileObj = await db.files.create({ cardUrl, date });
 
       // unlink tmp files
       fs.unlinkSync(file.path);
@@ -112,8 +112,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
   form.parse(req, async (err, fields, files) => {
     try {
       const { file } = files;
-      const { cycle } = fields;
-      if (!file || !cycle) {
+      if (!file) {
         return res.json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
       }
       const defaultPath = fileName;
@@ -135,7 +134,6 @@ router.put('/:id', checkToken, async (req, res, next) => {
       await db.files.update(
         {
           cardUrl,
-          cycle: parseInt(cycle, 10),
         },
         {
           where: {

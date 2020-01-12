@@ -1,6 +1,7 @@
 const express = require('express');
 const sequelize = require('sequelize');
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 const db = require('../models');
 const checkToken = require('../middleware/checkToken');
@@ -55,6 +56,18 @@ router.get('/', checkToken, async (req, res, next) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     const date = moment().format('YYYY-MM-DD');
+    const oneYearAgo = moment()
+      .add(-1, 'years')
+      .format('YYYY-MM-DD');
+    const sql = `SELECT * FROM answers  join missions on answers.missionId = missions.id  WHERE (answers.date > '${oneYearAgo}' AND answers.date < '${date}');`;
+    const oneYearData = await db.sequelize.query(sql, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+    console.log(1, oneYearData);
+    oneYearData.forEach(a => {
+      console.log(213, a.id, a.missionId);
+    });
+    // const notInId
     const { missions } = user;
     const oldMission = missions && JSON.parse(missions);
     const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
@@ -85,11 +98,11 @@ router.get('/', checkToken, async (req, res, next) => {
 
 router.post('/', checkToken, async (req, res, next) => {
   const { title, isContent, isImage } = req.body;
-  if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false)) {
+  if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
-    const missions = await db.missions.create({ title, isContent, isImage });
+    const missions = await db.missions.create({ title, isContent, isImage, cycle });
     res.json(response({ status: 201, data: missions }));
   } catch (e) {
     console.log(e);
@@ -103,7 +116,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
   const { title, isContent, isImage } = req.body;
-  if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false)) {
+  if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
@@ -112,7 +125,7 @@ router.put('/:id', checkToken, async (req, res, next) => {
       return res.json(response({ status: 400, message: '유효하지 않은 mission id 입니다.' }));
     }
     await db.missions.update(
-      { title: title, isContent: isContent, isImage: isImage },
+      { title: title, isContent: isContent, isImage: isImage, cycle },
       {
         where: {
           id,

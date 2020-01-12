@@ -17,6 +17,9 @@ module.exports = (Sequelize, DataTypes) => {
       isImage: {
         type: DataTypes.BOOLEAN,
       },
+      cycle: {
+        type: DataTypes.INTEGER,
+      },
     },
     {},
   );
