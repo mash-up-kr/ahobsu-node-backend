@@ -8,7 +8,7 @@ const response = require('../lib/response');
 
 const router = express.Router();
 
-router.post('/refresh', checkToken, async (req, res, next) => {
+router.get('/refresh', checkToken, async (req, res, next) => {
   const { id } = req.user;
   try {
     const user = await db.users.findOne({

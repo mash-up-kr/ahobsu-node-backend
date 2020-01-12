@@ -196,7 +196,7 @@ module.exports = {
     },
   },
   '/missions/refresh': {
-    post: {
+    get: {
       tags: ['missions'],
       summary: '미션 재발급',
       produces: ['application/json'],
