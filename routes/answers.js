@@ -103,12 +103,12 @@ router.post('/', checkToken, async (req, res, next) => {
         },
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
-      const imgUrl = baseUrl + file2;
+      const imageUrl = baseUrl + file2;
 
       const answer = await db.answers.create({
         userId: userId,
         missionId: missionId,
-        file: imgUrl,
+        imageUrl,
         content: fields.content,
         date: date,
       });
@@ -178,13 +178,13 @@ router.put('/:id', checkToken, async (req, res, next) => {
         },
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
-      const imgUrl = baseUrl + file2;
+      const imageUrl = baseUrl + file2;
 
       await db.answers.update(
         {
           userId: userId,
           missionId: fields.missionId,
-          file: imgUrl,
+          imageUrl,
           content: fields.content,
         },
         {
