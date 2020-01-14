@@ -23,4 +23,12 @@ router.get('/', checkToken, function(req, res, next) {
 router.get('/favicon.ico', function(req, res, next) {});
 router.get('/service-worker.js', function(req, res, next) {});
 
+router.get('/hello', (req, res) => {
+  res.send('world!');
+});
+
+router.get('/status', (req, res) => {
+  res.send('ok');
+});
+
 module.exports = router;
