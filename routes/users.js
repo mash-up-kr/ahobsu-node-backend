@@ -21,11 +21,10 @@ router.get('/my', checkToken, async (req, res, next) => {
   }
 });
 
-router.get('/', checkToken, async (req, res, next) => {
-  console.log(33, moment().format('YYYY-MM-DD HH:mm'));
+router.get('/', async (req, res, next) => {
   try {
-    const users = await db.users.findAll();
-    res.json(response({ data: users }));
+    // const users = await db.users.findAll();
+    res.json(response({ data: null }));
   } catch (e) {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
