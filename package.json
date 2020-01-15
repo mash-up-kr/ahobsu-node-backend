@@ -5,7 +5,7 @@
   "scripts": {
     "start": "env TZ='Asia/Seoul' nodemon ./bin/www",
     "deploy": "git pull origin dev && npm install && env TZ='Asia/Seoul' pm2 start ecosystem.config.js",
-    "unit": "NODE_ENV=test jest tests/*.test.js --forceExit"
+    "unit": "NODE_ENV=test jest __test__/*.test.js --forceExit"
   },
   "dependencies": {
     "aws-sdk": "^2.595.0",
