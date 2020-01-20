@@ -33,8 +33,8 @@ router.get('/', checkToken, async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const { name, birthday, email, gender, snsId, snsType } = req.body;
-  if (!name || !birthday || !email || !gender || !snsId || !snsType) {
+  const { name, birthday, email, gender, snsId, snsType, token } = req.body;
+  if (!name || !birthday || !email || !gender || !snsId || !snsType || !token) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
