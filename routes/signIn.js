@@ -65,6 +65,7 @@ router.post('/refresh', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
+  const token = req.headers.authorization;
   const { snsId } = req.body;
   if (!snsId) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));

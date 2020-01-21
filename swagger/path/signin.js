@@ -6,6 +6,14 @@ module.exports = {
       produces: ['application/json'],
       parameters: [
         {
+          name: 'Authorization',
+          in: 'header',
+          type: 'string',
+          description: 'SNS 인증 키',
+          default: 'SNS 인증키',
+          required: true,
+        },
+        {
           name: 'body',
           in: 'body',
           required: true,
