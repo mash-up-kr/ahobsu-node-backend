@@ -28,17 +28,10 @@ router.post('/refresh', async (req, res, next) => {
     }
     const { snsId } = result;
     const user = await db.users.findOne({ where: { snsId } });
-    if (!user) {
-      return res.json(
-        response({
-          status: 404,
-          message: '유저가 존재하지 않습니다.',
-        }),
-      );
-    }
+    const newUser = user ? user : await db.users.create({ snsId });
     const accessToken = await jwt.sign(
       {
-        user,
+        newUser,
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
@@ -50,11 +43,13 @@ router.post('/refresh', async (req, res, next) => {
       process.env.privateKey,
       { expiresIn: 30 * 24 * 60 * 60 },
     );
+    const signUp = !!newUser.name && !!newUser.birthday && !!newUser.email && !!newUser.gender;
     res.json(
       response({
         data: {
           accessToken,
           refreshToken,
+          signUp,
         },
       }),
     );
@@ -76,17 +71,10 @@ router.post('/', async (req, res, next) => {
   }
   try {
     const user = await db.users.findOne({ where: { snsId } });
-    if (!user) {
-      return res.json(
-        response({
-          status: 404,
-          message: '유저가 존재하지 않습니다.',
-        }),
-      );
-    }
+    const newUser = user ? user : await db.users.create({ snsId });
     const accessToken = await jwt.sign(
       {
-        user,
+        newUser,
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
@@ -98,11 +86,13 @@ router.post('/', async (req, res, next) => {
       process.env.privateKey,
       { expiresIn: 30 * 24 * 60 * 60 },
     );
+    const signUp = !!newUser.name && !!newUser.birthday && !!newUser.email && !!newUser.gender;
     res.json(
       response({
         data: {
           accessToken,
           refreshToken,
+          signUp,
         },
       }),
     );
