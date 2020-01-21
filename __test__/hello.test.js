@@ -22,3 +22,5 @@ describe('Test /hello', () => {
 // expect(users).toHaveLength(3);
 // expect(users).toContainEqual({ id: 1, email: 'user1@test.com' });
 // expect(data.users).not.toContainEqual(user);
+
+// expect(user).toHaveProperty('id', 1);
