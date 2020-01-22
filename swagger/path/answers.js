@@ -1,5 +1,5 @@
 module.exports = {
-  '/answers': {
+  '/api/v1/answers': {
     post: {
       tags: ['answers'],
       summary: '답 작성',
@@ -73,7 +73,7 @@ module.exports = {
       },
     },
   },
-  '/answers/{id}': {
+  '/api/v1/answers/{id}': {
     put: {
       tags: ['answers'],
       summary: '답 작성',
@@ -172,7 +172,7 @@ module.exports = {
       },
     },
   },
-  '/answers/week': {
+  '/api/v1/answers/week': {
     get: {
       tags: ['answers'],
       summary: '일주일치 데이터',
@@ -214,7 +214,7 @@ module.exports = {
       },
     },
   },
-  '/answers/month': {
+  '/api/v1/answers/month': {
     get: {
       tags: ['answers'],
       summary: '일주일치 데이터',
@@ -262,7 +262,7 @@ module.exports = {
       },
     },
   },
-  '/answers/{date}': {
+  '/api/v1/answers/{date}': {
     get: {
       tags: ['answers'],
       summary: '해당 날짜 데이터',

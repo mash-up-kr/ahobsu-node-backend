@@ -1,5 +1,5 @@
 module.exports = {
-  '/missions': {
+  '/api/v1/missions': {
     get: {
       tags: ['missions'],
       summary: '오늘의 미션 조회',
@@ -107,7 +107,7 @@ module.exports = {
       },
     },
   },
-  '/missions/{id}': {
+  '/api/v1/missions/{id}': {
     put: {
       tags: ['missions'],
       summary: '회원 정보 수정',
@@ -202,7 +202,7 @@ module.exports = {
       },
     },
   },
-  '/missions/refresh': {
+  '/api/v1/missions/refresh': {
     get: {
       tags: ['missions'],
       summary: '미션 재발급',

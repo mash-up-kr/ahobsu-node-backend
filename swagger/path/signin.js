@@ -1,5 +1,5 @@
 module.exports = {
-  '/signin': {
+  '/api/v1/signin': {
     post: {
       tags: ['signin'],
       summary: '키 생성',
@@ -45,7 +45,7 @@ module.exports = {
       },
     },
   },
-  '/signin/refresh': {
+  '/api/v1/signin/refresh': {
     post: {
       tags: ['signin'],
       summary: '키 재생성',

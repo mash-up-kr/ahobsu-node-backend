@@ -1,5 +1,5 @@
 module.exports = {
-  '/users': {
+  '/api/v1/users': {
     get: {
       tags: ['users'],
       summary: '유저 조회',
@@ -190,7 +190,7 @@ module.exports = {
       },
     },
   },
-  '/users/my': {
+  '/api/v1/users/my': {
     get: {
       tags: ['users'],
       summary: '내 정보 조회',
@@ -234,7 +234,7 @@ module.exports = {
       },
     },
   },
-  '/users/{id}': {
+  '/api/v1/users/{id}': {
     get: {
       tags: ['users'],
       summary: '특정 유저 조회',

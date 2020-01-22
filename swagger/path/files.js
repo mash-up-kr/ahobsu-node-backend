@@ -1,5 +1,5 @@
 module.exports = {
-  '/files/{id}': {
+  '/api/v1/files/{id}': {
     put: {
       tags: ['files'],
       summary: 'file 수정',
@@ -87,7 +87,7 @@ module.exports = {
       },
     },
   },
-  '/files': {
+  '/api/v1/files': {
     post: {
       tags: ['files'],
       summary: 'file 생성',

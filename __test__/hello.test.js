@@ -2,10 +2,10 @@
 const request = require('supertest');
 const app = require('../app');
 
-describe('Test /hello', () => {
+describe('Test /api/v1/hello', () => {
   it('should return world!', done => {
     request(app)
-      .get('/hello')
+      .get('/api/v1/hello')
       .then(response => {
         expect(response.text).toBe('world!');
         done();
