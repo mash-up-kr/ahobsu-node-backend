@@ -264,13 +264,13 @@ router.delete('/:id', checkToken, async (req, res, next) => {
       },
     });
     if (!answer) {
-      await db.answers.destroy({
-        where: {
-          id,
-        },
-      });
       return res.json(response({ status: 404, message: '유효하지 않은 answerId' }));
     }
+    await db.answers.destroy({
+      where: {
+        id,
+      },
+    });
     res.json(response({ message: '답변을 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
