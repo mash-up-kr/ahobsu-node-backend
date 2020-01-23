@@ -1,4 +1,3 @@
-// tests/status.test.js
 const request = require('supertest');
 const path = require('path');
 
@@ -19,9 +18,8 @@ beforeAll(async () => {
 
 describe('files', () => {
   const date = '2020-01-23';
+  const file = path.join(__dirname, '/money.jpg');
   it('Post /api/v1/files', async () => {
-    const file = path.join(__dirname, '/money.jpg');
-
     response = await request(app)
       .get(`/api/v1/files/${date}`)
       .set('Authorization', token);
@@ -46,10 +44,20 @@ describe('files', () => {
     expect(hasFileKeys);
   });
 
-  it('Delete /api/v1/files/{id}', async () => {
+  it('Get /api/v1/files/{id}', async () => {
     response = await request(app)
       .get(`/api/v1/files/${date}`)
       .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(hasFileKeys);
+  });
+
+  it('Put /api/v1/files/{id}', async () => {
+    response = await request(app)
+      .put(`/api/v1/files/${response.body.data.id}`)
+      .set('Authorization', token)
+      .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasFileKeys);
