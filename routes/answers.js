@@ -80,7 +80,7 @@ router.get('/month', checkToken, async (req, res, next) => {
 
 router.get('/:date', checkToken, async (req, res, next) => {
   const userId = req.user.id;
-  const answer = await db.answers.findAll({
+  const answer = await db.answers.findOne({
     where: {
       userId,
       date: req.params.date,
