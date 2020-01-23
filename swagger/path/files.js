@@ -37,7 +37,7 @@ module.exports = {
       },
     },
   },
-  '/api/v1/files/{id}': {
+  '/api/v1/files/{date}': {
     get: {
       tags: ['files'],
       summary: 'file 조회',
@@ -54,11 +54,11 @@ module.exports = {
           required: true,
         },
         {
-          name: 'id',
+          name: 'date',
           in: 'path',
-          type: 'integer',
-          default: 2,
-          description: '파일 ID',
+          type: 'string',
+          default: '2020-02-02',
+          description: '날짜',
           required: true,
         },
       ],
@@ -81,6 +81,8 @@ module.exports = {
         },
       },
     },
+  },
+  '/api/v1/files/{id}': {
     put: {
       tags: ['files'],
       summary: 'file 수정',
