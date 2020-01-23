@@ -23,6 +23,7 @@ router.get('/week', checkToken, async (req, res, next) => {
     first = day * -1;
     last = 8 - day;
   }
+
   const firstDay = await moment(date)
     .add(first, 'days')
     .format('YYYY-MM-DD');
@@ -162,14 +163,33 @@ router.delete('/:id', checkToken, async (req, res, next) => {
       where: { id },
     });
     if (!file) {
-      await db.files.destroy({
-        where: {
-          id,
-        },
-      });
       return res.json({ message: 'file이 존재하지 않습니다' });
     }
+    await db.files.destroy({
+      where: {
+        id,
+      },
+    });
     res.json(response({ message: '파일을 삭제 했습니다.' }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, message: e.message }));
+  }
+});
+
+router.get('/:id', checkToken, async (req, res, next) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+  }
+  try {
+    const file = await db.files.findOne({
+      where: { id },
+    });
+    if (!file) {
+      return res.json({ message: 'file이 존재하지 않습니다' });
+    }
+    res.json(response({ data: file }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
