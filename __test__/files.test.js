@@ -18,22 +18,63 @@ beforeAll(async () => {
 });
 
 describe('files', () => {
-  test('Get /api/v1/files/week', async () => {
+  const date = '2020-01-23';
+  it('Post /api/v1/files', async () => {
+    const file = path.join(__dirname, '/money.jpg');
+
     response = await request(app)
-      .get('/api/v1/files/week')
+      .get(`/api/v1/files/${date}`)
       .set('Authorization', token);
-    console.log(111, response.body);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+
+    if (response.body.data) {
+      response = await request(app)
+        .delete(`/api/v1/files/${response.body.data.id}`)
+        .set('Authorization', token);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.status).toBe(200);
+    }
+
+    response = await request(app)
+      .post('/api/v1/files')
+      .set('Authorization', token)
+      .field('date', date)
+      .attach('file', file);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(hasFileKeys);
+  });
+
+  it('Delete /api/v1/files/{id}', async () => {
+    response = await request(app)
+      .get(`/api/v1/files/${date}`)
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(hasFileKeys);
+  });
+
+  it('Delete /api/v1/files/{id}', async () => {
+    response = await request(app)
+      .delete(`/api/v1/files/${response.body.data.id}`)
+      .set('Authorization', token);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
   });
 });
 
+function hasFileKeys(res) {
+  if (!('id' in res.body)) throw new Error('missing id key');
+  if (!('cardUrl' in res.body)) throw new Error('missing cardUrl key');
+  if (!('date' in res.body)) throw new Error('missing date key');
+}
+
 describe('files2', () => {
-  test('Get /api/v1/files/week', async () => {
+  it('Get /api/v1/files/week', async () => {
     response = await request(app)
       .get('/api/v1/files/week')
       .set('Authorization', token);
-    console.log(111, response.body);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
   });
