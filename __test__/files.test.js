@@ -3,6 +3,7 @@ const path = require('path');
 
 const app = require('../app');
 
+let token = null;
 let response = null;
 
 beforeAll(async () => {
