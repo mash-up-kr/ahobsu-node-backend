@@ -113,7 +113,7 @@ router.post('/', checkToken, async (req, res, next) => {
           date,
         },
       });
-      const cardFile = await db.files.findOne({ where: { date } });
+      const cardFile = (await db.files.findOne({ where: { date } })) || { cardUrl: '' };
       const { cardUrl } = cardFile;
       if (!!beforeAnswer) {
         return res.json(response({ status: 404, message: '해당날짜에 답변이 존재합니다.' }));
