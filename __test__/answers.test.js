@@ -23,14 +23,18 @@ describe('answers', () => {
     const date = moment().format('YYYY-MM-DD');
     const file = path.join(__dirname, '/money.jpg');
 
-    const answer = await request(app)
+    response = await request(app)
       .get(`/api/v1/answers/${date}`)
       .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
 
-    if (answer.body.data) {
-      await request(app)
-        .delete(`/api/v1/answers/${answer.body.data.id}`)
+    if (response.body.data) {
+      response = await request(app)
+        .delete(`/api/v1/answers/${response.body.data.id}`)
         .set('Authorization', token);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.status).toBe(200);
     }
 
     response = await request(app)
@@ -106,7 +110,7 @@ describe('answers3', () => {
     expect(response.body.status).toBe(200);
   });
 
-  it('Get /api/v1/answers/month?date=date', async () => {
+  it('Get /api/v1/answers/month?date={date}', async () => {
     const date = moment()
       .add(-1, 'months')
       .format('YYYY-MM-DD');
