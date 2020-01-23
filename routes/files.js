@@ -23,7 +23,6 @@ router.get('/week', checkToken, async (req, res, next) => {
     first = day * -1;
     last = 8 - day;
   }
-  const userId = req.user.id;
   const firstDay = await moment(date)
     .add(first, 'days')
     .format('YYYY-MM-DD');
@@ -32,7 +31,6 @@ router.get('/week', checkToken, async (req, res, next) => {
     .format('YYYY-MM-DD');
   const answers = await db.files.findAll({
     where: {
-      userId,
       date: {
         [Op.gt]: firstDay,
         [Op.lt]: lastDay,
