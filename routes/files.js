@@ -14,32 +14,34 @@ const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 
 const router = express.Router();
 
-// router.get('/week', checkToken, async (req, res, next) => {
-//   const date = moment().format('YYYY-MM-DD');
-//   const day = moment().day();
-//   let first = -7;
-//   let last = 1;
-//   if (day != 0) {
-//     first = day * -1;
-//     last = 8 - day;
-//   }
-//   const firstDay = date.add(first, 'days').format('YYYY-MM-DD');
-//   const lastDay = date.add(last, 'days').format('YYYY-MM-DD');
-//   try {
-//     const files = await db.files.findAll({
-//       where: {
-//         date: {
-//           [Op.gt]: firstDay,
-//           [Op.lt]: lastDay,
-//         },
-//       },
-//     });
-//     res.json(response({ data: files }));
-//   } catch (e) {
-//     console.log(e);
-//     res.json(response({ status: 500, message: e.message }));
-//   }
-// });
+router.get('/week', checkToken, async (req, res, next) => {
+  const date = moment().format('YYYY-MM-DD');
+  const day = moment().day();
+  let first = -7;
+  let last = 1;
+  if (day != 0) {
+    first = day * -1;
+    last = 8 - day;
+  }
+  const userId = req.user.id;
+  const firstDay = await moment(date)
+    .add(first, 'days')
+    .format('YYYY-MM-DD');
+  const lastDay = await moment(date)
+    .add(last, 'days')
+    .format('YYYY-MM-DD');
+  const answers = await db.files.findAll({
+    where: {
+      userId,
+      date: {
+        [Op.gt]: firstDay,
+        [Op.lt]: lastDay,
+      },
+    },
+  });
+
+  res.json(response({ data: answers }));
+});
 
 router.post('/', checkToken, async (req, res, next) => {
   AWS.config.update({
