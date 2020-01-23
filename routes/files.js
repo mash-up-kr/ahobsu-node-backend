@@ -177,18 +177,12 @@ router.delete('/:id', checkToken, async (req, res, next) => {
   }
 });
 
-router.get('/:id', checkToken, async (req, res, next) => {
-  const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
+router.get('/:date', checkToken, async (req, res, next) => {
+  const { date } = req.params;
   try {
     const file = await db.files.findOne({
-      where: { id },
+      where: { date },
     });
-    if (!file) {
-      return res.json({ message: 'file이 존재하지 않습니다' });
-    }
     res.json(response({ data: file }));
   } catch (e) {
     console.log(e);
