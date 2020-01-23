@@ -31,7 +31,7 @@ router.post('/refresh', async (req, res, next) => {
     const newUser = user ? user : await db.users.create({ snsId });
     const accessToken = await jwt.sign(
       {
-        newUser,
+        user: newUser,
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
@@ -75,7 +75,7 @@ router.post('/', async (req, res, next) => {
     const newUser = user ? user : await db.users.create({ snsId });
     const accessToken = await jwt.sign(
       {
-        newUser,
+        user: newUser,
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
