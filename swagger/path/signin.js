@@ -10,7 +10,7 @@ module.exports = {
           in: 'header',
           type: 'string',
           description: 'SNS 인증 키',
-          default: 'SNS 인증키',
+          default: 'aaa',
           required: true,
         },
         {
