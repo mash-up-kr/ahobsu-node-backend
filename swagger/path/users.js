@@ -45,7 +45,7 @@ module.exports = {
     },
     post: {
       tags: ['users'],
-      summary: '회원 가입',
+      summary: '회원 가입 완료를 위한 초기 정보 입력',
       produces: ['application/json'],
       parameters: [
         {

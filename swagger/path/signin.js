@@ -2,7 +2,7 @@ module.exports = {
   '/api/v1/signin': {
     post: {
       tags: ['signin'],
-      summary: '키 생성',
+      summary: '가입 및 키 생성',
       produces: ['application/json'],
       parameters: [
         {

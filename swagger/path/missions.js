@@ -110,7 +110,7 @@ module.exports = {
   '/api/v1/missions/{id}': {
     put: {
       tags: ['missions'],
-      summary: '회원 정보 수정',
+      summary: '미션 수정',
       produces: ['application/json'],
       parameters: [
         {
@@ -187,7 +187,7 @@ module.exports = {
           required: true,
         },
       ],
-      summary: '회원 탈퇴',
+      summary: '미션 삭제',
       responses: {
         '200': {
           schema: {

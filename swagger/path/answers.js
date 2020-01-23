@@ -76,7 +76,7 @@ module.exports = {
   '/api/v1/answers/{id}': {
     put: {
       tags: ['answers'],
-      summary: '답 작성',
+      summary: '답 수정',
       consumes: ['multipart/form-data'],
       produces: ['application/json'],
       parameters: [
@@ -137,7 +137,7 @@ module.exports = {
     },
     delete: {
       tags: ['answers'],
-      summary: '답 작성',
+      summary: '답 삭제',
       produces: ['application/json'],
       parameters: [
         {
@@ -217,7 +217,7 @@ module.exports = {
   '/api/v1/answers/month': {
     get: {
       tags: ['answers'],
-      summary: '일주일치 데이터',
+      summary: '한달치 데이터',
       produces: ['application/json'],
       parameters: [
         {
