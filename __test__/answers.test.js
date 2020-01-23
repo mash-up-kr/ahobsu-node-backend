@@ -1,9 +1,11 @@
 const request = require('supertest');
-const app = require('../app');
 const path = require('path');
 const moment = require('moment');
 
+const app = require('../app');
+
 let token = null;
+let response = null;
 
 beforeAll(async () => {
   const {
@@ -16,35 +18,66 @@ beforeAll(async () => {
   token = accessToken;
 });
 
-describe('Test /api/v1/answers', () => {
-  it('should return world!', async () => {
+describe('answers', () => {
+  it('Post /api/v1/answers', async () => {
     const date = moment().format('YYYY-MM-DD');
-    console.log(date);
+    const file = path.join(__dirname, '/money.jpg');
+
     const answer = await request(app)
       .get(`/api/v1/answers/${date}`)
       .set('Authorization', token);
-    console.log(answer.body);
+
     if (answer.body.data) {
-      const aaa = await request(app)
+      await request(app)
         .delete(`/api/v1/answers/${answer.body.data.id}`)
         .set('Authorization', token);
-      console.log(123, answer.body.data.id, aaa.body);
     }
-    const file = path.join(__dirname, '/money.jpg');
-    const response = await request(app)
+
+    response = await request(app)
       .post('/api/v1/answers')
       .set('Authorization', token)
       .field('missionId', 1)
       .field('content', 'aaa')
       .attach('file', file);
-    console.log(111, response.body);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasPostApiV1AnswersKeys);
+    expect(hasAnswerKeys);
+  });
+
+  it('Get /api/v1/answers/{date}', async () => {
+    const date = moment().format('YYYY-MM-DD');
+
+    response = await request(app)
+      .get(`/api/v1/answers/${date}`)
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(hasAnswerKeys);
+  });
+
+  it('Put /api/v1/answers/{id}', async () => {
+    const file = path.join(__dirname, '/money.jpg');
+
+    response = await request(app)
+      .put(`/api/v1/answers/${response.body.data.id}`)
+      .set('Authorization', token)
+      .field('content', 'bbb')
+      .attach('file', file);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(hasAnswerKeys);
+  });
+
+  it('Delete /api/v1/answers/{id}', async () => {
+    response = await request(app)
+      .delete(`/api/v1/answers/${response.body.data.id}`)
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
   });
 });
 
-function hasPostApiV1AnswersKeys(res) {
+function hasAnswerKeys(res) {
   if (!('id' in res.body)) throw new Error('missing id key');
   if (!('userId' in res.body)) throw new Error('missing userId key');
   if (!('missionId' in res.body)) throw new Error('missing missionId key');
@@ -53,3 +86,35 @@ function hasPostApiV1AnswersKeys(res) {
   if (!('content' in res.body)) throw new Error('missing content key');
   if (!('date' in res.body)) throw new Error('missing date key');
 }
+
+describe('answers2', () => {
+  it('Get /api/v1/answers/week', async () => {
+    const response = await request(app)
+      .get('/api/v1/answers/week')
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+  });
+});
+
+describe('answers3', () => {
+  it('Get /api/v1/answers/month', async () => {
+    const response = await request(app)
+      .get('/api/v1/answers/month')
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+  });
+
+  it('Get /api/v1/answers/month?date=date', async () => {
+    const date = moment()
+      .add(-1, 'months')
+      .format('YYYY-MM-DD');
+
+    const response2 = await request(app)
+      .get(`/api/v1/answers/month?date=${date}`)
+      .set('Authorization', token);
+    expect(response2.statusCode).toBe(200);
+    expect(response2.body.status).toBe(200);
+  });
+});
