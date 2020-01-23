@@ -61,7 +61,6 @@ router.get('/month', checkToken, async (req, res, next) => {
     lastDay = moment(lastDay).add('days', 7);
     weeks.push([firstDay.format('YYYY-MM-DD'), lastDay.format('YYYY-MM-DD')]);
   }
-  console.log(9999, weeks);
   const answers = await Promise.all(
     weeks.map(([firstDay, lastDay]) => {
       return db.answers.findAll({
