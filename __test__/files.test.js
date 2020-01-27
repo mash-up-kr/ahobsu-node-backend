@@ -42,7 +42,7 @@ describe('files', () => {
       .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasFileKeys);
+    expect(hasFileKeys(response.body.data));
   });
 
   it('Get /api/v1/files/{id}', async () => {
@@ -51,7 +51,7 @@ describe('files', () => {
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasFileKeys);
+    expect(hasFileKeys(response.body.data));
   });
 
   it('Put /api/v1/files/{id}', async () => {
@@ -61,7 +61,7 @@ describe('files', () => {
       .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasFileKeys);
+    expect(hasFileKeys(response.body.data));
   });
 
   it('Delete /api/v1/files/{id}', async () => {
@@ -73,10 +73,10 @@ describe('files', () => {
   });
 });
 
-function hasFileKeys(res) {
-  if (!('id' in res.body)) throw new Error('missing id key');
-  if (!('cardUrl' in res.body)) throw new Error('missing cardUrl key');
-  if (!('date' in res.body)) throw new Error('missing date key');
+function hasFileKeys(data) {
+  if (!('id' in data)) throw new Error('missing id key');
+  if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
+  if (!('date' in data)) throw new Error('missing date key');
 }
 
 describe('files2', () => {
