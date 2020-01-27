@@ -69,7 +69,6 @@ module.exports = {
               email: 'yuchochpie@gmail.com',
               gender: '여',
               snsId: 1,
-              snsType: 'google',
             },
           },
         },
