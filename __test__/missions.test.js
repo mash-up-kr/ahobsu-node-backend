@@ -17,14 +17,21 @@ beforeAll(async () => {
 
 describe('missions', () => {
   it('Post /api/v1/missions', async () => {
+    const title = '안녕';
+    const isContent = true;
+    const isImage = false;
+    const cycle = 1;
     response = await request(app)
       .post('/api/v1/missions')
       .set('Authorization', token)
-      .send({ title: '안녕', isContent: true, isImage: false, cycle: 1 });
+      .send({ title, isContent, isImage, cycle });
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
     expect(hasMissionKeys(response.body.data));
-    expect(response.body.data.title).toBe(201);
+    expect(response.body.data.title).toBe(title);
+    expect(response.body.data.isContent).toBe(isContent);
+    expect(response.body.data.isImage).toBe(isImage);
+    expect(response.body.data.cycle).toBe(cycle);
   });
 
   it('Get /api/v1/missions/{id}', async () => {
@@ -37,13 +44,21 @@ describe('missions', () => {
   });
 
   it('Put /api/v1/missions/{id}', async () => {
+    const title = '문제수정';
+    const isContent = false;
+    const isImage = true;
+    const cycle = 2;
     response = await request(app)
-      .get(`/api/v1/missions/${response.body.data.id}`)
+      .put(`/api/v1/missions/${response.body.data.id}`)
       .set('Authorization', token)
-      .send({ title: '문제수정', isContent: true, isImage: true, cycle: 1 });
+      .send({ title, isContent, isImage, cycle });
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasMissionKeys(response.body.data));
+    expect(response.body.data.title).toBe(title);
+    expect(response.body.data.isContent).toBe(isContent);
+    expect(response.body.data.isImage).toBe(isImage);
+    expect(response.body.data.cycle).toBe(cycle);
   });
 
   it('Delete /api/v1/missions/{id}', async () => {
@@ -85,6 +100,8 @@ describe('missions', () => {
     expect('refresh' in response.body.data).toBeTruthy();
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
+    expect(hasMissionKeys(response.body.data.missions[1]));
+    expect(hasMissionKeys(response.body.data.missions[2]));
   });
 
   it('Get /api/v1/missions/refresh', async () => {
@@ -100,6 +117,8 @@ describe('missions', () => {
     expect(response.body.data.refresh).toBe(false);
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
+    expect(hasMissionKeys(response.body.data.missions[1]));
+    expect(hasMissionKeys(response.body.data.missions[2]));
   });
 
   it('Get /api/v1/missions/refresh before refresh', async () => {
