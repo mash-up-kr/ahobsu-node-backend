@@ -36,15 +36,19 @@ describe('answers', () => {
       expect(response.body.status).toBe(200);
     }
 
+    const content = 'aaa';
+    const missionId = 1;
     response = await request(app)
       .post('/api/v1/answers')
       .set('Authorization', token)
-      .field('missionId', 1)
-      .field('content', 'aaa')
+      .field('missionId', missionId)
+      .field('content', content)
       .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
     expect(hasAnswerKeys(response.body.data));
+    expect(response.body.data.content).toBe(content);
+    expect(response.body.data.missionId).toBe(String(missionId));
   });
 
   it('Post /api/v1/answers Exist', async () => {
