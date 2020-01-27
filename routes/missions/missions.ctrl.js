@@ -211,4 +211,5 @@ const mission = async (req, res, next) => {
     res.json(response({ status: 500, message: e.message }));
   }
 };
+
 module.exports = { refresh, missoins, create, update, destroy, mission };

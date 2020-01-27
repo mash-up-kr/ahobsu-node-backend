@@ -1,13 +1,22 @@
 const express = require('express');
 
-const db = require('../models');
-const checkToken = require('../middleware/checkToken');
-const response = require('../lib/response');
+const db = require('../../models');
+const checkToken = require('../../middleware/checkToken');
+const response = require('../../lib/response');
 const moment = require('moment');
 
 const router = express.Router();
 
-router.get('/my', checkToken, async (req, res, next) => {
+const users = async (req, res, next) => {
+  try {
+    const users = await db.users.findAll();
+    res.json(response({ data: users }));
+  } catch (e) {
+    console.log(e);
+    return res.json(response({ status: 500, message: e.message }));
+  }
+};
+const my = async (req, res, next) => {
   const { id } = req.user;
   try {
     const user = await db.users.findOne({ where: { id } });
@@ -19,18 +28,23 @@ router.get('/my', checkToken, async (req, res, next) => {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
   }
-});
-
-router.get('/', async (req, res, next) => {
+};
+const user = async (req, res, next) => {
+  const { id } = req.params;
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+  }
   try {
-    const users = await db.users.findAll();
-    res.json(response({ data: users }));
+    const user = await db.users.findOne({ where: { id } });
+    if (!user) {
+      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+    }
+    res.json(response({ data: user }));
   } catch (e) {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
   }
-});
-
+};
 // router.post('/', async (req, res, next) => {
 //   const { name, birthday, email, gender } = req.body;
 //   if (!name || !birthday || !email || !gender) {
@@ -57,7 +71,7 @@ router.get('/', async (req, res, next) => {
 //   }
 // });
 
-router.put('/', checkToken, async (req, res, next) => {
+const update = async (req, res, next) => {
   const { id } = req.user;
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -85,9 +99,9 @@ router.put('/', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.put('/refresh', checkToken, async (req, res, next) => {
+const refresh = async (req, res, next) => {
   const { id } = req.user;
   const refreshDate = null;
   if (isNaN(id)) {
@@ -112,9 +126,9 @@ router.put('/refresh', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.delete('/', checkToken, async (req, res, next) => {
+const destroy = async (req, res, next) => {
   const { id } = req.user;
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -138,23 +152,6 @@ router.delete('/', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.get('/:id', checkToken, async (req, res, next) => {
-  const { id } = req.params;
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
-  try {
-    const user = await db.users.findOne({ where: { id } });
-    if (!user) {
-      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
-    }
-    res.json(response({ data: user }));
-  } catch (e) {
-    console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
-  }
-});
-
-module.exports = router;
+module.exports = { users, my, user, update, refresh, destroy };
