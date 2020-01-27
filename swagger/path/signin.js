@@ -20,7 +20,8 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              snsId: 1,
+              snsId: '1',
+              snsType: 'apple',
             },
           },
         },

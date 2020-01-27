@@ -14,7 +14,7 @@ beforeAll(async () => {
     },
   } = await request(app)
     .post('/api/v1/signin')
-    .send({ snsId: 1 });
+    .send({ snsId: '1', snsTpye: 'apple' });
   token = accessToken;
 });
 
