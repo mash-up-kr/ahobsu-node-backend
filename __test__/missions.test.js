@@ -36,6 +36,16 @@ describe('missions', () => {
     expect(hasMissionKeys(response.body.data));
   });
 
+  it('Put /api/v1/missions/{id}', async () => {
+    response = await request(app)
+      .get(`/api/v1/missions/${response.body.data.id}`)
+      .set('Authorization', token)
+      .send({ title: '문제수정', isContent: true, isImage: true, cycle: 1 });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(hasMissionKeys(response.body.data));
+  });
+
   it('Delete /api/v1/missions/{id}', async () => {
     response = await request(app)
       .delete(`/api/v1/missions/${response.body.data.id}`)
