@@ -45,7 +45,7 @@ describe('answers', () => {
       .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasAnswerKeys);
+    expect(hasAnswerKeys(response.body.data));
   });
 
   it('Get /api/v1/answers/{date}', async () => {
@@ -56,7 +56,7 @@ describe('answers', () => {
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasAnswerKeys);
+    expect(hasAnswerKeys(response.body.data));
   });
 
   it('Put /api/v1/answers/{id}', async () => {
@@ -69,7 +69,7 @@ describe('answers', () => {
       .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(hasAnswerKeys);
+    expect(hasAnswerKeys(response.body.data));
   });
 
   it('Delete /api/v1/answers/{id}', async () => {
@@ -81,14 +81,14 @@ describe('answers', () => {
   });
 });
 
-function hasAnswerKeys(res) {
-  if (!('id' in res.body)) throw new Error('missing id key');
-  if (!('userId' in res.body)) throw new Error('missing userId key');
-  if (!('missionId' in res.body)) throw new Error('missing missionId key');
-  if (!('imageUrl' in res.body)) throw new Error('missing imageUrl key');
-  if (!('cardUrl' in res.body)) throw new Error('missing cardUrl key');
-  if (!('content' in res.body)) throw new Error('missing content key');
-  if (!('date' in res.body)) throw new Error('missing date key');
+function hasAnswerKeys(data) {
+  if (!('id' in data)) throw new Error('missing id key');
+  if (!('userId' in data)) throw new Error('missing userId key');
+  if (!('missionId' in data)) throw new Error('missing missionId key');
+  if (!('imageUrl' in data)) throw new Error('missing imageUrl key');
+  if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
+  if (!('content' in data)) throw new Error('missing content key');
+  if (!('date' in data)) throw new Error('missing date key');
 }
 
 describe('answers2', () => {

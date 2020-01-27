@@ -32,8 +32,8 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const { name, birthday, email, gender, snsId } = req.body;
-  if (!name || !birthday || !email || !gender || !snsId) {
+  const { name, birthday, email, gender } = req.body;
+  if (!name || !birthday || !email || !gender) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
