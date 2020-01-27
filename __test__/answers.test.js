@@ -75,16 +75,52 @@ describe('answers', () => {
   });
 
   it('Put /api/v1/answers/{id}', async () => {
-    const file = path.join(__dirname, '/money.jpg');
-
+    const content = 'bbb';
     response = await request(app)
       .put(`/api/v1/answers/${response.body.data.id}`)
       .set('Authorization', token)
-      .field('content', 'bbb')
+      .field('content', content)
       .attach('file', file);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasAnswerKeys(response.body.data));
+    expect(response.body.data.content).toBe(content);
+  });
+
+  it('Get /api/v1/answers/week', async () => {
+    const response = await request(app)
+      .get('/api/v1/answers/week')
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(response.body.data.length > 0).toBeTruthy();
+    expect(hasAnswerKeys(response.body.data[0]));
+  });
+
+  it('Get /api/v1/answers/month', async () => {
+    const today = moment();
+    const week = today.weeks() - 2;
+    const response = await request(app)
+      .get('/api/v1/answers/month')
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(response.body.data.answers.length > 0).toBeTruthy();
+    expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
+    expect(hasAnswerKeys(response.body.data.answers[week][0]));
+  });
+
+  it('Get /api/v1/answers/month?date={date}', async () => {
+    const month = moment().add(-1, 'months');
+    const date = month.format('YYYY-MM-DD');
+
+    const haveDateResponse = await request(app)
+      .get(`/api/v1/answers/month?date=${date}`)
+      .set('Authorization', token);
+    expect(haveDateResponse.statusCode).toBe(200);
+    expect(haveDateResponse.body.status).toBe(200);
+    expect(haveDateResponse.body.data.answers.length > 0).toBeTruthy();
+    expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
   });
 
   it('Delete /api/v1/answers/{id}', async () => {
@@ -106,35 +142,3 @@ function hasAnswerKeys(data) {
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
 }
-
-describe('answers2', () => {
-  it('Get /api/v1/answers/week', async () => {
-    const response = await request(app)
-      .get('/api/v1/answers/week')
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
-  });
-});
-
-describe('answers3', () => {
-  it('Get /api/v1/answers/month', async () => {
-    const response = await request(app)
-      .get('/api/v1/answers/month')
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
-  });
-
-  it('Get /api/v1/answers/month?date={date}', async () => {
-    const date = moment()
-      .add(-1, 'months')
-      .format('YYYY-MM-DD');
-
-    const response2 = await request(app)
-      .get(`/api/v1/answers/month?date=${date}`)
-      .set('Authorization', token);
-    expect(response2.statusCode).toBe(200);
-    expect(response2.body.status).toBe(200);
-  });
-});
