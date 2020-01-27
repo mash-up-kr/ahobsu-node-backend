@@ -30,7 +30,7 @@ router.get('/week', checkToken, async (req, res, next) => {
   const lastDay = await moment(date)
     .add(last, 'days')
     .format('YYYY-MM-DD');
-  const answers = await db.files.findAll({
+  const files = await db.files.findAll({
     where: {
       date: {
         [Op.gt]: firstDay,
@@ -39,7 +39,62 @@ router.get('/week', checkToken, async (req, res, next) => {
     },
   });
 
-  res.json(response({ data: answers }));
+  // res.json(response({ data: files }));
+  res.json(
+    response({
+      data: [
+        {
+          id: 48,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ur4tLr0T.pdf',
+          date: firstDay,
+          updatedAt: '2020-01-27T09:04:37.768Z',
+          createdAt: '2020-01-27T09:04:37.768Z',
+        },
+        {
+          id: 49,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/QUf7VIPf.pdf',
+          date: firstDay + 1,
+          updatedAt: '2020-01-27T09:05:27.908Z',
+          createdAt: '2020-01-27T09:05:27.908Z',
+        },
+        {
+          id: 50,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/J9smJXN7.pdf',
+          date: firstDay + 2,
+          updatedAt: '2020-01-27T09:05:56.070Z',
+          createdAt: '2020-01-27T09:05:56.070Z',
+        },
+        {
+          id: 51,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/RSUpmgOV.pdf',
+          date: firstDay + 3,
+          updatedAt: '2020-01-27T09:06:16.595Z',
+          createdAt: '2020-01-27T09:06:16.595Z',
+        },
+        {
+          id: 52,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/O9zJk5Nb.pdf',
+          date: firstDay + 4,
+          updatedAt: '2020-01-27T09:06:38.387Z',
+          createdAt: '2020-01-27T09:06:38.387Z',
+        },
+        {
+          id: 53,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LVBFZ7ni.pdf',
+          date: firstDay + 5,
+          updatedAt: '2020-01-27T09:06:59.914Z',
+          createdAt: '2020-01-27T09:06:59.914Z',
+        },
+        {
+          id: 54,
+          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/710Cz1v5.pdf',
+          date: firstDay + 6,
+          updatedAt: '2020-01-27T09:07:22.995Z',
+          createdAt: '2020-01-27T09:07:22.995Z',
+        },
+      ],
+    }),
+  );
 });
 
 router.post('/', checkToken, async (req, res, next) => {
