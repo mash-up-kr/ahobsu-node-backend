@@ -43,60 +43,59 @@ module.exports = {
         },
       },
     },
-    post: {
-      tags: ['users'],
-      summary: '회원 가입 완료를 위한 초기 정보 입력',
-      produces: ['application/json'],
-      parameters: [
-        {
-          name: 'Authorization',
-          in: 'header',
-          type: 'string',
-          description: 'API 인증 키',
-          default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
-          required: true,
-        },
-        {
-          name: 'body',
-          in: 'body',
-          required: true,
-          schema: {
-            type: 'object',
-            example: {
-              name: '김유정',
-              birthday: '1997-01-16',
-              email: 'yuchochpie@gmail.com',
-              gender: '여',
-              snsId: 1,
-            },
-          },
-        },
-      ],
-      responses: {
-        '200': {
-          schema: {
-            type: 'object',
-            example: {
-              status: 200,
-              message: '',
-              data: {
-                id: 2,
-                name: '김유정',
-                birthday: '1997-01-16',
-                email: 'yuchochpie@gmail.com',
-                gender: '여',
-                snsId: 1,
-                snsType: 'google',
-                updatedAt: '2020-01-03T16:46:07.880Z',
-                createdAt: '2020-01-03T16:46:07.880Z',
-              },
-            },
-          },
-        },
-      },
-    },
-
+    // post: {
+    //   tags: ['users'],
+    //   summary: '회원 가입 완료를 위한 초기 정보 입력',
+    //   produces: ['application/json'],
+    //   parameters: [
+    //     {
+    //       name: 'Authorization',
+    //       in: 'header',
+    //       type: 'string',
+    //       description: 'API 인증 키',
+    //       default:
+    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+    //       required: true,
+    //     },
+    //     {
+    //       name: 'body',
+    //       in: 'body',
+    //       required: true,
+    //       schema: {
+    //         type: 'object',
+    //         example: {
+    //           name: '김유정',
+    //           birthday: '1997-01-16',
+    //           email: 'yuchochpie@gmail.com',
+    //           gender: '여',
+    //           snsId: 1,
+    //         },
+    //       },
+    //     },
+    //   ],
+    //   responses: {
+    //     '200': {
+    //       schema: {
+    //         type: 'object',
+    //         example: {
+    //           status: 200,
+    //           message: '',
+    //           data: {
+    //             id: 2,
+    //             name: '김유정',
+    //             birthday: '1997-01-16',
+    //             email: 'yuchochpie@gmail.com',
+    //             gender: '여',
+    //             snsId: 1,
+    //             snsType: 'google',
+    //             updatedAt: '2020-01-03T16:46:07.880Z',
+    //             createdAt: '2020-01-03T16:46:07.880Z',
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
     put: {
       tags: ['users'],
       summary: '회원 정보 수정',
@@ -122,8 +121,6 @@ module.exports = {
               birthday: '1997-01-16',
               email: 'yuchochpie@gmail.com',
               gender: '여',
-              snsId: 1,
-              snsType: 'google',
             },
           },
         },

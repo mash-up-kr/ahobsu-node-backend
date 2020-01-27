@@ -31,39 +31,39 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
-  const { name, birthday, email, gender } = req.body;
-  if (!name || !birthday || !email || !gender) {
-    return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
-  }
-  try {
-    const user = await db.users.findOne({
-      where: {
-        id: req.user.id,
-      },
-    });
-    const newUser = await db.users.update(
-      { name, birthday, email, gender, snsId },
-      {
-        where: {
-          id: user.id,
-        },
-      },
-    );
-    res.json(response({ data: newUser }));
-  } catch (e) {
-    console.log(e);
-    res.json(response({ status: 500, message: e.message }));
-  }
-});
+// router.post('/', async (req, res, next) => {
+//   const { name, birthday, email, gender } = req.body;
+//   if (!name || !birthday || !email || !gender) {
+//     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
+//   }
+//   try {
+//     const user = await db.users.findOne({
+//       where: {
+//         id: req.user.id,
+//       },
+//     });
+//     const newUser = await db.users.update(
+//       { name, birthday, email, gender, snsId },
+//       {
+//         where: {
+//           id: user.id,
+//         },
+//       },
+//     );
+//     res.json(response({ data: newUser }));
+//   } catch (e) {
+//     console.log(e);
+//     res.json(response({ status: 500, message: e.message }));
+//   }
+// });
 
 router.put('/', checkToken, async (req, res, next) => {
   const { id } = req.user;
-  const { email, birthday } = req.body;
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
-  if (!email || !birthday) {
+  const { name, birthday, email, gender } = req.body;
+  if (!name || !birthday || !email || !gender) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
   }
   try {
@@ -72,7 +72,7 @@ router.put('/', checkToken, async (req, res, next) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     await db.users.update(
-      { email, birthday },
+      { name, birthday, email, gender, snsId },
       {
         where: {
           id,
@@ -80,7 +80,7 @@ router.put('/', checkToken, async (req, res, next) => {
       },
     );
     const newUser = await db.users.findOne({ where: { id } });
-    res.json(response({ data: { user: newUser } }));
+    res.json(response({ data: newUser }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
