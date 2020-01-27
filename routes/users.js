@@ -72,7 +72,34 @@ router.put('/', checkToken, async (req, res, next) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     await db.users.update(
-      { name, birthday, email, gender, snsId },
+      { name, birthday, email, gender },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+    const newUser = await db.users.findOne({ where: { id } });
+    res.json(response({ data: newUser }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, message: e.message }));
+  }
+});
+
+router.put('/refresh', checkToken, async (req, res, next) => {
+  const { id } = req.user;
+  const refreshDate = null;
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+  }
+  try {
+    const user = await db.users.findOne({ where: { id } });
+    if (!user) {
+      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+    }
+    await db.users.update(
+      { refreshDate },
       {
         where: {
           id,

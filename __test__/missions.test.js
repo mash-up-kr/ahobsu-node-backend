@@ -60,6 +60,7 @@ describe('missions', () => {
   let mission1 = null;
   let mission2 = null;
   let mission3 = null;
+
   it('Post /api/v1/missions', async () => {
     mission1 = await request(app)
       .post('/api/v1/missions')
@@ -74,6 +75,7 @@ describe('missions', () => {
       .set('Authorization', token)
       .send({ title: '안녕2', isContent: true, isImage: false, cycle: 1 });
   });
+
   it('Get /api/v1/missions', async () => {
     response = await request(app)
       .get(`/api/v1/missions`)
@@ -84,6 +86,22 @@ describe('missions', () => {
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
   });
+
+  it('Get /api/v1/missions/refresh', async () => {
+    await request(app)
+      .put(`/api/v1/users/refresh`)
+      .set('Authorization', token);
+
+    response = await request(app)
+      .get(`/api/v1/missions/refresh`)
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(200);
+    expect(response.body.data.refresh).toBe(false);
+    expect(response.body.data.missions.length).toBe(3);
+    expect(hasMissionKeys(response.body.data.missions[0]));
+  });
+
   it('Delete /api/v1/missions/{id}', async () => {
     mission1 = await request(app)
       .delete(`/api/v1/missions/${mission1.body.data.id}`)

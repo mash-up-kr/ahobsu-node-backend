@@ -201,6 +201,52 @@ module.exports = {
       },
     },
   },
+
+  '/api/v1/users/refresh': {
+    put: {
+      tags: ['users'],
+      summary: 'refresh Date reset',
+      produces: ['application/json'],
+      parameters: [
+        {
+          name: 'Authorization',
+          in: 'header',
+          type: 'string',
+          description: 'API 인증 키',
+          default:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+          required: true,
+        },
+      ],
+      responses: {
+        '200': {
+          schema: {
+            type: 'object',
+            example: {
+              status: 200,
+              message: '',
+              data: {
+                user: {
+                  id: 1,
+                  birthday: '1997-01-16',
+                  email: 'yuchochpie@gmail.com',
+                  name: '유정',
+                  gender: '여',
+                  refreshDate: null,
+                  refreshToken: null,
+                  mission: null,
+                  snsId: '1',
+                  snsType: 'google',
+                  createdAt: '2020-01-03T15:27:18.000Z',
+                  updatedAt: '2020-01-03T16:52:18.000Z',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   '/api/v1/users/my': {
     get: {
       tags: ['users'],
