@@ -171,15 +171,30 @@ module.exports = {
         '200': {
           schema: {
             type: 'object',
-            properties: {
-              ok: {
-                type: 'boolean',
-                example: true,
-              },
-              error: {
-                type: 'string',
-                example: null,
-              },
+            example: {
+              status: 200,
+              message: '유저를 삭제 했습니다.',
+              data: null,
+            },
+          },
+        },
+        '404': {
+          schema: {
+            type: 'object',
+            example: {
+              status: 404,
+              message: '유저가 존재하지 없습니다.',
+              data: null,
+            },
+          },
+        },
+        '412': {
+          schema: {
+            type: 'object',
+            example: {
+              status: 412,
+              message: 'id가 올바르지 않습니다.',
+              data: null,
             },
           },
         },
