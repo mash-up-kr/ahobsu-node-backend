@@ -43,7 +43,7 @@ describe('answers', () => {
       .field('content', 'aaa')
       .attach('file', file);
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(201);
     expect(hasAnswerKeys(response.body.data));
   });
 
@@ -88,7 +88,8 @@ describe('answers', () => {
       .delete(`/api/v1/answers/${response.body.data.id}`)
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(204);
+    expect(response.body.message).toBe('답변을 삭제 했습니다.');
   });
 });
 

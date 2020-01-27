@@ -159,7 +159,7 @@ router.post('/', checkToken, async (req, res, next) => {
       });
       // unlink tmp files
       fs.unlinkSync(file.path);
-      res.json(response({ data: answer }));
+      res.json(response({ status: 201, data: answer }));
     } catch (e) {
       console.log(e);
       return res.json(response({ status: 500, message: e.message }));
@@ -270,7 +270,7 @@ router.delete('/:id', checkToken, async (req, res, next) => {
         id,
       },
     });
-    res.json(response({ message: '답변을 삭제 했습니다.' }));
+    res.json(response({ status: 204, message: '답변을 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
