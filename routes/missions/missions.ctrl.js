@@ -3,13 +3,13 @@ const sequelize = require('sequelize');
 const moment = require('moment');
 const { Op } = require('sequelize');
 
-const db = require('../models');
-const checkToken = require('../middleware/checkToken');
-const response = require('../lib/response');
+const db = require('../../models');
+const checkToken = require('../../middleware/checkToken');
+const response = require('../../lib/response');
 
 const router = express.Router();
 
-router.get('/refresh', checkToken, async (req, res, next) => {
+const refresh = async (req, res, next) => {
   const { id } = req.user;
   try {
     const user = await db.users.findOne({
@@ -62,9 +62,9 @@ router.get('/refresh', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.get('/', checkToken, async (req, res, next) => {
+const missoins = async (req, res, next) => {
   const { id } = req.user;
   try {
     const user = await db.users.findOne({
@@ -122,9 +122,9 @@ router.get('/', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.post('/', checkToken, async (req, res, next) => {
+const create = async (req, res, next) => {
   const { title, isContent, isImage, cycle } = req.body;
   if (!title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle) {
     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
@@ -136,9 +136,9 @@ router.post('/', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.put('/:id', checkToken, async (req, res, next) => {
+const update = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -166,9 +166,9 @@ router.put('/:id', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.delete('/:id', checkToken, async (req, res, next) => {
+const destroy = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -192,9 +192,9 @@ router.delete('/:id', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.get('/:id', checkToken, async (req, res, next) => {
+const mission = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -210,6 +210,5 @@ router.get('/:id', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
-
-module.exports = router;
+};
+module.exports = { refresh, missoins, create, update, destroy, mission };
