@@ -115,7 +115,7 @@ router.post('/', checkToken, async (req, res, next) => {
         },
       });
       if (fileDate.length > 0) {
-        return res.json(response({ status: 500, message: '해당날짜에 이미지가 이미 있습니다.' }));
+        return res.json(response({ status: 400, message: '해당날짜에 이미지가 이미 있습니다.' }));
       }
 
       const { file } = files;

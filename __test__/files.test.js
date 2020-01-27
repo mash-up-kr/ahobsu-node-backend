@@ -5,6 +5,8 @@ const app = require('../app');
 
 let token = null;
 let response = null;
+const date = '2020-01-23';
+const file = path.join(__dirname, '/money.jpg');
 
 beforeAll(async () => {
   const {
@@ -18,8 +20,6 @@ beforeAll(async () => {
 });
 
 describe('files', () => {
-  const date = '2020-01-23';
-  const file = path.join(__dirname, '/money.jpg');
   it('Post /api/v1/files', async () => {
     response = await request(app)
       .get(`/api/v1/files/${date}`)
@@ -43,6 +43,16 @@ describe('files', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasFileKeys(response.body.data));
+  });
+  it('Post /api/v1/files Exist', async () => {
+    response = await request(app)
+      .post('/api/v1/files')
+      .set('Authorization', token)
+      .field('date', date)
+      .attach('file', file);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(400);
+    expect(response.body.message).toBe('해당날짜에 이미지가 이미 있습니다.');
   });
 
   it('Get /api/v1/files/{id}', async () => {
