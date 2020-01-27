@@ -6,15 +6,14 @@ const AWS = require('aws-sdk');
 const path = require('path');
 const fs = require('fs');
 
-const db = require('../models');
-const response = require('../lib/response');
-const checkToken = require('../middleware/checkToken');
+const db = require('../../models');
+const response = require('../../lib/response');
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const router = express.Router();
 
-router.get('/week', checkToken, async (req, res, next) => {
+const week = async (req, res, next) => {
   const date = moment().format('YYYY-MM-DD');
   const day = moment().day();
   let first = -7;
@@ -95,9 +94,9 @@ router.get('/week', checkToken, async (req, res, next) => {
       ],
     }),
   );
-});
+};
 
-router.post('/', checkToken, async (req, res, next) => {
+const create = async (req, res, next) => {
   AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
     secretAccessKey: process.env.AWSSecretKey,
@@ -149,9 +148,9 @@ router.post('/', checkToken, async (req, res, next) => {
       res.json(response({ status: 500, message: e.message }));
     }
   });
-});
+};
 
-router.put('/:id', checkToken, async (req, res, next) => {
+const update = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -206,9 +205,9 @@ router.put('/:id', checkToken, async (req, res, next) => {
       res.json(response({ status: 500, message: e.message }));
     }
   });
-});
+};
 
-router.delete('/:id', checkToken, async (req, res, next) => {
+const destroy = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -230,9 +229,9 @@ router.delete('/:id', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-router.get('/:date', checkToken, async (req, res, next) => {
+const date = async (req, res, next) => {
   const { date } = req.params;
   try {
     const file = await db.files.findOne({
@@ -243,6 +242,6 @@ router.get('/:date', checkToken, async (req, res, next) => {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-module.exports = router;
+module.exports = { week, date, create, update, destroy };
