@@ -82,7 +82,7 @@ describe('missions', () => {
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(response.body.data.refresh).toBeTruthy();
+    expect('refresh' in response.body.data).toBeTruthy();
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
   });
