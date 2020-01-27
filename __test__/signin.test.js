@@ -29,12 +29,12 @@ describe('Test /api/v1/signin/refresh', () => {
     expect(response.body.status).toBe(200);
     expect(response.body.data.accessToken).toBeTruthy();
     expect(response.body.data.refreshToken).toBeTruthy();
-    expect(hasPostApiV1SigninRefreshKeys);
+    expect(hasPostApiV1SigninRefreshKeys(response.body.data));
   });
 });
 
-function hasPostApiV1SigninRefreshKeys(res) {
-  if (!('accessToken' in res.body)) throw new Error('missing accessToken key');
-  if (!('refreshToken' in res.body)) throw new Error('missing refreshToken key');
-  if (!('signUp' in res.body)) throw new Error('missing signUp key');
+function hasPostApiV1SigninRefreshKeys(data) {
+  if (!('accessToken' in data)) throw new Error('missing accessToken key');
+  if (!('refreshToken' in data)) throw new Error('missing refreshToken key');
+  if (!('signUp' in data)) throw new Error('missing signUp key');
 }
