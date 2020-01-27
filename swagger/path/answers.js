@@ -243,19 +243,39 @@ module.exports = {
             example: {
               status: 200,
               message: '',
-              data: [
-                {
-                  id: 39,
-                  userId: 1,
-                  missionId: 18,
-                  imageUrl: null,
-                  cardUrl: null,
-                  content: '123',
-                  date: '2020-01-07',
-                  createdAt: '2020-01-07T12:51:07.000Z',
-                  updatedAt: '2020-01-07T12:51:07.000Z',
-                },
-              ],
+              data: {
+                date: '2020-01-01',
+                answers: [
+                  [
+                    {
+                      id: 1,
+                      userId: 1,
+                      missionId: 1,
+                      imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/RI0U6y2p.jpg',
+                      cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/hg2ue74o.jpg',
+                      content: '21414',
+                      date: '2020-01-11',
+                      createdAt: '2020-01-12 21:02:32',
+                      updatedAt: '2020-01-12 21:02:32',
+                    },
+                  ],
+                  [],
+                  [],
+                  [
+                    {
+                      id: 153,
+                      userId: 1,
+                      missionId: 1,
+                      imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/0aKPAhrT.jpg',
+                      cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/QUf7VIPf.pdf',
+                      content: 'bbb',
+                      date: '2020-01-28',
+                      createdAt: '2020-01-28 01:29:59',
+                      updatedAt: '2020-01-28 01:30:00',
+                    },
+                  ],
+                ],
+              },
             },
           },
         },
