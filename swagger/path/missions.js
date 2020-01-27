@@ -18,39 +18,42 @@ module.exports = {
       responses: {
         '200': {
           schema: {
-            status: 200,
-            message: '',
-            data: {
-              refresh: true,
-              missions: [
-                {
-                  id: 7,
-                  title: '문제',
-                  isContent: 1,
-                  isImage: 0,
-                  cycle: 1,
-                  createdAt: '2020-01-12 16:24:32',
-                  updatedAt: '2020-01-12 16:24:32',
-                },
-                {
-                  id: 13,
-                  title: '문제',
-                  isContent: 1,
-                  isImage: 0,
-                  cycle: 1,
-                  createdAt: '2020-01-12 16:24:33',
-                  updatedAt: '2020-01-12 16:24:33',
-                },
-                {
-                  id: 1,
-                  title: '문제',
-                  isContent: 1,
-                  isImage: 0,
-                  cycle: 1,
-                  createdAt: '2020-01-12 16:24:28',
-                  updatedAt: '2020-01-12 16:24:28',
-                },
-              ],
+            type: 'object',
+            example: {
+              status: 200,
+              message: '',
+              data: {
+                refresh: true,
+                missions: [
+                  {
+                    id: 7,
+                    title: '문제',
+                    isContent: 1,
+                    isImage: 0,
+                    cycle: 1,
+                    createdAt: '2020-01-12 16:24:32',
+                    updatedAt: '2020-01-12 16:24:32',
+                  },
+                  {
+                    id: 13,
+                    title: '문제',
+                    isContent: 1,
+                    isImage: 0,
+                    cycle: 1,
+                    createdAt: '2020-01-12 16:24:33',
+                    updatedAt: '2020-01-12 16:24:33',
+                  },
+                  {
+                    id: 1,
+                    title: '문제',
+                    isContent: 1,
+                    isImage: 0,
+                    cycle: 1,
+                    createdAt: '2020-01-12 16:24:28',
+                    updatedAt: '2020-01-12 16:24:28',
+                  },
+                ],
+              },
             },
           },
         },
