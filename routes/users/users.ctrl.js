@@ -1,11 +1,5 @@
-const express = require('express');
-
 const db = require('../../models');
-const checkToken = require('../../middleware/checkToken');
 const response = require('../../lib/response');
-const moment = require('moment');
-
-const router = express.Router();
 
 const users = async (req, res, next) => {
   try {
@@ -45,31 +39,6 @@ const user = async (req, res, next) => {
     return res.json(response({ status: 500, message: e.message }));
   }
 };
-// router.post('/', async (req, res, next) => {
-//   const { name, birthday, email, gender } = req.body;
-//   if (!name || !birthday || !email || !gender) {
-//     return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
-//   }
-//   try {
-//     const user = await db.users.findOne({
-//       where: {
-//         id: req.user.id,
-//       },
-//     });
-//     const newUser = await db.users.update(
-//       { name, birthday, email, gender, snsId },
-//       {
-//         where: {
-//           id: user.id,
-//         },
-//       },
-//     );
-//     res.json(response({ data: newUser }));
-//   } catch (e) {
-//     console.log(e);
-//     res.json(response({ status: 500, message: e.message }));
-//   }
-// });
 
 const update = async (req, res, next) => {
   const { id } = req.user;

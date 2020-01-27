@@ -11,8 +11,6 @@ const response = require('../../lib/response');
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-const router = express.Router();
-
 const week = async (req, res, next) => {
   const date = moment().format('YYYY-MM-DD');
   const day = moment().day();

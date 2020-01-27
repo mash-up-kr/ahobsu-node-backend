@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ctrl = require('./files.ctrl');
 
+const ctrl = require('./files.ctrl');
 const checkToken = require('../../middleware/checkToken');
 
 router.get('/week', checkToken, ctrl.week);

@@ -22,6 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // connectDB();
 
 app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.get('/', (req, res, next) => {
+  res.json({ name: '유정' });
+});
+
+app.get('/favicon.ico', function(req, res, next) {});
+app.get('/service-worker.js', function(req, res, next) {});
+
 app.use('/api/v1', reutes);
 
 // catch 404 and forward to error handler

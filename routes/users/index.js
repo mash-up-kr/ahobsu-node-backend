@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ctrl = require('./users.ctrl');
 
+const ctrl = require('./users.ctrl');
 const checkToken = require('../../middleware/checkToken');
 
 router.get('/', checkToken, ctrl.users);

@@ -16,13 +16,6 @@ router.use('/signIn', siginInRouter);
 router.use('/missions', missionRouter);
 router.use('/answers', answerRouter);
 
-router.get('/', checkToken, function(req, res, next) {
-  res.json({ name: '유정' });
-});
-
-router.get('/favicon.ico', function(req, res, next) {});
-router.get('/service-worker.js', function(req, res, next) {});
-
 router.get('/hello', (req, res) => {
   res.send('world!');
 });

@@ -1,13 +1,9 @@
 const express = require('express');
 const sequelize = require('sequelize');
 const moment = require('moment');
-const { Op } = require('sequelize');
 
 const db = require('../../models');
-const checkToken = require('../../middleware/checkToken');
 const response = require('../../lib/response');
-
-const router = express.Router();
 
 const missoins = async (req, res, next) => {
   const { id } = req.user;

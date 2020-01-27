@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const ctrl = require('./missions.ctrl');
 
+const ctrl = require('./missions.ctrl');
 const checkToken = require('../../middleware/checkToken');
 
 router.get('/', checkToken, ctrl.missoins);

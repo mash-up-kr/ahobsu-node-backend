@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 const db = require('../../models');
 const response = require('../../lib/response');
 
-const router = express.Router();
-
 const refresh = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
@@ -18,7 +16,7 @@ const refresh = async (req, res, next) => {
   }
   try {
     const result = jwt.verify(token, process.env.privateKey);
-    if (!result.snsId) {
+    if (!result.snsId && !result.snsType) {
       return res.json(
         response({
           status: 500,
