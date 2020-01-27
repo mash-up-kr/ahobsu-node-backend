@@ -24,6 +24,7 @@ describe('missions', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
     expect(hasMissionKeys(response.body.data));
+    expect(response.body.data.title).toBe(201);
   });
 
   it('Get /api/v1/missions/{id}', async () => {

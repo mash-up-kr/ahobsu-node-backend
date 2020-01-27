@@ -1,42 +1,42 @@
 module.exports = {
-  '/api/v1/files/week': {
-    get: {
-      tags: ['files'],
-      summary: '일주일치 파일',
-      produces: ['application/json'],
-      parameters: [
-        {
-          name: 'Authorization',
-          in: 'header',
-          type: 'string',
-          description: 'API 인증 키',
-          default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
-          required: true,
-        },
-      ],
-      responses: {
-        '200': {
-          schema: {
-            type: 'object',
-            example: {
-              status: 200,
-              message: '',
-              data: [
-                {
-                  id: 1,
-                  cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
-                  date: '2020-01-12',
-                  createdAt: '2020-01-12 19:50:35',
-                  updatedAt: '2020-01-12 19:54:15',
-                },
-              ],
-            },
-          },
-        },
-      },
-    },
-  },
+  // '/api/v1/files/week': {
+  //   get: {
+  //     tags: ['files'],
+  //     summary: '일주일치 파일',
+  //     produces: ['application/json'],
+  //     parameters: [
+  //       {
+  //         name: 'Authorization',
+  //         in: 'header',
+  //         type: 'string',
+  //         description: 'API 인증 키',
+  //         default:
+  //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+  //         required: true,
+  //       },
+  //     ],
+  //     responses: {
+  //       '200': {
+  //         schema: {
+  //           type: 'object',
+  //           example: {
+  //             status: 200,
+  //             message: '',
+  //             data: [
+  //               {
+  //                 id: 1,
+  //                 cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+  //                 date: '2020-01-12',
+  //                 createdAt: '2020-01-12 19:50:35',
+  //                 updatedAt: '2020-01-12 19:54:15',
+  //               },
+  //             ],
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
   '/api/v1/files/{date}': {
     get: {
       tags: ['files'],

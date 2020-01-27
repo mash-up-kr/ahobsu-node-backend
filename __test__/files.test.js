@@ -43,6 +43,7 @@ describe('files', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
     expect(hasFileKeys(response.body.data));
+    expect(response.body.data.date).toBe(date);
   });
   it('Post /api/v1/files Exist', async () => {
     const ExistResponse = await request(app)
@@ -90,12 +91,12 @@ function hasFileKeys(data) {
   if (!('date' in data)) throw new Error('missing date key');
 }
 
-describe('files2', () => {
-  it('Get /api/v1/files/week', async () => {
-    response = await request(app)
-      .get('/api/v1/files/week')
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
-  });
-});
+// describe('files2', () => {
+//   it('Get /api/v1/files/week', async () => {
+//     response = await request(app)
+//       .get('/api/v1/files/week')
+//       .set('Authorization', token);
+//     expect(response.statusCode).toBe(200);
+//     expect(response.body.status).toBe(200);
+//   });
+// });
