@@ -6,6 +6,8 @@ const app = require('../app');
 
 let token = null;
 let response = null;
+const date = moment().format('YYYY-MM-DD');
+const file = path.join(__dirname, '/money.jpg');
 
 beforeAll(async () => {
   const {
@@ -20,9 +22,6 @@ beforeAll(async () => {
 
 describe('answers', () => {
   it('Post /api/v1/answers', async () => {
-    const date = moment().format('YYYY-MM-DD');
-    const file = path.join(__dirname, '/money.jpg');
-
     response = await request(app)
       .get(`/api/v1/answers/${date}`)
       .set('Authorization', token);
@@ -46,6 +45,18 @@ describe('answers', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasAnswerKeys(response.body.data));
+  });
+
+  it('Post /api/v1/answers Exist', async () => {
+    response = await request(app)
+      .post('/api/v1/answers')
+      .set('Authorization', token)
+      .field('missionId', 1)
+      .field('content', 'aaa')
+      .attach('file', file);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(404);
+    expect(response.body.message).toBe('해당날짜에 답변이 존재합니다.');
   });
 
   it('Get /api/v1/answers/{date}', async () => {
