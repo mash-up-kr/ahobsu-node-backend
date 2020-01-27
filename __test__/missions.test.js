@@ -24,7 +24,7 @@ describe('missions', () => {
       .send({ title: '안녕', isContent: true, isImage: false, cycle: 1 });
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
-    expect(hasMissionKeys);
+    expect(hasMissionKeys(response.body.data));
   });
 
   it('Delete /api/v1/missions/{id}', async () => {
@@ -36,10 +36,10 @@ describe('missions', () => {
   });
 });
 
-function hasMissionKeys(res) {
-  if (!('id' in res.body)) throw new Error('missing id key');
-  if (!('title' in res.body)) throw new Error('missing title key');
-  if (!('isContent' in res.body)) throw new Error('missing isContent key');
-  if (!('isImage' in res.body)) throw new Error('missing isImage key');
-  if (!('cycle' in res.body)) throw new Error('missing cycle key');
+function hasMissionKeys(data) {
+  if (!('id' in data)) throw new Error('missing id key');
+  if (!('title' in data)) throw new Error('missing title key');
+  if (!('isContent' in data)) throw new Error('missing isContent key');
+  if (!('isImage' in data)) throw new Error('missing isImage key');
+  if (!('cycle' in data)) throw new Error('missing cycle key');
 }
