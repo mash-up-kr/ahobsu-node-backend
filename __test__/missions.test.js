@@ -1,4 +1,3 @@
-// tests/status.test.js
 const request = require('supertest');
 const app = require('../app');
 
@@ -51,7 +50,7 @@ describe('missions', () => {
       .delete(`/api/v1/missions/${response.body.data.id}`)
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(204);
     expect(response.body.message).toBe('문제를 삭제 했습니다.');
   });
 });
@@ -100,6 +99,15 @@ describe('missions', () => {
     expect(response.body.data.refresh).toBe(false);
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
+  });
+
+  it('Get /api/v1/missions/refresh before refresh', async () => {
+    response = await request(app)
+      .get(`/api/v1/missions/refresh`)
+      .set('Authorization', token);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe(400);
+    expect(response.body.message).toBe('갱신 횟수가 모자랍니다.');
   });
 
   it('Delete /api/v1/missions/{id}', async () => {

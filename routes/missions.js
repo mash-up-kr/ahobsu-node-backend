@@ -56,7 +56,7 @@ router.get('/refresh', checkToken, async (req, res, next) => {
       );
       res.json(response({ data: { refresh: false, missions } }));
     } else {
-      res.json(response({ status: 400, message: '갱신 횟수가 모자랄 수 있습니다.' }));
+      res.json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
     }
   } catch (e) {
     console.log(e);
@@ -73,7 +73,7 @@ router.get('/', checkToken, async (req, res, next) => {
       },
     });
     if (!user) {
-      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+      return res.json(response({ status: 400, message: '유저가 존재하지 없습니다.' }));
     }
     const date = moment().format('YYYY-MM-DD');
     // const notInId
@@ -187,7 +187,7 @@ router.delete('/:id', checkToken, async (req, res, next) => {
         id,
       },
     });
-    res.json(response({ message: '문제를 삭제 했습니다.' }));
+    res.json(response({ status: 204, message: '문제를 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
