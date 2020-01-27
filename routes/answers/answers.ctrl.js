@@ -6,14 +6,12 @@ const AWS = require('aws-sdk');
 const path = require('path');
 const fs = require('fs');
 
-const db = require('../models');
-const checkToken = require('../middleware/checkToken');
-const response = require('../lib/response');
+const db = require('../../models');
+const response = require('../../lib/response');
 
-const router = express.Router();
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-router.get('/week', checkToken, async (req, res, next) => {
+const week = async (req, res, next) => {
   const date = moment().format('YYYY-MM-DD');
   const day = moment().day();
   let first = -7;
@@ -40,9 +38,9 @@ router.get('/week', checkToken, async (req, res, next) => {
   });
 
   res.json(response({ data: answers }));
-});
+};
 
-router.get('/month', checkToken, async (req, res, next) => {
+const month = async (req, res, next) => {
   const userId = req.user.id;
   const queryDate = req.query.date;
   const date = !!queryDate ? moment(queryDate).date(1) : moment().date(1);
@@ -75,9 +73,9 @@ router.get('/month', checkToken, async (req, res, next) => {
     }),
   );
   res.json(response({ data: { date: date.format('YYYY-MM-DD'), answers } }));
-});
+};
 
-router.get('/:date', checkToken, async (req, res, next) => {
+const date = async (req, res, next) => {
   const userId = req.user.id;
   const answer = await db.answers.findOne({
     where: {
@@ -86,9 +84,9 @@ router.get('/:date', checkToken, async (req, res, next) => {
     },
   });
   res.json(response({ data: answer }));
-});
+};
 
-router.post('/', checkToken, async (req, res, next) => {
+const create = async (req, res, next) => {
   const userId = req.user.id;
   AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
@@ -165,9 +163,8 @@ router.post('/', checkToken, async (req, res, next) => {
       return res.json(response({ status: 500, message: e.message }));
     }
   });
-});
-
-router.put('/:id', checkToken, async (req, res, next) => {
+};
+const update = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -247,9 +244,9 @@ router.put('/:id', checkToken, async (req, res, next) => {
       return res.json(response({ status: 500, message: e.message }));
     }
   });
-});
+};
 
-router.delete('/:id', checkToken, async (req, res, next) => {
+const destroy = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -275,6 +272,6 @@ router.delete('/:id', checkToken, async (req, res, next) => {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
   }
-});
+};
 
-module.exports = router;
+module.exports = { week, month, date, create, update, destroy };

@@ -4,7 +4,8 @@ const usersRouter = require('./users');
 const filesRouter = require('./files');
 const siginInRouter = require('./signIn');
 const missionRouter = require('./missions');
-const answerRouter = require('./answers.js');
+const answerRouter = require('./answers');
+// const answerRouter = require('./answers/answers.ctrl.js/index.js.js');
 
 const checkToken = require('../middleware/checkToken');
 
