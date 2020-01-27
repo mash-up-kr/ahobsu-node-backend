@@ -4,7 +4,8 @@ const app = require('../app');
 
 let token = null;
 let response = null;
-
+const snsId = '2';
+const snsType = 'apple';
 beforeAll(async () => {
   const {
     body: {
@@ -12,26 +13,29 @@ beforeAll(async () => {
     },
   } = await request(app)
     .post('/api/v1/signin')
-    .send({ snsId: '2', snsType: 'apple' });
+    .send({ snsId, snsType });
   token = accessToken;
-});
-
-describe('Test /api/v1/users', () => {
-  test('should return ok', async () => {
-    const response = await request(app).get('/api/v1/users');
-    expect(response.statusCode).toBe(200);
-  });
 });
 
 describe('users', () => {
   it('Put /api/v1/users', async () => {
+    const name = '김유정';
+    const birthday = '1997-01-16';
+    const email = 'yuchochpie@gmail.com';
+    const gender = '여';
     response = await request(app)
       .put(`/api/v1/users`)
       .set('Authorization', token)
-      .send({ name: '김유정', birthday: '1997-01-16', email: 'yuchochpie@gmail.com', gender: '여' });
+      .send({ name, birthday, email, gender });
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasUserKeys(response.body.data));
+    expect(response.body.data.name).toBe(name);
+    expect(response.body.data.birthday).toBe(birthday);
+    expect(response.body.data.email).toBe(email);
+    expect(response.body.data.gender).toBe(gender);
+    expect(response.body.data.snsId).toBe(snsId);
+    expect(response.body.data.snsType).toBe(snsType);
   });
 
   it('Get /api/v1/users', async () => {
