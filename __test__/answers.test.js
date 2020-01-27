@@ -48,15 +48,15 @@ describe('answers', () => {
   });
 
   it('Post /api/v1/answers Exist', async () => {
-    response = await request(app)
+    const existResponse = await request(app)
       .post('/api/v1/answers')
       .set('Authorization', token)
       .field('missionId', 1)
       .field('content', 'aaa')
       .attach('file', file);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(404);
-    expect(response.body.message).toBe('해당날짜에 답변이 존재합니다.');
+    expect(existResponse.statusCode).toBe(200);
+    expect(existResponse.body.status).toBe(400);
+    expect(existResponse.body.message).toBe('해당날짜에 답변이 존재합니다.');
   });
 
   it('Get /api/v1/answers/{date}', async () => {

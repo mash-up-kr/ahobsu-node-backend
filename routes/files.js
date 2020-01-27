@@ -143,7 +143,7 @@ router.post('/', checkToken, async (req, res, next) => {
 
       // unlink tmp files
       fs.unlinkSync(file.path);
-      res.json(response({ data: fileObj }));
+      res.json(response({ status: 201, data: fileObj }));
     } catch (e) {
       console.log(e);
       res.json(response({ status: 500, message: e.message }));
@@ -225,7 +225,7 @@ router.delete('/:id', checkToken, async (req, res, next) => {
         id,
       },
     });
-    res.json(response({ message: '파일을 삭제 했습니다.' }));
+    res.json(response({ status: 204, message: '파일을 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));

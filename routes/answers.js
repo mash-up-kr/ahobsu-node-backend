@@ -103,7 +103,7 @@ router.post('/', checkToken, async (req, res, next) => {
       const { missionId, content } = fields;
       const checkMission = await db.missions.findOne({ where: { id: missionId } });
       if (!checkMission) {
-        return res.json(response({ status: 404, message: '존재하지않는 missionId.' }));
+        return res.json(response({ status: 412, message: '존재하지않는 missionId.' }));
       }
       const date = moment().format('YYYY-MM-DD');
       const beforeAnswer = await db.answers.findOne({
@@ -115,11 +115,11 @@ router.post('/', checkToken, async (req, res, next) => {
       const cardFile = (await db.files.findOne({ where: { date } })) || { cardUrl: '' };
       const { cardUrl } = cardFile;
       if (!!beforeAnswer) {
-        return res.json(response({ status: 404, message: '해당날짜에 답변이 존재합니다.' }));
+        return res.json(response({ status: 400, message: '해당날짜에 답변이 존재합니다.' }));
       }
       const image = files.file;
       if (!image && !content) {
-        return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
+        return res.json(response({ status: 412, message: '필수 파라미터가 부족합니다.' }));
       }
       if (!image) {
         const answer = await db.answers.create({

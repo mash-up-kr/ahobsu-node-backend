@@ -41,18 +41,18 @@ describe('files', () => {
       .field('date', date)
       .attach('file', file);
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(201);
     expect(hasFileKeys(response.body.data));
   });
   it('Post /api/v1/files Exist', async () => {
-    response = await request(app)
+    const ExistResponse = await request(app)
       .post('/api/v1/files')
       .set('Authorization', token)
       .field('date', date)
       .attach('file', file);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(400);
-    expect(response.body.message).toBe('해당날짜에 이미지가 이미 있습니다.');
+    expect(ExistResponse.statusCode).toBe(200);
+    expect(ExistResponse.body.status).toBe(400);
+    expect(ExistResponse.body.message).toBe('해당날짜에 이미지가 이미 있습니다.');
   });
 
   it('Get /api/v1/files/{id}', async () => {
@@ -79,7 +79,8 @@ describe('files', () => {
       .delete(`/api/v1/files/${response.body.data.id}`)
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(204);
+    expect(response.body.message).toBe('파일을 삭제 했습니다.');
   });
 });
 
