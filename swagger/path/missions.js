@@ -114,7 +114,7 @@ module.exports = {
   '/api/v1/missions/{id}': {
     get: {
       tags: ['missions'],
-      summary: '미션 수정',
+      summary: '미션 조회',
       produces: ['application/json'],
       parameters: [
         {

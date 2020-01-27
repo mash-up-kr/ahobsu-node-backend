@@ -97,7 +97,9 @@ router.get('/', checkToken, async (req, res, next) => {
           ids.push(`'${a.id}'`);
         }
       });
-      const sql2 = `SELECT * from missions WHERE NOT missions.id IN (${ids.join(',')}) ORDER BY RAND() LIMIT 3`;
+      const sql2 = `SELECT * from missions ${
+        ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''
+      } ORDER BY RAND() LIMIT 3`;
       const missions = await db.sequelize.query(sql2, {
         type: sequelize.QueryTypes.SELECT,
       });
