@@ -96,6 +96,19 @@ const week = async (req, res, next) => {
   );
 };
 
+const date = async (req, res, next) => {
+  const { date } = req.params;
+  try {
+    const file = await db.files.findOne({
+      where: { date },
+    });
+    res.json(response({ data: file }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, message: e.message }));
+  }
+};
+
 const create = async (req, res, next) => {
   AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
@@ -225,19 +238,6 @@ const destroy = async (req, res, next) => {
       },
     });
     res.json(response({ status: 204, message: '파일을 삭제 했습니다.' }));
-  } catch (e) {
-    console.log(e);
-    res.json(response({ status: 500, message: e.message }));
-  }
-};
-
-const date = async (req, res, next) => {
-  const { date } = req.params;
-  try {
-    const file = await db.files.findOne({
-      where: { date },
-    });
-    res.json(response({ data: file }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));

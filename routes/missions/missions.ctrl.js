@@ -9,6 +9,65 @@ const response = require('../../lib/response');
 
 const router = express.Router();
 
+const missoins = async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const user = await db.users.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      return res.json(response({ status: 400, message: '유저가 존재하지 없습니다.' }));
+    }
+    const date = moment().format('YYYY-MM-DD');
+    // const notInId
+    const { missions } = user;
+    const oldMission = missions && JSON.parse(missions);
+    const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
+
+    if (!oldMission || (!!oldMission && oldMission.missions.length < 1) || oldMission.date < date) {
+      const oneYearAgo = moment()
+        .add(-1, 'years')
+        .format('YYYY-MM-DD');
+      const sql1 = `SELECT * FROM answers  join missions on answers.missionId = missions.id  WHERE (answers.date > '${oneYearAgo}' AND answers.date < '${date}');`;
+      const oneYearData = await db.sequelize.query(sql1, {
+        type: sequelize.QueryTypes.SELECT,
+      });
+      const ids = [];
+      oneYearData.forEach(a => {
+        if (
+          moment(a.date)
+            .add(a.cycle, 'days')
+            .format('YYYY-MM-DD') >= date
+        ) {
+          ids.push(`'${a.id}'`);
+        }
+      });
+      const sql2 = `SELECT * from missions ${
+        ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''
+      } ORDER BY RAND() LIMIT 3`;
+      const missions = await db.sequelize.query(sql2, {
+        type: sequelize.QueryTypes.SELECT,
+      });
+
+      await db.users.update(
+        { mission: JSON.stringify({ date, missions }) },
+        {
+          where: {
+            id,
+          },
+        },
+      );
+      res.json(response({ data: { refresh, missions } }));
+    } else {
+      res.json(response({ data: refresh, missions: oldMission.missions }));
+    }
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, message: e.message }));
+  }
+};
 const refresh = async (req, res, next) => {
   const { id } = req.user;
   try {
@@ -64,60 +123,18 @@ const refresh = async (req, res, next) => {
   }
 };
 
-const missoins = async (req, res, next) => {
-  const { id } = req.user;
+const mission = async (req, res, next) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+  }
   try {
-    const user = await db.users.findOne({
+    const mission = await db.missions.findOne({
       where: {
         id,
       },
     });
-    if (!user) {
-      return res.json(response({ status: 400, message: '유저가 존재하지 없습니다.' }));
-    }
-    const date = moment().format('YYYY-MM-DD');
-    // const notInId
-    const { missions } = user;
-    const oldMission = missions && JSON.parse(missions);
-    const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
-
-    if (!oldMission || (!!oldMission && oldMission.missions.length < 1) || oldMission.date < date) {
-      const oneYearAgo = moment()
-        .add(-1, 'years')
-        .format('YYYY-MM-DD');
-      const sql1 = `SELECT * FROM answers  join missions on answers.missionId = missions.id  WHERE (answers.date > '${oneYearAgo}' AND answers.date < '${date}');`;
-      const oneYearData = await db.sequelize.query(sql1, {
-        type: sequelize.QueryTypes.SELECT,
-      });
-      const ids = [];
-      oneYearData.forEach(a => {
-        if (
-          moment(a.date)
-            .add(a.cycle, 'days')
-            .format('YYYY-MM-DD') >= date
-        ) {
-          ids.push(`'${a.id}'`);
-        }
-      });
-      const sql2 = `SELECT * from missions ${
-        ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''
-      } ORDER BY RAND() LIMIT 3`;
-      const missions = await db.sequelize.query(sql2, {
-        type: sequelize.QueryTypes.SELECT,
-      });
-
-      await db.users.update(
-        { mission: JSON.stringify({ date, missions }) },
-        {
-          where: {
-            id,
-          },
-        },
-      );
-      res.json(response({ data: { refresh, missions } }));
-    } else {
-      res.json(response({ data: refresh, missions: oldMission.missions }));
-    }
+    res.json(response({ data: mission }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
@@ -194,22 +211,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-const mission = async (req, res, next) => {
-  const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
-  try {
-    const mission = await db.missions.findOne({
-      where: {
-        id,
-      },
-    });
-    res.json(response({ data: mission }));
-  } catch (e) {
-    console.log(e);
-    res.json(response({ status: 500, message: e.message }));
-  }
-};
-
-module.exports = { refresh, missoins, create, update, destroy, mission };
+module.exports = { missoins, refresh, mission, create, update, destroy };
