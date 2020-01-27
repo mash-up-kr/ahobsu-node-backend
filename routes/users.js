@@ -23,8 +23,8 @@ router.get('/my', checkToken, async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   try {
-    // const users = await db.users.findAll();
-    res.json(response({ data: null }));
+    const users = await db.users.findAll();
+    res.json(response({ data: users }));
   } catch (e) {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
@@ -141,7 +141,7 @@ router.delete('/', checkToken, async (req, res, next) => {
 });
 
 router.get('/:id', checkToken, async (req, res, next) => {
-  const { id } = req.params.id;
+  const { id } = req.params;
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
   }
