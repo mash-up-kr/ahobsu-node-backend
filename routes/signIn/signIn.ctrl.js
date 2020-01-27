@@ -1,12 +1,12 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const db = require('../models');
-const response = require('../lib/response');
+const db = require('../../models');
+const response = require('../../lib/response');
 
 const router = express.Router();
 
-router.post('/refresh', async (req, res, next) => {
+const refresh = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
     return res.json(
@@ -66,9 +66,9 @@ router.post('/refresh', async (req, res, next) => {
       }),
     );
   }
-});
+};
 
-router.post('/', async (req, res, next) => {
+const create = async (req, res, next) => {
   const token = req.headers.authorization;
   const { snsId, snsType } = req.body;
   if (!snsId || !snsType) {
@@ -110,6 +110,6 @@ router.post('/', async (req, res, next) => {
       }),
     );
   }
-});
+};
 
-module.exports = router;
+module.exports = { refresh, create };
