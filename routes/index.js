@@ -16,12 +16,4 @@ router.use('/signIn', siginInRouter);
 router.use('/missions', missionRouter);
 router.use('/answers', answerRouter);
 
-router.get('/hello', (req, res) => {
-  res.send('world!');
-});
-
-router.get('/status', (req, res) => {
-  res.send('ok');
-});
-
 module.exports = router;
