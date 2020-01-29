@@ -42,7 +42,7 @@ const missoins = async (req, res, next) => {
       });
       const sql2 = `SELECT * from missions ${
         ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''
-      } ORDER BY RAND() LIMIT 3`;
+      } ORDER BY ${process.env.NODE_ENV === 'test' ? 'random()' : 'RAND()'} LIMIT 3`;
       const missions = await db.sequelize.query(sql2, {
         type: sequelize.QueryTypes.SELECT,
       });
@@ -96,7 +96,7 @@ const refresh = async (req, res, next) => {
       });
       const sql2 = `SELECT * from missions 
         ${ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''}
-        ORDER BY RAND() LIMIT 3`;
+        ORDER BY ${process.env.NODE_ENV === 'test' ? 'random()' : 'RAND()'} LIMIT 3`;
       const missions = await db.sequelize.query(sql2, {
         type: sequelize.QueryTypes.SELECT,
       });

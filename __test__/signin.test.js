@@ -1,5 +1,11 @@
 const request = require('supertest');
+
 const app = require('../app');
+const connectDB = require('../connectDB');
+
+beforeAll(async () => {
+  await connectDB();
+});
 
 describe('Test /api/v1/signin', () => {
   it('should return ok', async () => {

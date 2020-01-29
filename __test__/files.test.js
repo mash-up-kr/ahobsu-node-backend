@@ -2,6 +2,7 @@ const request = require('supertest');
 const path = require('path');
 
 const app = require('../app');
+const connectDB = require('../connectDB');
 
 let token = null;
 let response = null;
@@ -9,6 +10,8 @@ const date = '2020-01-23';
 const file = path.join(__dirname, '/money.jpg');
 
 beforeAll(async () => {
+  await connectDB();
+
   const {
     body: {
       data: { accessToken },

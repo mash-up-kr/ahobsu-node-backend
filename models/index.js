@@ -8,25 +8,35 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
-const options = {
-  host: config.host,
-  dialect: 'mysql',
-  timezone: '+09:00',
-  operatorsAliases: false,
-  define: {
-    timestamps: true,
-  },
-  dialectOptions: {
-    dateStrings: true,
-    typeCast: true,
-  },
-  pool: {
-    min: 0,
-    max: 10,
-    idle: 10000,
-    acquire: 10000,
-  },
-};
+const options =
+  process.env.NODE_ENV === 'test'
+    ? {
+        username: 'root',
+        password: 'root',
+        storage: ':memory:',
+        host: 'localhost',
+        dialect: 'sqlite',
+        operatorsAliases: false,
+      }
+    : {
+        host: config.host,
+        dialect: 'mysql',
+        timezone: '+09:00',
+        operatorsAliases: false,
+        define: {
+          timestamps: true,
+        },
+        dialectOptions: {
+          dateStrings: true,
+          typeCast: true,
+        },
+        pool: {
+          min: 0,
+          max: 10,
+          idle: 10000,
+          acquire: 10000,
+        },
+      };
 
 let sequelize;
 if (config.use_env_variable) {

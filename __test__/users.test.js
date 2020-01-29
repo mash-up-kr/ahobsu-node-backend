@@ -1,12 +1,16 @@
 // tests/status.test.js
 const request = require('supertest');
+
 const app = require('../app');
+const connectDB = require('../connectDB');
 
 let token = null;
 let response = null;
 const snsId = '2';
 const snsType = 'apple';
 beforeAll(async () => {
+  await connectDB();
+
   const {
     body: {
       data: { accessToken },

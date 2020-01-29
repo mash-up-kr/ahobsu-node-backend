@@ -3,6 +3,7 @@ const path = require('path');
 const moment = require('moment');
 
 const app = require('../app');
+const connectDB = require('../connectDB');
 
 let token = null;
 let response = null;
@@ -10,6 +11,8 @@ const date = moment().format('YYYY-MM-DD');
 const file = path.join(__dirname, '/money.jpg');
 
 beforeAll(async () => {
+  await connectDB();
+
   const {
     body: {
       data: { accessToken },
@@ -21,6 +24,7 @@ beforeAll(async () => {
 });
 
 describe('answers', () => {
+  let missionId = null;
   it('Post /api/v1/answers', async () => {
     response = await request(app)
       .get(`/api/v1/answers/${date}`)
@@ -36,8 +40,16 @@ describe('answers', () => {
       expect(response.body.status).toBe(200);
     }
 
+    const title = '안녕';
+    const isContent = true;
+    const isImage = false;
+    const cycle = 1;
     const content = 'aaa';
-    const missionId = 1;
+    response = await request(app)
+      .post('/api/v1/missions')
+      .set('Authorization', token)
+      .send({ title, isContent, isImage, cycle });
+    missionId = response.body.data.id;
     response = await request(app)
       .post('/api/v1/answers')
       .set('Authorization', token)
@@ -55,7 +67,7 @@ describe('answers', () => {
     const existResponse = await request(app)
       .post('/api/v1/answers')
       .set('Authorization', token)
-      .field('missionId', 1)
+      .field('missionId', missionId)
       .field('content', 'aaa')
       .attach('file', file);
     expect(existResponse.statusCode).toBe(200);
