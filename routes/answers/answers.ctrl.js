@@ -20,14 +20,14 @@ const week = async (req, res, next) => {
     last = 8 - day;
   }
   const userId = req.user.id;
-  const firstDay = await moment(date)
+  const firstDay = moment(date)
     .add(first, 'days')
     .format('YYYY-MM-DD');
-  const lastDay = await moment(date)
+  const lastDay = moment(date)
     .add(last, 'days')
     .format('YYYY-MM-DD');
-  const today = await moment(date).format('YYYY-MM-DD');
-  const answers = await db.answers.findAll({
+  const today = moment(date).format('YYYY-MM-DD');
+  const ExistAnswers = await db.answers.findAll({
     where: {
       userId,
       date: {
@@ -35,6 +35,18 @@ const week = async (req, res, next) => {
         [Op.lt]: lastDay,
       },
     },
+  });
+  const answers = new Array(7).fill({}).map((_, index) => {
+    return (
+      ExistAnswers.find(
+        element =>
+          element.date ===
+          moment(date)
+            .add(first, 'days')
+            .add(index + 1, 'days')
+            .format('YYYY-MM-DD'),
+      ) || {}
+    );
   });
 
   res.json(response({ data: { today, answers } }));
