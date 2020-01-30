@@ -170,7 +170,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 204,
               message: '유저를 삭제 했습니다.',
               data: null,
             },

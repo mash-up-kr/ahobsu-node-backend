@@ -241,7 +241,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 204,
               message: '문제를 삭제 했습니다.',
               data: null,
             },

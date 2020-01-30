@@ -7,19 +7,19 @@ beforeAll(async () => {
   await connectDB();
 });
 
-describe('Test /api/v1/signin', () => {
-  it('should return ok', async () => {
+describe('signin1', () => {
+  it('Post /api/v1/signin', async () => {
     const response = await request(app)
       .post('/api/v1/signin')
       .send({ snsId: '1', snsType: 'apple', token: 'aaa' });
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(201);
     expect(hasPostApiV1SigninRefreshKeys(response.body.data));
   });
 });
 
-describe('Test /api/v1/signin/refresh', () => {
-  it('should return ok', async () => {
+describe('signin', () => {
+  it('Post /api/v1/signin/refresh', async () => {
     const {
       body: {
         data: { refreshToken },
@@ -31,7 +31,7 @@ describe('Test /api/v1/signin/refresh', () => {
       .post('/api/v1/signin/refresh')
       .set('Authorization', refreshToken);
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    expect(response.body.status).toBe(201);
     expect(hasPostApiV1SigninRefreshKeys(response.body.data));
   });
 });

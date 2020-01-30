@@ -31,7 +31,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 201,
               message: '',
               data: {
                 accessToken:
@@ -67,7 +67,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 201,
               message: '',
               data: {
                 accessToken:

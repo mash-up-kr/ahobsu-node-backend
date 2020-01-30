@@ -161,7 +161,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 204,
               message: '파일을 삭제 했습니다.',
               data: null,
             },
@@ -206,7 +206,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 201,
               message: '',
               data: {
                 id: 1,

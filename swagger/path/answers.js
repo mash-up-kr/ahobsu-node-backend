@@ -42,7 +42,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 201,
               message: '',
               data: [
                 {
@@ -181,7 +181,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 200,
+              status: 204,
               message: '답변을 삭제 했습니다.',
               data: null,
             },

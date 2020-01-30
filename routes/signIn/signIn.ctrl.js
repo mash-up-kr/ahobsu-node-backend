@@ -48,6 +48,7 @@ const refresh = async (req, res, next) => {
     const signUp = !!user.name && !!user.birthday && !!user.email && !!user.gender;
     res.json(
       response({
+        status: 201,
         data: {
           accessToken,
           refreshToken,
@@ -93,6 +94,7 @@ const create = async (req, res, next) => {
     const signUp = !!newUser.name && !!newUser.birthday && !!newUser.email && !!newUser.gender;
     res.json(
       response({
+        status: 201,
         data: {
           accessToken,
           refreshToken,
