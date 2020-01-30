@@ -1,6 +1,6 @@
-const express = require('express');
 const sequelize = require('sequelize');
 const moment = require('moment');
+const { Op } = require('sequelize');
 
 const db = require('../../models');
 const response = require('../../lib/response');
@@ -37,14 +37,17 @@ const missoins = async (req, res, next) => {
             .add(a.cycle, 'days')
             .format('YYYY-MM-DD') >= date
         ) {
-          ids.push(`'${a.id}'`);
+          ids.push(a.id);
         }
       });
-      const sql2 = `SELECT * from missions ${
-        ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''
-      } ORDER BY ${process.env.NODE_ENV === 'test' ? 'random()' : 'RAND()'} LIMIT 3`;
-      const missions = await db.sequelize.query(sql2, {
-        type: sequelize.QueryTypes.SELECT,
+
+      const missions = await await db.missions.findAll({
+        where: {
+          id: {
+            [Op.notIn]: ids,
+          },
+        },
+        order: db.sequelize.random(),
       });
 
       await db.users.update(
@@ -91,14 +94,17 @@ const refresh = async (req, res, next) => {
             .add(a.cycle, 'days')
             .format('YYYY-MM-DD') >= date
         ) {
-          ids.push(`'${a.id}'`);
+          ids.push(a.id);
         }
       });
-      const sql2 = `SELECT * from missions 
-        ${ids.length > 0 ? `WHERE NOT missions.id IN (${ids.join(',')})` : ''}
-        ORDER BY ${process.env.NODE_ENV === 'test' ? 'random()' : 'RAND()'} LIMIT 3`;
-      const missions = await db.sequelize.query(sql2, {
-        type: sequelize.QueryTypes.SELECT,
+
+      const missions = await await db.missions.findAll({
+        where: {
+          id: {
+            [Op.notIn]: ids,
+          },
+        },
+        order: db.sequelize.random(),
       });
 
       await db.users.update(
