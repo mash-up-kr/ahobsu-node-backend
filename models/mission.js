@@ -23,8 +23,8 @@ module.exports = (Sequelize, DataTypes) => {
     },
     {},
   );
-  // Answer.associate = (models) => {
-  //   // associations can be defined here
-  // };
+  missions.associate = db => {
+    db.missions.hasMany(db.answers);
+  };
   return missions;
 };

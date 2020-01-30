@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // connect To DB
-// connectDB();
+connectDB();
 
 app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

@@ -35,6 +35,11 @@ const week = async (req, res, next) => {
         [Op.lt]: lastDay,
       },
     },
+    include: [
+      {
+        model: db.missions,
+      },
+    ],
   });
   const answers = new Array(7).fill({}).map((_, index) => {
     return (
@@ -81,6 +86,11 @@ const month = async (req, res, next) => {
             [Op.lt]: lastDay,
           },
         },
+        include: [
+          {
+            model: db.missions,
+          },
+        ],
       });
     }),
   );
@@ -94,6 +104,11 @@ const date = async (req, res, next) => {
       userId,
       date: req.params.date,
     },
+    include: [
+      {
+        model: db.missions,
+      },
+    ],
   });
   res.json(response({ data: answer }));
 };
@@ -159,13 +174,21 @@ const create = async (req, res, next) => {
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
       const imageUrl = baseUrl + file2;
 
-      const answer = await db.answers.create({
+      const newAnswer = await db.answers.create({
         userId: userId,
         missionId: missionId,
         imageUrl,
         cardUrl,
         content: fields.content,
         date,
+      });
+      const answer = await db.answers.findOne({
+        where: { id: newAnswer.id },
+        include: [
+          {
+            model: db.missions,
+          },
+        ],
       });
       // unlink tmp files
       fs.unlinkSync(file.path);
@@ -213,7 +236,14 @@ const update = async (req, res, next) => {
             },
           },
         );
-        const newAnswer = await db.answers.findOne({ where: { id } });
+        const newAnswer = await db.answers.findOne({
+          where: { id },
+          include: [
+            {
+              model: db.missions,
+            },
+          ],
+        });
         return res.json(response({ data: newAnswer }));
       }
       const { file } = files;
@@ -249,7 +279,14 @@ const update = async (req, res, next) => {
       );
       // unlink tmp files
       fs.unlinkSync(file.path);
-      const newAnswer = await db.answers.findOne({ where: { id } });
+      const newAnswer = await db.answers.findOne({
+        where: { id },
+        include: [
+          {
+            model: db.missions,
+          },
+        ],
+      });
       return res.json(response({ data: newAnswer }));
     } catch (e) {
       console.log(e);

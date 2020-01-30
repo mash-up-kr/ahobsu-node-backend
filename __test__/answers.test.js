@@ -60,7 +60,7 @@ describe('answers', () => {
     expect(response.body.status).toBe(201);
     expect(hasAnswerKeys(response.body.data));
     expect(response.body.data.content).toBe(content);
-    expect(response.body.data.missionId).toBe(String(missionId));
+    expect(response.body.data.missionId).toBe(missionId);
   });
 
   it('Post /api/v1/answers Exist', async () => {
@@ -107,7 +107,7 @@ describe('answers', () => {
     expect(response.body.status).toBe(200);
     expect(response.body.data.today).toBeTruthy();
     expect(response.body.data.answers.length > 0).toBeTruthy();
-
+    console.log(999, response.body.data.answers[3]);
     // expect(hasAnswerKeys(response.body.data.answers[0]));
   });
 

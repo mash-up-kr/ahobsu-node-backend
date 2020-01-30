@@ -29,8 +29,8 @@ module.exports = (Sequelize, DataTypes) => {
     },
     {},
   );
-  // Answer.associate = (models) => {
-  //   // associations can be defined here
-  // };
+  answers.associate = db => {
+    db.answers.belongsTo(db.missions);
+  };
   return answers;
 };
