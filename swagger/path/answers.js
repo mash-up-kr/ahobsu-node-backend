@@ -196,8 +196,11 @@ module.exports = {
               status: 200,
               message: '',
               data: {
-                today: '2020-01-07',
+                today: '2020-01-30',
                 answers: [
+                  {},
+                  {},
+                  {},
                   {
                     id: 39,
                     userId: 1,
@@ -205,10 +208,13 @@ module.exports = {
                     imageUrl: null,
                     cardUrl: null,
                     content: '123',
-                    date: '2020-01-07',
+                    date: '2020-01-30',
                     createdAt: '2020-01-07T12:51:07.000Z',
                     updatedAt: '2020-01-07T12:51:07.000Z',
                   },
+                  {},
+                  {},
+                  {},
                 ],
               },
             },
