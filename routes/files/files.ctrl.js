@@ -11,88 +11,88 @@ const response = require('../../lib/response');
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-const week = async (req, res, next) => {
-  const date = moment().format('YYYY-MM-DD');
-  const day = moment().day();
-  let first = -7;
-  let last = 1;
-  if (day != 0) {
-    first = day * -1;
-    last = 8 - day;
-  }
+// const week = async (req, res, next) => {
+//   const date = moment().format('YYYY-MM-DD');
+//   const day = moment().day();
+//   let first = -7;
+//   let last = 1;
+//   if (day != 0) {
+//     first = day * -1;
+//     last = 8 - day;
+//   }
 
-  const firstDay = await moment(date)
-    .add(first, 'days')
-    .format('YYYY-MM-DD');
-  const lastDay = await moment(date)
-    .add(last, 'days')
-    .format('YYYY-MM-DD');
-  const files = await db.files.findAll({
-    where: {
-      date: {
-        [Op.gt]: firstDay,
-        [Op.lt]: lastDay,
-      },
-    },
-  });
+//   const firstDay = await moment(date)
+//     .add(first, 'days')
+//     .format('YYYY-MM-DD');
+//   const lastDay = await moment(date)
+//     .add(last, 'days')
+//     .format('YYYY-MM-DD');
+//   const files = await db.files.findAll({
+//     where: {
+//       date: {
+//         [Op.gt]: firstDay,
+//         [Op.lt]: lastDay,
+//       },
+//     },
+//   });
 
-  // res.json(response({ data: files }));
-  res.json(
-    response({
-      data: [
-        {
-          id: 48,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ur4tLr0T.pdf',
-          date: firstDay,
-          updatedAt: '2020-01-27T09:04:37.768Z',
-          createdAt: '2020-01-27T09:04:37.768Z',
-        },
-        {
-          id: 49,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/QUf7VIPf.pdf',
-          date: firstDay + 1,
-          updatedAt: '2020-01-27T09:05:27.908Z',
-          createdAt: '2020-01-27T09:05:27.908Z',
-        },
-        {
-          id: 50,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/J9smJXN7.pdf',
-          date: firstDay + 2,
-          updatedAt: '2020-01-27T09:05:56.070Z',
-          createdAt: '2020-01-27T09:05:56.070Z',
-        },
-        {
-          id: 51,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/RSUpmgOV.pdf',
-          date: firstDay + 3,
-          updatedAt: '2020-01-27T09:06:16.595Z',
-          createdAt: '2020-01-27T09:06:16.595Z',
-        },
-        {
-          id: 52,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/O9zJk5Nb.pdf',
-          date: firstDay + 4,
-          updatedAt: '2020-01-27T09:06:38.387Z',
-          createdAt: '2020-01-27T09:06:38.387Z',
-        },
-        {
-          id: 53,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LVBFZ7ni.pdf',
-          date: firstDay + 5,
-          updatedAt: '2020-01-27T09:06:59.914Z',
-          createdAt: '2020-01-27T09:06:59.914Z',
-        },
-        {
-          id: 54,
-          cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/710Cz1v5.pdf',
-          date: firstDay + 6,
-          updatedAt: '2020-01-27T09:07:22.995Z',
-          createdAt: '2020-01-27T09:07:22.995Z',
-        },
-      ],
-    }),
-  );
-};
+//   // res.json(response({ data: files }));
+//   res.json(
+//     response({
+//       data: [
+//         {
+//           id: 1,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/ur4tLr0T.pdf',
+//           date: firstDay,
+//           updatedAt: '2020-01-27T09:04:37.768Z',
+//           createdAt: '2020-01-27T09:04:37.768Z',
+//         },
+//         {
+//           id: 2,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/QUf7VIPf.pdf',
+//           date: firstDay + 1,
+//           updatedAt: '2020-01-27T09:05:27.908Z',
+//           createdAt: '2020-01-27T09:05:27.908Z',
+//         },
+//         {
+//           id: 3,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/J9smJXN7.pdf',
+//           date: firstDay + 2,
+//           updatedAt: '2020-01-27T09:05:56.070Z',
+//           createdAt: '2020-01-27T09:05:56.070Z',
+//         },
+//         {
+//           id: 4,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/RSUpmgOV.pdf',
+//           date: firstDay + 3,
+//           updatedAt: '2020-01-27T09:06:16.595Z',
+//           createdAt: '2020-01-27T09:06:16.595Z',
+//         },
+//         {
+//           id: 5,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/O9zJk5Nb.pdf',
+//           date: firstDay + 4,
+//           updatedAt: '2020-01-27T09:06:38.387Z',
+//           createdAt: '2020-01-27T09:06:38.387Z',
+//         },
+//         {
+//           id: 6,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LVBFZ7ni.pdf',
+//           date: firstDay + 5,
+//           updatedAt: '2020-01-27T09:06:59.914Z',
+//           createdAt: '2020-01-27T09:06:59.914Z',
+//         },
+//         {
+//           id: 7,
+//           cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/710Cz1v5.pdf',
+//           date: firstDay + 6,
+//           updatedAt: '2020-01-27T09:07:22.995Z',
+//           createdAt: '2020-01-27T09:07:22.995Z',
+//         },
+//       ],
+//     }),
+//   );
+// };
 
 const date = async (req, res, next) => {
   const { date } = req.params;
@@ -242,4 +242,10 @@ const destroy = async (req, res, next) => {
   }
 };
 
-module.exports = { week, date, create, update, destroy };
+module.exports = {
+  // week,
+  date,
+  create,
+  update,
+  destroy,
+};
