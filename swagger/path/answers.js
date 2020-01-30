@@ -195,19 +195,22 @@ module.exports = {
             example: {
               status: 200,
               message: '',
-              data: [
-                {
-                  id: 39,
-                  userId: 1,
-                  missionId: 18,
-                  imageUrl: null,
-                  cardUrl: null,
-                  content: '123',
-                  date: '2020-01-07',
-                  createdAt: '2020-01-07T12:51:07.000Z',
-                  updatedAt: '2020-01-07T12:51:07.000Z',
-                },
-              ],
+              data: {
+                today: '2020-01-07',
+                answers: [
+                  {
+                    id: 39,
+                    userId: 1,
+                    missionId: 18,
+                    imageUrl: null,
+                    cardUrl: null,
+                    content: '123',
+                    date: '2020-01-07',
+                    createdAt: '2020-01-07T12:51:07.000Z',
+                    updatedAt: '2020-01-07T12:51:07.000Z',
+                  },
+                ],
+              },
             },
           },
         },

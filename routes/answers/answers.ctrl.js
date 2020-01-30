@@ -26,6 +26,7 @@ const week = async (req, res, next) => {
   const lastDay = await moment(date)
     .add(last, 'days')
     .format('YYYY-MM-DD');
+  const today = await moment(date).format('YYYY-MM-DD');
   const answers = await db.answers.findAll({
     where: {
       userId,
@@ -36,7 +37,7 @@ const week = async (req, res, next) => {
     },
   });
 
-  res.json(response({ data: answers }));
+  res.json(response({ data: { today, answers } }));
 };
 
 const month = async (req, res, next) => {

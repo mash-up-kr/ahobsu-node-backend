@@ -105,8 +105,11 @@ describe('answers', () => {
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
-    expect(response.body.data.length > 0).toBeTruthy();
-    expect(hasAnswerKeys(response.body.data[0]));
+    console.log(222, response.body);
+    expect(response.body.data.today).toBeTruthy();
+    expect(response.body.data.answers.length > 0).toBeTruthy();
+
+    expect(hasAnswerKeys(response.body.data.answers[0]));
   });
 
   it('Get /api/v1/answers/month', async () => {
