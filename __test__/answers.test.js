@@ -59,6 +59,7 @@ describe('answers', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
     expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.missionId).toBe(missionId);
   });
@@ -84,6 +85,7 @@ describe('answers', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
   });
 
   it('Put /api/v1/answers/{id}', async () => {
@@ -96,6 +98,7 @@ describe('answers', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
   });
 
@@ -106,9 +109,7 @@ describe('answers', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(response.body.data.today).toBeTruthy();
-    expect(response.body.data.answers.length > 0).toBeTruthy();
-    console.log(999, response.body.data.answers[3]);
-    // expect(hasAnswerKeys(response.body.data.answers[0]));
+    expect(response.body.data.answers.length === 7).toBeTruthy();
   });
 
   it('Get /api/v1/answers/month', async () => {
@@ -122,6 +123,7 @@ describe('answers', () => {
     expect(response.body.data.answers.length > 0).toBeTruthy();
     expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
     expect(hasAnswerKeys(response.body.data.answers[week][0]));
+    expect(hasMissionKeys(response.body.data.answers[week][0].mission));
   });
 
   it('Get /api/v1/answers/month?date={date}', async () => {
@@ -156,3 +158,11 @@ function hasAnswerKeys(data) {
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
 }
+
+const hasMissionKeys = data => {
+  if (!('id' in data)) throw new Error('missing id key');
+  if (!('title' in data)) throw new Error('missing title key');
+  if (!('isContent' in data)) throw new Error('missing isContent key');
+  if (!('isImage' in data)) throw new Error('missing isImage key');
+  if (!('cycle' in data)) throw new Error('missing cycle key');
+};
