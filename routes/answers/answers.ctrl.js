@@ -114,6 +114,7 @@ const date = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
+  console.log(333, moment('2020-01-26').day());
   const userId = req.user.id;
   AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
@@ -137,7 +138,11 @@ const create = async (req, res, next) => {
           date,
         },
       });
-      const cardFile = (await db.files.findOne({ where: { date } })) || { cardUrl: '' };
+      let cardFile = await db.files.findOne({ where: { date } });
+      if (!cardFile) {
+        const id = moment().day() === 0 ? 7 : moment().day();
+        cardFile = await db.files.findOne({ where: { id } });
+      }
       const { cardUrl } = cardFile;
       if (!!beforeAnswer) {
         return res.json(response({ status: 400, message: '해당날짜에 답변이 존재합니다.' }));

@@ -39,12 +39,64 @@ describe('answers', () => {
       expect(response.statusCode).toBe(200);
       expect(response.body.status).toBe(200);
     }
+    const ago = moment().format('1999-01-20');
+    const id = moment().day() === 0 ? 7 : moment().day();
+    await Promise.all([
+      // 1
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+      // 2
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+      // 3
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+      // 4
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+      // 5
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+      // 6
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+      // 7
+      request(app)
+        .post('/api/v1/files')
+        .set('Authorization', token)
+        .field('date', ago)
+        .attach('file', file),
+    ]);
+    // await request(app)
+    //   .post('/api/v1/files')
+    //   .set('Authorization', token)
+    //   .field('date', date)
+    //   .attach('file', file);
 
     const title = '안녕';
     const isContent = true;
     const isImage = false;
     const cycle = 1;
     const content = 'aaa';
+
     response = await request(app)
       .post('/api/v1/missions')
       .set('Authorization', token)
