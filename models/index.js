@@ -17,6 +17,7 @@ const options =
         host: 'localhost',
         dialect: 'sqlite',
         operatorsAliases: false,
+        logging: false,
       }
     : {
         host: config.host,
