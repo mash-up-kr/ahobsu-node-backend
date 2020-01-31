@@ -28,7 +28,7 @@ const month = async (req, res, next) => {
     const { date: queryDate } = req.query;
     const { weeks, date } = getMonthDate(queryDate);
     const answers = await getMonthAnswers({ weeks, userId });
-    res.json(response({ data: { date: date.format('YYYY-MM-DD'), answers } }));
+    res.json(response({ data: { date, answers } }));
   } catch (error) {
     console.log(error.message);
     res.json(response({ status: 500, message: error.message }));
@@ -331,7 +331,7 @@ const getMonthDate = queryDate => {
     lastDay = moment(lastDay).add(7, 'days');
     weeks.push([firstDay.format('YYYY-MM-DD'), lastDay.format('YYYY-MM-DD')]);
   }
-  return { weeks, date };
+  return { weeks, date: date.format('YYYY-MM-DD') };
 };
 
 const getMonthAnswers = ({ weeks, userId }) => {
