@@ -11,18 +11,28 @@ const response = require('../../lib/response');
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const week = async (req, res, next) => {
-  const { firstDay, lastDay, today, first } = getWeekDate();
-  const { id: userId } = req.user;
-  const answers = await getWeekAnswers({ userId, firstDay, lastDay, today, first });
-  res.json(response({ data: { today, answers } }));
+  try {
+    const { firstDay, lastDay, today, first } = getWeekDate();
+    const { id: userId } = req.user;
+    const answers = await getWeekAnswers({ userId, firstDay, lastDay, today, first });
+    res.json(response({ data: { today, answers } }));
+  } catch (error) {
+    console.log(error.message);
+    res.json(response({ status: 500, message: error.message }));
+  }
 };
 
 const month = async (req, res, next) => {
-  const { id: userId } = req.user;
-  const { date: queryDate } = req.query;
-  const { weeks, date } = getMonthDate(queryDate);
-  const answers = await getMonthAnswers({ weeks, userId });
-  res.json(response({ data: { date: date.format('YYYY-MM-DD'), answers } }));
+  try {
+    const { id: userId } = req.user;
+    const { date: queryDate } = req.query;
+    const { weeks, date } = getMonthDate(queryDate);
+    const answers = await getMonthAnswers({ weeks, userId });
+    res.json(response({ data: { date: date.format('YYYY-MM-DD'), answers } }));
+  } catch (error) {
+    console.log(error.message);
+    res.json(response({ status: 500, message: error.message }));
+  }
 };
 
 const date = async (req, res, next) => {
