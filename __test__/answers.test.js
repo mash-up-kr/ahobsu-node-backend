@@ -40,7 +40,6 @@ describe('answers', () => {
       expect(response.body.status).toBe(200);
     }
     const ago = moment().format('1999-01-20');
-    const id = moment().day() === 0 ? 7 : moment().day();
     await Promise.all([
       // 1
       request(app)
@@ -85,11 +84,6 @@ describe('answers', () => {
         .field('date', ago)
         .attach('file', file),
     ]);
-    // await request(app)
-    //   .post('/api/v1/files')
-    //   .set('Authorization', token)
-    //   .field('date', date)
-    //   .attach('file', file);
 
     const title = '안녕';
     const isContent = true;
@@ -166,16 +160,16 @@ describe('answers', () => {
 
   it('Get /api/v1/answers/month', async () => {
     const today = moment();
-    const week = today.weeks() - 2;
     const response = await request(app)
       .get('/api/v1/answers/month')
       .set('Authorization', token);
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(200);
     expect(response.body.data.answers.length > 0).toBeTruthy();
+    expect(response.body.data.answers[0].length === 7).toBeTruthy();
     expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
-    expect(hasAnswerKeys(response.body.data.answers[week][0]));
-    expect(hasMissionKeys(response.body.data.answers[week][0].mission));
+    // expect(hasAnswerKeys(response.body.data.answers[0][0]));
+    // expect(hasMissionKeys(response.body.data.answers[0][0].mission));
   });
 
   it('Get /api/v1/answers/month?date={date}', async () => {
@@ -188,6 +182,7 @@ describe('answers', () => {
     expect(haveDateResponse.statusCode).toBe(200);
     expect(haveDateResponse.body.status).toBe(200);
     expect(haveDateResponse.body.data.answers.length > 0).toBeTruthy();
+    expect(haveDateResponse.body.data.answers[0].length === 7).toBeTruthy();
     expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
   });
 

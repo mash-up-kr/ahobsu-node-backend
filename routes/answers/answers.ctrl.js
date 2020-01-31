@@ -12,9 +12,10 @@ const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 
 const week = async (req, res, next) => {
   try {
-    const { firstDay, lastDay, today, first } = getWeekDate();
     const { id: userId } = req.user;
-    const answers = await getWeekAnswers({ userId, firstDay, lastDay, today, first });
+    const today = moment().format('YYYY-MM-DD');
+    const { firstDay, lastDay } = getFirstDayAndLastDay(today);
+    const answers = await getWeekAnswers({ userId, firstDay, lastDay });
     res.json(response({ data: { today, answers } }));
   } catch (error) {
     console.log(error.message);
@@ -36,18 +37,9 @@ const month = async (req, res, next) => {
 };
 
 const date = async (req, res, next) => {
-  const userId = req.user.id;
-  const answer = await db.answers.findOne({
-    where: {
-      userId,
-      date: req.params.date,
-    },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
+  const { id: userId } = req.user;
+  const { date } = req.params;
+  const answer = await getAnswerByDate({ userId, date });
   res.json(response({ data: answer }));
 };
 
@@ -267,25 +259,24 @@ const destroy = async (req, res, next) => {
 
 module.exports = { week, month, date, create, update, destroy };
 
-const getWeekDate = () => {
-  const today = moment().format('YYYY-MM-DD');
-  const day = moment().day();
+const getFirstDayAndLastDay = today => {
+  const day = moment(today).day();
   let first = -7;
   let last = 1;
   if (day != 0) {
     first = day * -1;
     last = 8 - day;
   }
-  const firstDay = moment()
+  const firstDay = moment(today)
     .add(first, 'days')
     .format('YYYY-MM-DD');
-  const lastDay = moment()
+  const lastDay = moment(today)
     .add(last, 'days')
     .format('YYYY-MM-DD');
-  return { firstDay, lastDay, today, first };
+  return { firstDay, lastDay };
 };
 
-const getWeekAnswers = async ({ userId, firstDay, lastDay, today, first }) => {
+const getWeekAnswers = async ({ userId, firstDay, lastDay }) => {
   const ExistAnswers = await db.answers.findAll({
     where: {
       userId,
@@ -305,8 +296,7 @@ const getWeekAnswers = async ({ userId, firstDay, lastDay, today, first }) => {
       ExistAnswers.find(
         element =>
           element.date ===
-          moment(today)
-            .add(first, 'days')
+          moment(firstDay)
             .add(index + 1, 'days')
             .format('YYYY-MM-DD'),
       ) || {}
@@ -316,16 +306,11 @@ const getWeekAnswers = async ({ userId, firstDay, lastDay, today, first }) => {
 
 const getMonthDate = queryDate => {
   const date = !!queryDate ? moment(queryDate).date(1) : moment().date(1);
-  const day = date.day();
-  let first = -7;
-  let last = 1;
-  if (day != 0) {
-    first = day * -1;
-    last = 8 - day;
-  }
-  let firstDay = moment(date).add(first, 'days');
-  let lastDay = moment(date).add(last, 'days');
-  const weeks = [];
+  let { firstDay, lastDay } = getFirstDayAndLastDay(date);
+  const weeks = [[firstDay, lastDay]];
+  firstDay = moment(firstDay);
+  lastDay = moment(lastDay);
+
   while (lastDay.month() === date.month()) {
     firstDay = moment(firstDay).add(7, 'days');
     lastDay = moment(lastDay).add(7, 'days');
@@ -335,22 +320,24 @@ const getMonthDate = queryDate => {
 };
 
 const getMonthAnswers = ({ weeks, userId }) => {
+  console.log(7676, weeks);
   return Promise.all(
     weeks.map(([firstDay, lastDay]) => {
-      return db.answers.findAll({
-        where: {
-          userId,
-          date: {
-            [Op.gt]: firstDay,
-            [Op.lt]: lastDay,
-          },
-        },
-        include: [
-          {
-            model: db.missions,
-          },
-        ],
-      });
+      return getWeekAnswers({ userId, firstDay, lastDay });
     }),
   );
+};
+
+const getAnswerByDate = async ({ userId, date }) => {
+  return db.answers.findOne({
+    where: {
+      userId,
+      date,
+    },
+    include: [
+      {
+        model: db.missions,
+      },
+    ],
+  });
 };
