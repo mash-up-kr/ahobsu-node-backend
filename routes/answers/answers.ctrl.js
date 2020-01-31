@@ -114,7 +114,6 @@ const date = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
-  console.log(333, moment('2020-01-26').day());
   const userId = req.user.id;
   AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
