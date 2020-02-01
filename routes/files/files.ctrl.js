@@ -240,10 +240,20 @@ const destroy = async (req, res, next) => {
   }
 };
 
+const getFileByDate = async date => {
+  return db.files.findOne({ where: { date } });
+};
+
+const getFileById = async id => {
+  return db.files.findOne({ where: { id } });
+};
+
 module.exports = {
   // week,
   date,
   create,
   update,
   destroy,
+  getFileByDate,
+  getFileById,
 };

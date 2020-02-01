@@ -213,4 +213,8 @@ const destroy = async (req, res, next) => {
   }
 };
 
-module.exports = { missoins, refresh, mission, create, update, destroy };
+const getMissionById = async id => {
+  return db.missions.findOne({ where: { id } });
+};
+
+module.exports = { missoins, refresh, mission, create, update, destroy, getMissionById };
