@@ -100,8 +100,9 @@ const update = async (req, res, next) => {
     }
 
     if (!imageUrl) imageUrl = answer.imageUrl;
+    await updateAnswer({ id, userId, missionId, imageUrl, content });
     {
-      const answer = await updateAnswer({ id, userId, missionId, imageUrl, content });
+      const answer = await getAnswerById(id);
       return res.json(response({ data: answer }));
     }
   } catch (e) {
@@ -254,14 +255,6 @@ const updateAnswer = async ({ id, userId, missionId, imageUrl, content }) => {
       },
     },
   );
-  return db.answers.findOne({
-    where: { id },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
 };
 
 const deleteAnswer = async id => {
