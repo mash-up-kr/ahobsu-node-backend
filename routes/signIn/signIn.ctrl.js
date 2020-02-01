@@ -1,135 +1,75 @@
-const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const db = require('../../models');
 const response = require('../../lib/response');
+const { getUserBySnsIdAndSnsType, createUser } = require('../users/users.ctrl');
 
-const refresh = async (req, res, next) => {
-  const token = req.headers.authorization;
-  if (!token) {
-    return res.json(
-      response({
-        status: 400,
-        message: '토큰이 필요합니다.',
-      }),
-    );
-  }
+const refresh = async (req, res) => {
   try {
-    const result = jwt.verify(token, process.env.privateKey);
-    if (!result.snsId && !result.snsType) {
-      return res.json(
-        response({
-          status: 500,
-          message: '올바르지 못한 토큰 입니다.',
-        }),
-      );
+    const { authorization: token } = req.headers;
+    if (!token) {
+      return res.json(response({ status: 400, message: '토큰이 필요합니다.' }));
     }
-    const { snsId, snsType } = result;
-    const user = await db.users.findOne({ where: { snsId, snsType } });
+    const result = jwt.verify(token, process.env.privateKey);
+    if (isRequired(result)) {
+      return res.json(response({ status: 1100, message: '올바르지 못한 토큰 입니다.' }));
+    }
+
+    const user = await getUserBySnsIdAndSnsType(result);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
-
-    const accessToken = await jwt.sign(
-      {
-        user: {
-          id: user.id,
-          email: user.email,
-          birthday: user.birthday,
-          name: user.name,
-          gender: user.gender,
-          refreshDate: user.refreshDate,
-          refreshToken: user.refreshToken,
-          snsId: user.snsId,
-          snsType: user.snsType,
-        },
-      },
-      process.env.privateKey,
-      { expiresIn: 7 * 24 * 60 * 60 },
-    );
-    const refreshToken = await jwt.sign(
-      {
-        snsId,
-        snsType,
-      },
-      process.env.privateKey,
-      { expiresIn: 30 * 24 * 60 * 60 },
-    );
-    const signUp = !!user.name && !!user.birthday && !!user.email && !!user.gender;
-    res.json(
-      response({
-        status: 201,
-        data: {
-          accessToken,
-          refreshToken,
-          signUp,
-        },
-      }),
-    );
+    const { accessToken, refreshToken } = await createToken(user);
+    const signUp = isSignUp(user);
+    res.json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
   } catch (e) {
     console.log(e);
-    return res.json(
-      response({
-        status: 400,
-        message: '올바르지 못한 토큰 입니다.',
-      }),
-    );
+    return res.json(response({ status: 400, message: '올바르지 못한 토큰 입니다.' }));
   }
 };
 
-const create = async (req, res, next) => {
-  const token = req.headers.authorization;
-  const { snsId, snsType } = req.body;
-  if (!snsId || !snsType) {
-    return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
-  }
+const create = async (req, res) => {
   try {
-    const user = await db.users.findOne({ where: { snsId, snsType } });
-    const newUser = user ? user : await db.users.create({ snsId, snsType });
-    const accessToken = await jwt.sign(
-      {
-        user: {
-          id: newUser.id,
-          email: newUser.email,
-          birthday: newUser.birthday,
-          name: newUser.name,
-          gender: newUser.gender,
-          refreshDate: newUser.refreshDate,
-          refreshToken: newUser.refreshToken,
-          snsId: newUser.snsId,
-          snsType: newUser.snsType,
-        },
-      },
-      process.env.privateKey,
-      { expiresIn: 7 * 24 * 60 * 60 },
-    );
-    const refreshToken = await jwt.sign(
-      {
-        snsId,
-        snsType,
-      },
-      process.env.privateKey,
-      { expiresIn: 30 * 24 * 60 * 60 },
-    );
-    const signUp = !!newUser.name && !!newUser.birthday && !!newUser.email && !!newUser.gender;
-    res.json(
-      response({
-        status: 201,
-        data: {
-          accessToken,
-          refreshToken,
-          signUp,
-        },
-      }),
-    );
+    const token = req.headers.authorization;
+    if (isRequired(req.body)) {
+      return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
+    }
+    const user = await getUserBySnsIdAndSnsType(req.body);
+    const newUser = user ? user : await createUser(req.body);
+    const { accessToken, refreshToken } = await createToken(newUser);
+    const signUp = isSignUp(newUser);
+    res.json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
   } catch (e) {
-    return res.json(
-      response({
-        staus: 500,
-        message: e.message,
-      }),
-    );
+    return res.json(response({ status: 500, message: e.message }));
   }
 };
 
 module.exports = { refresh, create };
+
+const isRequired = ({ snsId, snsType }) => {
+  return !snsId && !snsType;
+};
+
+const createToken = async ({ id, snsId, snsType }) => {
+  const accessToken = await jwt.sign(
+    {
+      user: {
+        id,
+      },
+    },
+    process.env.privateKey,
+    { expiresIn: 7 * 24 * 60 * 60 },
+  );
+  const refreshToken = await jwt.sign(
+    {
+      snsId,
+      snsType,
+    },
+    process.env.privateKey,
+    { expiresIn: 30 * 24 * 60 * 60 },
+  );
+  return { accessToken, refreshToken };
+};
+
+const isSignUp = ({ name, birthday, email, gender }) => {
+  return !!name && !!birthday && !!email && !!gender;
+};

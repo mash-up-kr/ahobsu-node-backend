@@ -7,7 +7,7 @@ beforeAll(async () => {
   await connectDB();
 });
 
-describe('signin1', () => {
+describe('signin', () => {
   it('Post /api/v1/signin', async () => {
     const response = await request(app)
       .post('/api/v1/signin')
@@ -18,7 +18,7 @@ describe('signin1', () => {
   });
 });
 
-describe('signin', () => {
+describe('signin refresh', () => {
   it('Post /api/v1/signin/refresh', async () => {
     const {
       body: {

@@ -131,4 +131,12 @@ const getUserById = async id => {
   });
 };
 
-module.exports = { users, my, user, update, refresh, destroy, getUserById };
+const getUserBySnsIdAndSnsType = async ({ snsId, snsType }) => {
+  return db.users.findOne({ where: { snsId, snsType } });
+};
+
+const createUser = async ({ snsId, snsType }) => {
+  return db.users.create({ snsId, snsType });
+};
+
+module.exports = { users, my, user, update, refresh, destroy, getUserById, getUserBySnsIdAndSnsType, createUser };
