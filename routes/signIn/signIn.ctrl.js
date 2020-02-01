@@ -32,7 +32,17 @@ const refresh = async (req, res, next) => {
 
     const accessToken = await jwt.sign(
       {
-        user,
+        user: {
+          id: user.id,
+          email: user.email,
+          birthday: user.birthday,
+          name: user.name,
+          gender: user.gender,
+          refreshDate: user.refreshDate,
+          refreshToken: user.refreshToken,
+          snsId: user.snsId,
+          snsType: user.snsType,
+        },
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
@@ -76,9 +86,20 @@ const create = async (req, res, next) => {
   try {
     const user = await db.users.findOne({ where: { snsId, snsType } });
     const newUser = user ? user : await db.users.create({ snsId, snsType });
+    console.log(1111, newUser);
     const accessToken = await jwt.sign(
       {
-        user: user,
+        user: {
+          id: newUser.id,
+          email: newUser.email,
+          birthday: newUser.birthday,
+          name: newUser.name,
+          gender: newUser.gender,
+          refreshDate: newUser.refreshDate,
+          refreshToken: newUser.refreshToken,
+          snsId: newUser.snsId,
+          snsType: newUser.snsType,
+        },
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
