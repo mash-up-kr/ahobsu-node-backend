@@ -299,7 +299,7 @@ const getWeekAnswers = async ({ userId, firstDay, lastDay }) => {
           moment(firstDay)
             .add(index + 1, 'days')
             .format('YYYY-MM-DD'),
-      ) || {}
+      ) || null
     );
   }));
 };
