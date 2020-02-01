@@ -1,19 +1,19 @@
 const db = require('../../models');
 const response = require('../../lib/response');
 
-const users = async (req, res, next) => {
+const users = async (_, res) => {
   try {
-    const users = await db.users.findAll();
+    const users = await getUsers();
     res.json(response({ data: users }));
   } catch (e) {
     console.log(e);
     return res.json(response({ status: 500, message: e.message }));
   }
 };
-const my = async (req, res, next) => {
-  const { id } = req.user;
+const my = async (req, res) => {
   try {
-    const user = await db.users.findOne({ where: { id } });
+    const { id } = req.user;
+    const user = await getUserById(id);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
@@ -23,13 +23,13 @@ const my = async (req, res, next) => {
     return res.json(response({ status: 500, message: e.message }));
   }
 };
-const user = async (req, res, next) => {
-  const { id } = req.params;
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
+const user = async (req, res) => {
   try {
-    const user = await db.users.findOne({ where: { id } });
+    const { id } = req.params;
+    if (isNaN(id)) {
+      return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+    }
+    const user = await getUserById(id);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
@@ -40,57 +40,46 @@ const user = async (req, res, next) => {
   }
 };
 
-const update = async (req, res, next) => {
-  const { id } = req.user;
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
-  const { name, birthday, email, gender } = req.body;
-  if (!name || !birthday || !email || !gender) {
-    return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
-  }
+const update = async (req, res) => {
   try {
-    const user = await db.users.findOne({ where: { id } });
+    const { id } = req.user;
+    if (isNaN(id)) {
+      return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+    }
+    if (isRequired(req.body)) {
+      return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
+    }
+    const user = await getUserById(id);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
-    await db.users.update(
-      { name, birthday, email, gender },
-      {
-        where: {
-          id,
-        },
-      },
-    );
-    const newUser = await db.users.findOne({ where: { id } });
-    res.json(response({ data: newUser }));
+    await updateUser(id, req.body);
+    {
+      const user = await getUserById(id);
+      res.json(response({ data: user }));
+    }
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
   }
 };
 
-const refresh = async (req, res, next) => {
-  const { id } = req.user;
-  const refreshDate = null;
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
+const refresh = async (req, res) => {
   try {
-    const user = await db.users.findOne({ where: { id } });
+    const { id } = req.user;
+    // const refreshDate = null;
+    if (isNaN(id)) {
+      return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+    }
+    const user = await getUserById(id);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
-    await db.users.update(
-      { refreshDate },
-      {
-        where: {
-          id,
-        },
-      },
-    );
-    const newUser = await db.users.findOne({ where: { id } });
-    res.json(response({ data: newUser }));
+    await resetRefeshDateById(id);
+    {
+      const user = await getUserById(id);
+      res.json(response({ data: user }));
+    }
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
@@ -98,24 +87,16 @@ const refresh = async (req, res, next) => {
 };
 
 const destroy = async (req, res, next) => {
-  const { id } = req.user;
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
   try {
-    const user = await db.users.findOne({
-      where: {
-        id,
-      },
-    });
+    const { id } = req.user;
+    if (isNaN(id)) {
+      return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+    }
+    const user = await getUserById(id);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
-    await db.users.destroy({
-      where: {
-        id,
-      },
-    });
+    await deleteUser(id);
     res.json(response({ message: '유저를 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
@@ -140,3 +121,41 @@ const createUser = async ({ snsId, snsType }) => {
 };
 
 module.exports = { users, my, user, update, refresh, destroy, getUserById, getUserBySnsIdAndSnsType, createUser };
+
+const getUsers = async () => {
+  return db.users.findAll();
+};
+
+const isRequired = ({ name, birthday, email, gender }) => {
+  return !name || !birthday || !email || !gender;
+};
+
+const updateUser = async (id, { name, birthday, email, gender }) => {
+  return db.users.update(
+    { name, birthday, email, gender },
+    {
+      where: {
+        id,
+      },
+    },
+  );
+};
+
+const resetRefeshDateById = async id => {
+  return db.users.update(
+    { refreshDate: null },
+    {
+      where: {
+        id,
+      },
+    },
+  );
+};
+
+const deleteUser = async id => {
+  return db.users.destroy({
+    where: {
+      id,
+    },
+  });
+};
