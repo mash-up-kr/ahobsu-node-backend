@@ -95,6 +95,10 @@ const update = async (req, res, next) => {
       return res.json(response({ status: 404, message: '존재하지않는 answerId.' }));
     }
 
+    if (answer.userId !== userId) {
+      return res.json(response({ status: 400, message: '본인의 답변만 수정 할 수 있습니다.' }));
+    }
+
     if (!imageUrl) imageUrl = answer.imageUrl;
     {
       const answer = await updateAnswer({ id, userId, missionId, imageUrl, content });
@@ -113,10 +117,16 @@ const destroy = async (req, res, next) => {
     if (isNaN(id)) {
       return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
     }
+
     const answer = await getAnswerById(id);
     if (!answer) {
       return res.json(response({ status: 404, message: '유효하지 않은 answerId' }));
     }
+
+    if (answer.userId !== userId) {
+      return res.json(response({ status: 400, message: '본인의 답변만 삭제 할 수 있습니다.' }));
+    }
+
     await deleteAnswer(id);
     res.json(response({ status: 204, message: '답변을 삭제 했습니다.' }));
   } catch (e) {
