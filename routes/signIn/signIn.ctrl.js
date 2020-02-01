@@ -78,7 +78,7 @@ const create = async (req, res, next) => {
     const newUser = user ? user : await db.users.create({ snsId, snsType });
     const accessToken = await jwt.sign(
       {
-        user: newUser,
+        user: user,
       },
       process.env.privateKey,
       { expiresIn: 7 * 24 * 60 * 60 },
