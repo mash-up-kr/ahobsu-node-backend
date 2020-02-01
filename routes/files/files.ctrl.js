@@ -1,15 +1,5 @@
-const express = require('express');
-const moment = require('moment');
-const { Op } = require('sequelize');
-const formidable = require('formidable');
-const AWS = require('aws-sdk');
-const path = require('path');
-const fs = require('fs');
-
 const db = require('../../models');
 const response = require('../../lib/response');
-
-const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const date = async (req, res, next) => {
   const { date } = req.params;
