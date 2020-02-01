@@ -123,4 +123,12 @@ const destroy = async (req, res, next) => {
   }
 };
 
-module.exports = { users, my, user, update, refresh, destroy };
+const getUserById = async id => {
+  return db.users.findOne({
+    where: {
+      id,
+    },
+  });
+};
+
+module.exports = { users, my, user, update, refresh, destroy, getUserById };
