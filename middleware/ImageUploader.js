@@ -49,6 +49,6 @@ module.exports = async (req, res, next) => {
       }
     });
   });
-  req.file = file;
+  req.body = { ...req.body, file };
   next();
 };

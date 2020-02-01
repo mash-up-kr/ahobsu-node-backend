@@ -43,10 +43,9 @@ const create = async (req, res, next) => {
   try {
     const { id: userId } = req.user;
     const date = moment().format('YYYY-MM-DD');
-    const { file: imageUrl } = req;
-    const { content, missionId } = req.body;
+    const { content, missionId, file: imageUrl } = req.body;
 
-    if (IsRequiredoneOfThem({ imageUrl, content })) {
+    if (isRequiredoneOfThem({ imageUrl, content })) {
       return res.json(response({ status: 412, message: '필수 파라미터가 부족합니다.' }));
     }
 
@@ -81,14 +80,13 @@ const update = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
     const { id: userId } = req.user;
-    const { content, missionId } = req.body;
-    let { file: imageUrl } = req;
+    const { content, missionId, file: imageUrl } = req.body;
 
     if (isNaN(id)) {
       return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
     }
 
-    if (IsRequiredoneOfThem({ imageUrl, content })) {
+    if (isRequiredoneOfThem({ imageUrl, content })) {
       return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
     }
 
@@ -264,6 +262,6 @@ const deleteAnswer = async id => {
   });
 };
 
-const IsRequiredoneOfThem = ({ imageUrl, content }) => {
+const isRequiredoneOfThem = ({ imageUrl, content }) => {
   return !imageUrl && !content;
 };
