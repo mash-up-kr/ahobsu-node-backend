@@ -86,7 +86,6 @@ const create = async (req, res, next) => {
   try {
     const user = await db.users.findOne({ where: { snsId, snsType } });
     const newUser = user ? user : await db.users.create({ snsId, snsType });
-    console.log(1111, newUser);
     const accessToken = await jwt.sign(
       {
         user: {

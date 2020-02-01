@@ -1,14 +1,8 @@
 const moment = require('moment');
 const { Op } = require('sequelize');
-const formidable = require('formidable');
-const AWS = require('aws-sdk');
-const path = require('path');
-const fs = require('fs');
 
 const db = require('../../models');
 const response = require('../../lib/response');
-
-const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const week = async (req, res, next) => {
   try {
@@ -45,75 +39,43 @@ const date = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   const userId = req.user.id;
-  AWS.config.update({
-    accessKeyId: process.env.AWSAccessKeyId,
-    secretAccessKey: process.env.AWSSecretKey,
-  });
-  const s3 = new AWS.S3();
-  let fileName = '';
-  for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
-  const form = new formidable.IncomingForm();
-  form.parse(req, async (err, fields, files) => {
-    try {
-      const { missionId, content } = fields;
-      const checkMission = await db.missions.findOne({ where: { id: missionId } });
-      if (!checkMission) {
-        return res.json(response({ status: 412, message: '존재하지않는 missionId.' }));
-      }
-      const date = moment().format('YYYY-MM-DD');
-      const beforeAnswer = await db.answers.findOne({
-        where: {
-          userId,
-          date,
-        },
-      });
-      let cardFile = await db.files.findOne({ where: { date } });
-      if (!cardFile) {
-        const id = moment().day() === 0 ? 7 : moment().day();
-        cardFile = await db.files.findOne({ where: { id } });
-      }
-      const { cardUrl } = cardFile;
-      if (!!beforeAnswer) {
-        return res.json(response({ status: 400, message: '해당날짜에 답변이 존재합니다.' }));
-      }
-      const image = files.file;
-      if (!image && !content) {
-        return res.json(response({ status: 412, message: '필수 파라미터가 부족합니다.' }));
-      }
-      if (!image) {
-        const answer = await db.answers.create({
-          userId,
-          missionId,
-          cardUrl,
-          content,
-          date,
-        });
-        return res.json(response({ data: answer }));
-      }
-      const { file } = files;
-      const defaultPath = fileName;
-      const file2 = defaultPath + path.parse(file.name).ext;
-      s3.upload(
-        {
-          Bucket: process.env.buket,
-          Key: file2,
-          ACL: 'public-read',
-          Body: fs.createReadStream(file.path),
-        },
-        (error, result) => {
-          if (error) console.log(error);
-          else console.log(result);
-        },
-      );
-      const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
-      const imageUrl = baseUrl + file2;
+  const date = moment().format('YYYY-MM-DD');
+  const { file: imageUrl } = req;
+  const { content, missionId } = req.body;
 
+  try {
+    if (!req && !content) {
+      return res.json(response({ status: 412, message: '필수 파라미터가 부족합니다.' }));
+    }
+
+    const beforeAnswer = await db.answers.findOne({
+      where: {
+        userId,
+        date,
+      },
+    });
+    if (!!beforeAnswer) {
+      return res.json(response({ status: 400, message: '해당날짜에 답변이 존재합니다.' }));
+    }
+
+    const checkMission = await db.missions.findOne({ where: { id: missionId } });
+    if (!checkMission) {
+      return res.json(response({ status: 412, message: '존재하지않는 missionId.' }));
+    }
+
+    let cardFile = await db.files.findOne({ where: { date } });
+    if (!cardFile) {
+      const id = moment().day() === 0 ? 7 : moment().day();
+      cardFile = await db.files.findOne({ where: { id } });
+    }
+    const { cardUrl } = cardFile;
+
+    if (!imageUrl) {
       const newAnswer = await db.answers.create({
-        userId: userId,
-        missionId: missionId,
-        imageUrl,
+        userId,
+        missionId,
         cardUrl,
-        content: fields.content,
+        content,
         date,
       });
       const answer = await db.answers.findOne({
@@ -124,86 +86,55 @@ const create = async (req, res, next) => {
           },
         ],
       });
-      // unlink tmp files
-      fs.unlinkSync(file.path);
-      res.json(response({ status: 201, data: answer }));
-    } catch (e) {
-      console.log(e);
-      return res.json(response({ status: 500, message: e.message }));
+      return res.json(response({ status: 201, data: answer }));
     }
-  });
+
+    const newAnswer = await db.answers.create({
+      userId,
+      missionId,
+      imageUrl,
+      cardUrl,
+      content,
+      date,
+    });
+    const answer = await db.answers.findOne({
+      where: { id: newAnswer.id },
+      include: [
+        {
+          model: db.missions,
+        },
+      ],
+    });
+    return res.json(response({ status: 201, data: answer }));
+  } catch (e) {
+    console.log(e);
+    return res.json(response({ status: 500, message: e.message }));
+  }
 };
 const update = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
+  const { id: userId } = req.user;
+  const { content, missionId } = req.body;
+  const { file: imageUrl } = req;
+
+  if (isNaN(userId)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
+  }
+  if (!imageUrl && !content) {
+    return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
   }
   const answer = await db.answers.findOne({ where: { id } });
   if (!answer) {
     return res.json(response({ status: 404, message: '존재하지않는 answerId.' }));
   }
-  const userId = req.user.id;
-  AWS.config.update({
-    accessKeyId: process.env.AWSAccessKeyId,
-    secretAccessKey: process.env.AWSSecretKey,
-  });
-  const s3 = new AWS.S3();
-  let fileName = '';
-  for (let i = 0; i < 8; i += 1) fileName += possible.charAt(Math.floor(Math.random() * possible.length));
-  const form = new formidable.IncomingForm();
-  form.parse(req, async (err, fields, files) => {
-    try {
-      const image = files.file;
-      if (!image && !fields.content) {
-        return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
-      }
-      if (!image) {
-        await db.answers.update(
-          {
-            userId: userId,
-            missionId: fields.missionId,
-            content: fields.content,
-          },
-          {
-            where: {
-              id,
-            },
-          },
-        );
-        const newAnswer = await db.answers.findOne({
-          where: { id },
-          include: [
-            {
-              model: db.missions,
-            },
-          ],
-        });
-        return res.json(response({ data: newAnswer }));
-      }
-      const { file } = files;
-      const defaultPath = fileName;
-      const file2 = defaultPath + path.parse(file.name).ext;
-      s3.upload(
-        {
-          Bucket: process.env.buket,
-          Key: file2,
-          ACL: 'public-read',
-          Body: fs.createReadStream(file.path),
-        },
-        (error, result) => {
-          if (error) console.log(error);
-          else console.log(result);
-        },
-      );
-      const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
-      const imageUrl = baseUrl + file2;
 
+  try {
+    if (!imageUrl) {
       await db.answers.update(
         {
-          userId: userId,
-          missionId: fields.missionId,
-          imageUrl,
-          content: fields.content,
+          userId,
+          missionId,
+          content,
         },
         {
           where: {
@@ -211,9 +142,7 @@ const update = async (req, res, next) => {
           },
         },
       );
-      // unlink tmp files
-      fs.unlinkSync(file.path);
-      const newAnswer = await db.answers.findOne({
+      const answer = await db.answers.findOne({
         where: { id },
         include: [
           {
@@ -221,12 +150,34 @@ const update = async (req, res, next) => {
           },
         ],
       });
-      return res.json(response({ data: newAnswer }));
-    } catch (e) {
-      console.log(e);
-      return res.json(response({ status: 500, message: e.message }));
+      return res.json(response({ data: answer }));
     }
-  });
+    await db.answers.update(
+      {
+        userId,
+        missionId,
+        imageUrl,
+        content,
+      },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+    const answer = await db.answers.findOne({
+      where: { id },
+      include: [
+        {
+          model: db.missions,
+        },
+      ],
+    });
+    return res.json(response({ data: answer }));
+  } catch (e) {
+    console.log(e);
+    return res.json(response({ status: 500, message: e.message }));
+  }
 };
 
 const destroy = async (req, res, next) => {
@@ -320,7 +271,6 @@ const getMonthDate = queryDate => {
 };
 
 const getMonthAnswers = ({ weeks, userId }) => {
-  console.log(7676, weeks);
   return Promise.all(
     weeks.map(([firstDay, lastDay]) => {
       return getWeekAnswers({ userId, firstDay, lastDay });

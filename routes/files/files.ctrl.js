@@ -144,7 +144,6 @@ const create = async (req, res, next) => {
         },
         (error, result) => {
           if (error) console.log(error);
-          else console.log(result);
         },
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
@@ -192,7 +191,6 @@ const update = async (req, res, next) => {
         },
         (error, result) => {
           if (error) console.log(error);
-          else console.log(result);
         },
       );
       const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
