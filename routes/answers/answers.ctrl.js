@@ -46,8 +46,7 @@ const create = async (req, res, next) => {
     const { file: imageUrl } = req;
     const { content, missionId } = req.body;
 
-    // 필수 파라미터 확인
-    if (!imageUrl && !content) {
+    if (IsRequiredoneOfThem({ imageUrl, content })) {
       return res.json(response({ status: 412, message: '필수 파라미터가 부족합니다.' }));
     }
 
@@ -89,8 +88,7 @@ const update = async (req, res, next) => {
       return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
     }
 
-    // 필수 파라미터 확인
-    if (!imageUrl && !content) {
+    if (IsRequiredoneOfThem({ imageUrl, content })) {
       return res.json(response({ status: 404, message: '필수 파라미터가 부족합니다.' }));
     }
 
@@ -264,4 +262,8 @@ const deleteAnswer = async id => {
       id,
     },
   });
+};
+
+const IsRequiredoneOfThem = ({ imageUrl, content }) => {
+  return !imageUrl && !content;
 };
