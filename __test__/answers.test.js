@@ -4,11 +4,10 @@ const moment = require('moment');
 
 const app = require('../app');
 const connectDB = require('../connectDB');
+const { checkStatus } = require('./util');
+const { hasMissionKeys } = require('./missions.test');
 
 let token = null;
-let response = null;
-const date = moment().format('YYYY-MM-DD');
-const file = path.join(__dirname, '/money.jpg');
 
 beforeAll(async () => {
   await connectDB();
@@ -24,20 +23,21 @@ beforeAll(async () => {
 });
 
 describe('answers', () => {
+  let response = null;
+  const file = path.join(__dirname, '/money.jpg');
+  const date = moment().format('YYYY-MM-DD');
   let missionId = null;
   it('Post /api/v1/answers', async () => {
     response = await request(app)
       .get(`/api/v1/answers/${date}`)
       .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    checkStatus(response);
 
     if (response.body.data) {
       response = await request(app)
         .delete(`/api/v1/answers/${response.body.data.id}`)
         .set('Authorization', token);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.status).toBe(200);
+      checkStatus(response);
     }
     const ago = moment().format('1999-01-20');
     await Promise.all([
@@ -102,8 +102,7 @@ describe('answers', () => {
       .field('missionId', missionId)
       .field('content', content)
       .attach('file', file);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(201);
+    checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
@@ -117,8 +116,7 @@ describe('answers', () => {
       .field('missionId', missionId)
       .field('content', 'aaa')
       .attach('file', file);
-    expect(existResponse.statusCode).toBe(200);
-    expect(existResponse.body.status).toBe(400);
+    checkStatus(existResponse, 400);
     expect(existResponse.body.message).toBe('해당날짜에 답변이 존재합니다.');
   });
 
@@ -128,8 +126,7 @@ describe('answers', () => {
     response = await request(app)
       .get(`/api/v1/answers/${date}`)
       .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
   });
@@ -141,8 +138,7 @@ describe('answers', () => {
       .set('Authorization', token)
       .field('content', content)
       .attach('file', file);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
@@ -152,8 +148,7 @@ describe('answers', () => {
     const response = await request(app)
       .get('/api/v1/answers/week')
       .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    checkStatus(response);
     expect(response.body.data.today).toBeTruthy();
     expect(response.body.data.answers.length === 7).toBeTruthy();
   });
@@ -163,8 +158,7 @@ describe('answers', () => {
     const response = await request(app)
       .get('/api/v1/answers/month')
       .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    checkStatus(response);
     expect(response.body.data.answers.length > 0).toBeTruthy();
     expect(response.body.data.answers[0].length === 7).toBeTruthy();
     expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
@@ -179,8 +173,7 @@ describe('answers', () => {
     const haveDateResponse = await request(app)
       .get(`/api/v1/answers/month?date=${date}`)
       .set('Authorization', token);
-    expect(haveDateResponse.statusCode).toBe(200);
-    expect(haveDateResponse.body.status).toBe(200);
+    checkStatus(response);
     expect(haveDateResponse.body.data.answers.length > 0).toBeTruthy();
     expect(haveDateResponse.body.data.answers[0].length === 7).toBeTruthy();
     expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
@@ -190,8 +183,7 @@ describe('answers', () => {
     response = await request(app)
       .delete(`/api/v1/answers/${response.body.data.id}`)
       .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(204);
+    checkStatus(response, 204);
     expect(response.body.message).toBe('답변을 삭제 했습니다.');
   });
 });
@@ -205,11 +197,3 @@ function hasAnswerKeys(data) {
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
 }
-
-const hasMissionKeys = data => {
-  if (!('id' in data)) throw new Error('missing id key');
-  if (!('title' in data)) throw new Error('missing title key');
-  if (!('isContent' in data)) throw new Error('missing isContent key');
-  if (!('isImage' in data)) throw new Error('missing isImage key');
-  if (!('cycle' in data)) throw new Error('missing cycle key');
-};

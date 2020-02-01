@@ -154,3 +154,5 @@ function hasMissionKeys(data) {
   if (!('isImage' in data)) throw new Error('missing isImage key');
   if (!('cycle' in data)) throw new Error('missing cycle key');
 }
+
+module.exports = { hasMissionKeys };
