@@ -78,13 +78,23 @@ cd Ahobsu-Node-Backend
 npm install
 ```
 
+- .env.default를 .env로 변경 후 키 설정
+
+```env
+AWSAccessKeyId=YOUR_AWSAccessKeyId
+AWSSecretKey=YOUR_AWSSecretKey
+buket=YOUR_buket
+privateKey=YOUR_privateKey
+TZ=Asia/Seoul
+```
+
 - 개발 서버 시작
 
 ```sh
-  npm start
+  npm start:test
 ```
 
-- 배포 시작
+- 배포 시작(pm2로 시작)
 
 ```sh
   npm run depoly
@@ -112,6 +122,8 @@ npm install
 | [sequelize](https://github.com/sequelize/sequelize)                             | Node.js를위한 사용하기 쉬운 다중 SQL 언어 ORM                                                    |             |
 | [sequelize-cli](https://github.com/sequelize/cli)                               | Sequelize 명령 줄 인터페이스 (CLI)                                                               |             |
 | [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express)          | 일을 기반으로 자동 생성 swagger-ui 생성 API 문서를 명시 적으로 제공                              |             |
+| [jest](https://github.com/facebook/jest)                                        | 포괄적인 JavaScript 테스트 솔루션                                                                |             |
+| [supertest](https://github.com/visionmedia/supertest)                           | 유창한 API를 사용하여 node.js HTTP 서버를 테스트하기위한 수퍼 에이전트 중심 라이브러리.          |             |
 
 ## Error Code
 
