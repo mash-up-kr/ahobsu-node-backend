@@ -16,6 +16,7 @@
 ### 소개글
 
 - "Make Own True Identity"
+- [소개페이지](https://his-0203.github.io/)
 
 #### 매일 하루에 한 번 받을 질문에 답하면서 자신을 기록해보세요.
 
