@@ -79,6 +79,8 @@ cd Ahobsu-Node-Backend
 npm install
 ```
 
+- config/config.default.json를 config.json으로 변경
+
 - .env.default를 .env로 변경 후 키 설정
 
 ```env
