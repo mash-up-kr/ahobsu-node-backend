@@ -3,6 +3,8 @@ const request = require('supertest');
 const app = require('../app');
 const connectDB = require('../connectDB');
 
+const req = request(app);
+
 beforeAll(async () => {
   await connectDB();
 });
@@ -41,3 +43,12 @@ function hasPostApiV1SigninRefreshKeys(data) {
   if (!('refreshToken' in data)) throw new Error('missing refreshToken key');
   if (!('signUp' in data)) throw new Error('missing signUp key');
 }
+
+const signin = async req => {
+  const snsId = '1';
+  const snsType = 'apple';
+  const token = 'aaa';
+  return req.post('/api/v1/signin').send({ snsId, snsType, token });
+};
+
+module.exports = { signin };

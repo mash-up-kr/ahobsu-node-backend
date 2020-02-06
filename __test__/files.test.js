@@ -94,12 +94,12 @@ function hasFileKeys(data) {
   if (!('date' in data)) throw new Error('missing date key');
 }
 
-// describe('files2', () => {
-//   it('Get /api/v1/files/week', async () => {
-//     response = await request(app)
-//       .get('/api/v1/files/week')
-//       .set('Authorization', token);
-//     expect(response.statusCode).toBe(200);
-//     expect(response.body.status).toBe(200);
-//   });
-// });
+const postFile = async ({ req, token, ago, file }) => {
+  return req
+    .post('/api/v1/files')
+    .set('Authorization', token)
+    .field('date', ago)
+    .attach('file', file);
+};
+
+module.exports = { postFile };

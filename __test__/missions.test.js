@@ -155,4 +155,11 @@ function hasMissionKeys(data) {
   if (!('cycle' in data)) throw new Error('missing cycle key');
 }
 
-module.exports = { hasMissionKeys };
+const postMission = async ({ req, token, title, isContent, isImage, cycle }) => {
+  return req
+    .post('/api/v1/missions')
+    .set('Authorization', token)
+    .send({ title, isContent, isImage, cycle });
+};
+
+module.exports = { hasMissionKeys, postMission };
