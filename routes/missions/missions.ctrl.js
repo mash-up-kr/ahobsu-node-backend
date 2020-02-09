@@ -18,7 +18,8 @@ const missoins = async (req, res) => {
     const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
 
     if (!!oldMission && oldMission.date === date && oldMission.missions.length > 0) {
-      return res.json(response({ data: refresh, missions: oldMission.missions }));
+      console.log(11111, oldMission.missions);
+      return res.json(response({ data: { refresh, missions: oldMission.missions } }));
     }
     const missions = await getNewMission(id);
     await setMissionsInUser({ missions, id });
@@ -127,8 +128,8 @@ const getMissionById = async id => {
 module.exports = { missoins, refresh, mission, create, update, destroy, getMissionById };
 
 const getOldMission = user => {
-  const { missions } = user;
-  return missions && JSON.parse(missions);
+  const { mission } = user;
+  return mission && JSON.parse(mission);
 };
 
 const getNewMission = async userId => {
@@ -161,14 +162,16 @@ const getNewMission = async userId => {
     }
   });
 
-  return db.missions.findAll({
+  const missions = db.missions.findAll({
     where: {
       id: {
         [Op.notIn]: ids,
       },
     },
     order: db.sequelize.random(),
+    limit: 3,
   });
+  return missions;
 };
 
 const setMissionsInUser = async ({ missions, id }) => {
