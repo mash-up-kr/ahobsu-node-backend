@@ -29,12 +29,28 @@ const refresh = async (req, res) => {
 
 const create = async (req, res) => {
   try {
+    const { snsId, snsType } = req.body;
     const token = req.headers.authorization;
+    const snsData =
+      process.env.NODE_ENV === 'test'
+        ? {
+            iss: 'https://appleid.apple.com',
+            aud: 'com.mashup.ahobsu.Ahobsu',
+            exp: 1581254790,
+            iat: 1581254190,
+            sub: '001813.71f97bef48324fb29451a33e05d2cf5d.0908',
+            c_hash: 'KB0W75zvIFEcY9zW-79uxQ',
+            email: 'j5vvd9xtrb@privaterelay.appleid.com',
+            email_verified: 'true',
+            is_private_email: 'true',
+            auth_time: 1581254190,
+          }
+        : await jwt.decode(token);
     if (isRequired(req.body)) {
       return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType(req.body);
-    const newUser = user ? user : await createUser(req.body);
+    const newUser = user ? user : await createUser({ snsId, snsType, email: snsData.email });
     const { accessToken, refreshToken } = await createToken(newUser);
     const signUp = isSignUp(newUser);
     res.json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));

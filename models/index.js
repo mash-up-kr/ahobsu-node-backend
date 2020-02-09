@@ -37,6 +37,7 @@ const options =
           idle: 10000,
           acquire: 10000,
         },
+        logging: false,
       };
 
 let sequelize;
