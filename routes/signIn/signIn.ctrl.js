@@ -29,7 +29,7 @@ const refresh = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { snsId, snsType } = req.body;
+    const { sub, snsType } = req.body;
     const token = req.headers.authorization;
     const snsData =
       process.env.NODE_ENV === 'test'
@@ -50,7 +50,7 @@ const create = async (req, res) => {
       return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType(req.body);
-    const newUser = user ? user : await createUser({ snsId, snsType, email: snsData.email });
+    const newUser = user ? user : await createUser({ snsId: sub, snsType, email: snsData.email });
     const { accessToken, refreshToken } = await createToken(newUser);
     const signUp = isSignUp(newUser);
     res.json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
@@ -61,8 +61,8 @@ const create = async (req, res) => {
 
 module.exports = { refresh, create };
 
-const isRequired = ({ snsId, snsType }) => {
-  return !snsId && !snsType;
+const isRequired = ({ sub, snsType }) => {
+  return !sub && !snsType;
 };
 
 const createToken = async ({ id, snsId, snsType }) => {
