@@ -62,8 +62,8 @@ const create = async (req, res) => {
 
 module.exports = { refresh, create };
 
-const isRequired = ({ sub, snsType }) => {
-  return !sub && !snsType;
+const isRequired = ({ snsType }) => {
+  return !snsType;
 };
 
 const createToken = async ({ id, snsId, snsType }) => {
