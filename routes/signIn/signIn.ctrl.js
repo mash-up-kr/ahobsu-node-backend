@@ -50,7 +50,7 @@ const create = async (req, res) => {
       return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
     }
     const { sub: snsId, email } = snsData;
-    const user = await getUserBySnsIdAndSnsType({ snsId, snsData });
+    const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
     const signUp = isSignUp(newUser);
