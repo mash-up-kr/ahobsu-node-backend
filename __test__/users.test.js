@@ -6,7 +6,6 @@ const connectDB = require('../connectDB');
 
 let token = null;
 let response = null;
-const snsId = '2';
 const snsType = 'apple';
 beforeAll(async () => {
   await connectDB();
@@ -17,7 +16,8 @@ beforeAll(async () => {
     },
   } = await request(app)
     .post('/api/v1/signin')
-    .send({ snsId, snsType });
+    .set('Authorization', 'aaa')
+    .send({ snsType });
   token = accessToken;
 });
 
@@ -38,7 +38,6 @@ describe('users', () => {
     expect(response.body.data.birthday).toBe(birthday);
     expect(response.body.data.email).toBe(email);
     expect(response.body.data.gender).toBe(gender);
-    expect(response.body.data.snsId).toBe(snsId);
     expect(response.body.data.snsType).toBe(snsType);
   });
 

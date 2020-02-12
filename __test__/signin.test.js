@@ -11,9 +11,11 @@ beforeAll(async () => {
 
 describe('signin', () => {
   it('Post /api/v1/signin', async () => {
+    const token = 'aa';
     const response = await request(app)
       .post('/api/v1/signin')
-      .send({ snsId: '1', snsType: 'apple', token: 'aaa' });
+      .set('Authorization', token)
+      .send({ snsType: 'apple' });
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe(201);
     expect(hasPostApiV1SigninRefreshKeys(response.body.data));
@@ -28,7 +30,7 @@ describe('signin refresh', () => {
       },
     } = await request(app)
       .post('/api/v1/signin')
-      .send({ snsId: '1', snsType: 'apple' });
+      .send({ snsType: 'apple' });
     const response = await request(app)
       .post('/api/v1/signin/refresh')
       .set('Authorization', refreshToken);
@@ -45,10 +47,12 @@ function hasPostApiV1SigninRefreshKeys(data) {
 }
 
 const signin = async req => {
-  const snsId = '1';
   const snsType = 'apple';
   const token = 'aaa';
-  return req.post('/api/v1/signin').send({ snsId, snsType, token });
+  return req
+    .post('/api/v1/signin')
+    .set('Authorization', token)
+    .send({ snsType });
 };
 
 module.exports = { signin };
