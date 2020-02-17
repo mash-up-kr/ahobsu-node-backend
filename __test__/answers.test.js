@@ -25,7 +25,7 @@ beforeAll(async () => {
 
 describe('answers', () => {
   let response = null;
-  const file = path.join(__dirname, '/money.jpg');
+  const file = path.join(__dirname, '/bigSizeimg.jpeg');
   const date = moment().format('YYYY-MM-DD');
   let missionId = null;
   it('Post /api/v1/answers', async () => {
@@ -37,24 +37,25 @@ describe('answers', () => {
       response = await deleteAnswerById({ req, id, token });
       checkStatus(response);
     }
-    const ago = moment().format('1999-01-20');
-    await Promise.all([
-      // 1
-      postFile({ req, token, ago, file }),
-      // 2
-      postFile({ req, token, ago, file }),
-      // 3
-      postFile({ req, token, ago, file }),
-      // 4
-      postFile({ req, token, ago, file }),
-      // 5
-      postFile({ req, token, ago, file }),
-      // 6
-      postFile({ req, token, ago, file }),
-      // 7
-      postFile({ req, token, ago, file }),
-    ]);
-
+    {
+      const date = moment().format('1999-01-20');
+      const a = await Promise.all([
+        // 1
+        postFile({ req, token, file, date }),
+        // 2
+        postFile({ req, token, file, date }),
+        // 3
+        postFile({ req, token, file, date }),
+        // 4
+        postFile({ req, token, file, date }),
+        // 5
+        postFile({ req, token, file, date }),
+        // 6
+        postFile({ req, token, file, date }),
+        // 7
+        postFile({ req, token, file, date }),
+      ]);
+    }
     const title = '안녕';
     const isContent = true;
     const isImage = false;

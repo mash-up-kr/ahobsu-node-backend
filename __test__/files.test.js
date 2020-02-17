@@ -3,11 +3,13 @@ const path = require('path');
 
 const app = require('../app');
 const connectDB = require('../connectDB');
+const { checkStatus } = require('./util');
+const { signin } = require('./signin.test');
 
-let token = null;
-let response = null;
 const date = '2020-01-23';
-const file = path.join(__dirname, '/money.jpg');
+const file = path.join(__dirname, '/bigSizeimg.jpeg');
+const req = request(app);
+let token = null;
 
 beforeAll(async () => {
   await connectDB();
@@ -16,75 +18,50 @@ beforeAll(async () => {
     body: {
       data: { accessToken },
     },
-  } = await request(app)
-    .post('/api/v1/signin')
-    .set('Authorization', 'aaa')
-    .send({ snsType: 'apple' });
+  } = await signin(req);
   token = accessToken;
 });
 
 describe('files', () => {
+  let response = null;
   it('Post /api/v1/files', async () => {
-    response = await request(app)
-      .get(`/api/v1/files/${date}`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    response = await getFileByDate({ req, token, date });
+    checkStatus(response);
 
     if (response.body.data) {
-      response = await request(app)
-        .delete(`/api/v1/files/${response.body.data.id}`)
-        .set('Authorization', token);
-      expect(response.statusCode).toBe(200);
-      expect(response.body.status).toBe(200);
+      const { id } = response.body.data;
+      response = await deleteFileById({ req, token, id });
+      checkStatus(response);
     }
 
-    response = await request(app)
-      .post('/api/v1/files')
-      .set('Authorization', token)
-      .field('date', date)
-      .attach('file', file);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(201);
+    response = await postFile({ req, token, date, file });
+    checkStatus(response, 201);
     expect(hasFileKeys(response.body.data));
     expect(response.body.data.date).toBe(date);
   });
   it('Post /api/v1/files Exist', async () => {
-    const ExistResponse = await request(app)
-      .post('/api/v1/files')
-      .set('Authorization', token)
-      .field('date', date)
-      .attach('file', file);
-    expect(ExistResponse.statusCode).toBe(200);
-    expect(ExistResponse.body.status).toBe(400);
+    const ExistResponse = await postFile({ req, token, date, file });
+    checkStatus(ExistResponse, 400);
     expect(ExistResponse.body.message).toBe('해당날짜에 이미지가 이미 있습니다.');
   });
 
   it('Get /api/v1/files/{id}', async () => {
-    response = await request(app)
-      .get(`/api/v1/files/${date}`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    response = await getFileByDate({ req, token, date });
+    checkStatus(response);
     expect(hasFileKeys(response.body.data));
   });
 
   it('Put /api/v1/files/{id}', async () => {
-    response = await request(app)
-      .put(`/api/v1/files/${response.body.data.id}`)
-      .set('Authorization', token)
-      .attach('file', file);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    const { id } = response.body.data;
+    response = await putFile({ req, token, id, file });
+    checkStatus(response);
     expect(hasFileKeys(response.body.data));
   });
 
   it('Delete /api/v1/files/{id}', async () => {
-    response = await request(app)
-      .delete(`/api/v1/files/${response.body.data.id}`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(204);
+    const { id } = response.body.data;
+    response = await deleteFileById({ req, token, id });
+    checkStatus(response, 204);
     expect(response.body.message).toBe('파일을 삭제 했습니다.');
   });
 });
@@ -95,12 +72,27 @@ function hasFileKeys(data) {
   if (!('date' in data)) throw new Error('missing date key');
 }
 
-const postFile = async ({ req, token, ago, file }) => {
+const postFile = async ({ req, token, file, date }) => {
   return req
     .post('/api/v1/files')
     .set('Authorization', token)
-    .field('date', ago)
+    .field('date', date)
     .attach('file', file);
 };
 
 module.exports = { postFile };
+
+const getFileByDate = async ({ req, token, date }) => {
+  return req.get(`/api/v1/files/${date}`).set('Authorization', token);
+};
+
+const deleteFileById = async ({ req, token, id }) => {
+  return req.delete(`/api/v1/files/${id}`).set('Authorization', token);
+};
+
+const putFile = async ({ req, token, id }) => {
+  return req
+    .put(`/api/v1/files/${id}`)
+    .set('Authorization', token)
+    .attach('file', file);
+};

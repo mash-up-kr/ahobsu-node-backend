@@ -61,9 +61,15 @@ const create = async (req, res, next) => {
 
     let cardFile = await getFileByDate(date);
     if (!cardFile) {
-      const id = getProvideTemporaryId();
+      let id = getProvideTemporaryId();
       cardFile = await getFileById(id);
+      if (!cardFile) {
+        id += 7;
+        cardFile = await getFileById(id);
+      }
     }
+
+    console.log(999, cardFile);
     const { cardUrl } = cardFile;
 
     const { id } = await createAnswer({ userId, missionId, imageUrl, cardUrl, content, date });
