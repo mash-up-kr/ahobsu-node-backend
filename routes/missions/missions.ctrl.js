@@ -18,7 +18,6 @@ const missoins = async (req, res) => {
     const refresh = !user.refreshDate || (!!user.refreshDate && user.refreshDate < date);
 
     if (!!oldMission && oldMission.date === date && oldMission.missions.length > 0) {
-      console.log(11111, oldMission.missions);
       return res.json(response({ data: { refresh, missions: oldMission.missions } }));
     }
     const missions = await getNewMission(id);
@@ -38,6 +37,7 @@ const refresh = async (req, res) => {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     const date = moment().format('YYYY-MM-DD');
+    console.log(5555, user.refreshDate);
     if (!!user.refreshDate && user.refreshDate === date) {
       return res.json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
     }

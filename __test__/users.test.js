@@ -87,3 +87,8 @@ function hasUserKeys(data) {
   if (!('snsId' in data)) throw new Error('missing snsId key');
   if (!('snsType' in data)) throw new Error('missing snsType key');
 }
+
+const putUserRefresh = async ({ req, token }) => {
+  return req.put(`/api/v1/users/refresh`).set('Authorization', token);
+};
+module.exports = { putUserRefresh, hasUserKeys };

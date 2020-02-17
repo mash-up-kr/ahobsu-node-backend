@@ -2,9 +2,12 @@ const request = require('supertest');
 
 const app = require('../app');
 const connectDB = require('../connectDB');
+const { checkStatus } = require('./util');
+const { signin } = require('./signin.test');
+const { putUserRefresh, hasUserKeys } = require('./users.test');
 
+const req = request(app);
 let token = null;
-let response = null;
 
 beforeAll(async () => {
   await connectDB();
@@ -13,25 +16,19 @@ beforeAll(async () => {
     body: {
       data: { accessToken },
     },
-  } = await request(app)
-    .post('/api/v1/signin')
-    .set('Authorization', 'aaa')
-    .send({ snsType: 'apple' });
+  } = await signin(req);
   token = accessToken;
 });
 
 describe('missions', () => {
+  let response = null;
   it('Post /api/v1/missions', async () => {
     const title = '안녕';
     const isContent = true;
     const isImage = false;
     const cycle = 1;
-    response = await request(app)
-      .post('/api/v1/missions')
-      .set('Authorization', token)
-      .send({ title, isContent, isImage, cycle });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(201);
+    response = await postMission({ req, token, title, isContent, isImage, cycle });
+    checkStatus(response, 201);
     expect(hasMissionKeys(response.body.data));
     expect(response.body.data.title).toBe(title);
     expect(response.body.data.isContent).toBe(isContent);
@@ -40,11 +37,9 @@ describe('missions', () => {
   });
 
   it('Get /api/v1/missions/{id}', async () => {
-    response = await request(app)
-      .get(`/api/v1/missions/${response.body.data.id}`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    const { id } = response.body.data;
+    response = await getMissionById(req, token, id);
+    checkStatus(response);
     expect(hasMissionKeys(response.body.data));
   });
 
@@ -53,12 +48,9 @@ describe('missions', () => {
     const isContent = false;
     const isImage = true;
     const cycle = 2;
-    response = await request(app)
-      .put(`/api/v1/missions/${response.body.data.id}`)
-      .set('Authorization', token)
-      .send({ title, isContent, isImage, cycle });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    const { id } = response.body.data;
+    response = await putMission({ req, token, id, title, isContent, isImage, cycle });
+    checkStatus(response);
     expect(hasMissionKeys(response.body.data));
     expect(response.body.data.title).toBe(title);
     expect(response.body.data.isContent).toBe(isContent);
@@ -67,41 +59,38 @@ describe('missions', () => {
   });
 
   it('Delete /api/v1/missions/{id}', async () => {
-    response = await request(app)
-      .delete(`/api/v1/missions/${response.body.data.id}`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(204);
+    const { id } = response.body.data;
+    response = await deleteMission({ req, token, id });
+    checkStatus(response, 204);
     expect(response.body.message).toBe('문제를 삭제 했습니다.');
   });
 });
 
-describe('missions', () => {
+describe('missions', async () => {
+  let response = null;
   let mission1 = null;
   let mission2 = null;
   let mission3 = null;
 
   it('Post /api/v1/missions', async () => {
-    mission1 = await request(app)
-      .post('/api/v1/missions')
-      .set('Authorization', token)
-      .send({ title: '안녕2', isContent: true, isImage: false, cycle: 1 });
-    mission2 = await request(app)
-      .post('/api/v1/missions')
-      .set('Authorization', token)
-      .send({ title: '안녕2', isContent: true, isImage: false, cycle: 1 });
-    mission3 = await request(app)
-      .post('/api/v1/missions')
-      .set('Authorization', token)
-      .send({ title: '안녕2', isContent: true, isImage: false, cycle: 1 });
+    const title = '안녕';
+    const isContent = true;
+    const isImage = false;
+    const cycle = 1;
+    mission1 = await postMission({ req, token, title, isContent, isImage, cycle });
+    mission2 = await postMission({ req, token, title, isContent, isImage, cycle });
+    mission3 = await postMission({ req, token, title, isContent, isImage, cycle });
   });
 
   it('Get /api/v1/missions', async () => {
-    response = await request(app)
-      .get(`/api/v1/missions`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    const {
+      body: {
+        data: { accessToken },
+      },
+    } = await signin(req);
+    token = accessToken;
+    response = await getMissions({ req, token });
+    checkStatus(response);
     expect('refresh' in response.body.data).toBeTruthy();
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
@@ -110,15 +99,12 @@ describe('missions', () => {
   });
 
   it('Get /api/v1/missions/refresh', async () => {
-    await request(app)
-      .put(`/api/v1/users/refresh`)
-      .set('Authorization', token);
+    const responseUserRefresh = await putUserRefresh({ req, token });
+    checkStatus(responseUserRefresh);
+    expect(hasUserKeys(responseUserRefresh.body.data));
 
-    response = await request(app)
-      .get(`/api/v1/missions/refresh`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(200);
+    response = await getMissionRefresh({ req, token });
+    checkStatus(response);
     expect(response.body.data.refresh).toBe(false);
     expect(response.body.data.missions.length).toBe(3);
     expect(hasMissionKeys(response.body.data.missions[0]));
@@ -127,11 +113,8 @@ describe('missions', () => {
   });
 
   it('Get /api/v1/missions/refresh before refresh', async () => {
-    response = await request(app)
-      .get(`/api/v1/missions/refresh`)
-      .set('Authorization', token);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(400);
+    response = await getMissionRefresh({ req, token });
+    checkStatus(response, 400);
     expect(response.body.message).toBe('갱신 횟수가 모자랍니다.');
   });
 
@@ -164,3 +147,26 @@ const postMission = async ({ req, token, title, isContent, isImage, cycle }) => 
 };
 
 module.exports = { hasMissionKeys, postMission };
+
+const getMissionById = async (req, token, id) => {
+  return req.get(`/api/v1/missions/${id}`).set('Authorization', token);
+};
+
+const putMission = async ({ req, token, id, title, isContent, isImage, cycle }) => {
+  return req
+    .put(`/api/v1/missions/${id}`)
+    .set('Authorization', token)
+    .send({ title, isContent, isImage, cycle });
+};
+
+const deleteMission = async ({ req, token, id }) => {
+  return req.delete(`/api/v1/missions/${id}`).set('Authorization', token);
+};
+
+const getMissions = async ({ req, token }) => {
+  return req.get(`/api/v1/missions`).set('Authorization', token);
+};
+
+const getMissionRefresh = async ({ req, token }) => {
+  return req.get(`/api/v1/missions/refresh`).set('Authorization', token);
+};

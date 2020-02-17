@@ -69,7 +69,6 @@ const create = async (req, res, next) => {
       }
     }
 
-    console.log(999, cardFile);
     const { cardUrl } = cardFile;
 
     const { id } = await createAnswer({ userId, missionId, imageUrl, cardUrl, content, date });

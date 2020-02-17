@@ -30,6 +30,9 @@ const refresh = async (req, res) => {
 const create = async (req, res) => {
   try {
     const { snsType } = req.body;
+    if (isRequired(req.body)) {
+      return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
+    }
     const token = req.headers.authorization;
     const snsData =
       process.env.NODE_ENV === 'test'
@@ -46,9 +49,7 @@ const create = async (req, res) => {
             auth_time: 1581254190,
           }
         : await jwt.decode(token);
-    if (isRequired(req.body)) {
-      return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
-    }
+
     const { sub: snsId, email } = snsData;
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
     const newUser = user ? user : await createUser({ snsId, snsType, email });
