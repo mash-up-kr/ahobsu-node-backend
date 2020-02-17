@@ -119,7 +119,6 @@ module.exports = {
             example: {
               name: '김유정',
               birthday: '1997-01-16',
-              email: 'yuchochpie@gmail.com',
               gender: '여',
             },
           },

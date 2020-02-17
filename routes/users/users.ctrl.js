@@ -126,13 +126,13 @@ const getUsers = async () => {
   return db.users.findAll();
 };
 
-const isRequired = ({ name, birthday, email, gender }) => {
-  return !name || !birthday || !email || !gender;
+const isRequired = ({ name, birthday, gender }) => {
+  return !name || !birthday || !gender;
 };
 
-const updateUser = async (id, { name, birthday, email, gender }) => {
+const updateUser = async (id, { name, birthday, gender }) => {
   return db.users.update(
-    { name, birthday, email, gender },
+    { name, birthday, gender },
     {
       where: {
         id,
