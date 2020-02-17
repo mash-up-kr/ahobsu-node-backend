@@ -1,4 +1,4 @@
 {
-  "exec": "node ./bin/www",
+  "exec": "node ./bin/www.js",
   "ext": "js json jsx"
 }
