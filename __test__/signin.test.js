@@ -2,6 +2,7 @@ const request = require('supertest');
 
 const app = require('../app');
 const connectDB = require('../connectDB');
+const { checkStatus } = require('./util');
 
 const req = request(app);
 
@@ -11,13 +12,8 @@ beforeAll(async () => {
 
 describe('signin', () => {
   it('Post /api/v1/signin', async () => {
-    const token = 'aa';
-    const response = await request(app)
-      .post('/api/v1/signin')
-      .set('Authorization', token)
-      .send({ snsType: 'apple' });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(201);
+    const response = await signin(req);
+    checkStatus(response, 201);
     expect(hasPostApiV1SigninRefreshKeys(response.body.data));
   });
 });
@@ -28,14 +24,9 @@ describe('signin refresh', () => {
       body: {
         data: { refreshToken },
       },
-    } = await request(app)
-      .post('/api/v1/signin')
-      .send({ snsType: 'apple' });
-    const response = await request(app)
-      .post('/api/v1/signin/refresh')
-      .set('Authorization', refreshToken);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe(201);
+    } = await signin(req);
+    const response = await checkRefreshToken({ req, refreshToken });
+    checkStatus(response, 201);
     expect(hasPostApiV1SigninRefreshKeys(response.body.data));
   });
 });
@@ -56,3 +47,7 @@ const signin = async req => {
 };
 
 module.exports = { signin };
+
+const checkRefreshToken = async ({ req, refreshToken }) => {
+  return req.post('/api/v1/signin/refresh').set('Authorization', refreshToken);
+};

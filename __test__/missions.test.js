@@ -66,7 +66,7 @@ describe('missions', () => {
   });
 });
 
-describe('missions', async () => {
+describe('missions', () => {
   let response = null;
   let mission1 = null;
   let mission2 = null;
