@@ -20,12 +20,9 @@ module.exports = (Sequelize, DataTypes) => {
       cardUrl: {
         type: DataTypes.STRING,
       },
-      content: {
-        type: DataTypes.STRING,
-      },
-      date: {
-        type: DataTypes.STRING,
-      },
+      content: { type: DataTypes.STRING },
+      date: { type: DataTypes.STRING },
+      setDate: { type: DataTypes.STRING },
     },
     {},
   );

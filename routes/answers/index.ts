@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ctrl = require('./answers.ctrl');
+import ctrl from './answers.ctrl';
 const checkToken = require('../../middleware/checkToken');
 const imageUploader = require('../../middleware/imageUploader');
 

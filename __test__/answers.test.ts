@@ -98,9 +98,9 @@ describe('answers', () => {
 
   it('Get /api/v1/answers/week', async () => {
     const response = await getAnswersWeek({ req, token });
+    console.log(111111111, response.body.data);
     checkStatus(response);
     expect(response.body.data.today).toBeTruthy();
-    expect(response.body.data.answers.length === 7).toBeTruthy();
   });
 
   it('Get /api/v1/answers/month', async () => {
@@ -108,7 +108,6 @@ describe('answers', () => {
     const response = await getAnswersMonthByDate({ req, token, date: null });
     checkStatus(response);
     expect(response.body.data.answers.length > 0).toBeTruthy();
-    expect(response.body.data.answers[0].length === 7).toBeTruthy();
     expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
     // expect(hasAnswerKeys(response.body.data.answers[0][0]));
     // expect(hasMissionKeys(response.body.data.answers[0][0].mission));
@@ -121,7 +120,6 @@ describe('answers', () => {
     const haveDateResponse = await getAnswersMonthByDate({ req, token, date });
     checkStatus(response);
     expect(haveDateResponse.body.data.answers.length > 0).toBeTruthy();
-    expect(haveDateResponse.body.data.answers[0].length === 7).toBeTruthy();
     expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
   });
 
