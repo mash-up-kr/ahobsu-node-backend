@@ -1,9 +1,3 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
 const app = require('../app');
 const debug = require('debug')('ahubsu-node:server');
 const http = require('http');
@@ -13,7 +7,7 @@ const https = require('https');
  * Normalize a port into a number, string, or false.
  */
 
-const normalizePort = val => {
+const normalizePort = (val: string) => {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -33,7 +27,7 @@ const normalizePort = val => {
  * Event listener for HTTP server "error" event.
  */
 
-const onError = error => {
+const onError = (error: any) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -71,7 +65,7 @@ if (process.env.NODE_ENV === 'production') {
     version: 'draft-11', // 버전2
     configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
     server: 'https://acme-v02.api.letsencrypt.org/directory',
-    approveDomains: (opts, certs, cb) => {
+    approveDomains: (opts: any, certs: any, cb: any) => {
       if (certs) {
         opts.domains = ['example.com', 'www.example.com'];
       } else {

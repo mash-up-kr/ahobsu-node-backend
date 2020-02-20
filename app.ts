@@ -1,15 +1,22 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const swaggerUi = require('swagger-ui-express');
+import * as express from 'express';
+import * as createError from 'http-errors';
+// const createError = require('http-errors');
+// const express = require('express');
+import * as path from 'path';
+// const path = require('path');
+import * as cookieParser from 'cookie-parser';
+// const cookieParser = require('cookie-parser');
+import * as logger from 'morgan';
+// const logger = require('morgan');
+import * as swaggerUi from 'swagger-ui-express';
+// const swaggerUi = require('swagger-ui-express');
+
 const swaggerDocument = require('./swagger/swagger.js');
 const connectDB = require('./connectDB');
-
 const reutes = require('./routes');
 
 require('dotenv').config();
+
 const app = express();
 
 app.use(logger('dev'));
@@ -38,7 +45,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err: any, req: any, res: any, next: any) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

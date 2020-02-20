@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'Yuni-Q_TOAST',
-      script: './bin/www.js',
+      script: './dist/src/index.js',
       exec_mode: 'cluster',
       instances: '0',
       instance_var: 'INSTANCE_ID',

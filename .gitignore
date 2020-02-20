@@ -60,3 +60,6 @@ typings/
 config.json
 .DS_Store
 .vscode
+dist
+config.js
+config.ts
