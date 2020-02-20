@@ -1,19 +1,13 @@
-import * as express from 'express';
-import * as createError from 'http-errors';
-// const createError = require('http-errors');
-// const express = require('express');
-import * as path from 'path';
-// const path = require('path');
 import * as cookieParser from 'cookie-parser';
-// const cookieParser = require('cookie-parser');
+import * as express from 'express';
+import { NextFunction, Request, Response } from 'express';
+import * as createError from 'http-errors';
 import * as logger from 'morgan';
-// const logger = require('morgan');
+import * as path from 'path';
 import * as swaggerUi from 'swagger-ui-express';
-// const swaggerUi = require('swagger-ui-express');
-
-const swaggerDocument = require('./swagger/swagger.js');
-const connectDB = require('./connectDB');
-const reutes = require('./routes');
+import connectDB from './connectDB';
+import reutes from './routes';
+import swaggerDocument from './swagger/swagger';
 
 require('dotenv').config();
 
@@ -45,7 +39,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err: any, req: any, res: any, next: any) {
+app.use(function(err: any, req: Request, res: Response, next: NextFunction) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -55,4 +49,4 @@ app.use(function(err: any, req: any, res: any, next: any) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

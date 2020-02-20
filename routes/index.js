@@ -16,4 +16,4 @@ router.use('/signIn', siginInRouter);
 router.use('/missions', missionRouter);
 router.use('/answers', answerRouter);
 
-module.exports = router;
+export default router;

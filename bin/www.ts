@@ -1,7 +1,9 @@
-const app = require('../app');
-const debug = require('debug')('ahubsu-node:server');
-const http = require('http');
-const https = require('https');
+import * as debug from 'debug';
+import * as http from 'http';
+import * as https from 'https';
+import app from '../app';
+
+debug('ahubsu-node:server');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -27,7 +29,7 @@ const normalizePort = (val: string) => {
  * Event listener for HTTP server "error" event.
  */
 
-const onError = (error: any) => {
+const onError = (error: { syscall: string; code: string }) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -65,7 +67,7 @@ if (process.env.NODE_ENV === 'production') {
     version: 'draft-11', // 버전2
     configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
     server: 'https://acme-v02.api.letsencrypt.org/directory',
-    approveDomains: (opts: any, certs: any, cb: any) => {
+    approveDomains: (opts: { domains: string[]; email: string; agreeTos: boolean }, certs, cb) => {
       if (certs) {
         opts.domains = ['example.com', 'www.example.com'];
       } else {

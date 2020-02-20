@@ -25,7 +25,7 @@ Object.keys(users).forEach(key => {
   paths[key] = users[key];
 });
 
-module.exports = {
+export default {
   swagger: '2.0',
   info: {
     title: 'Ahobsu-Node-Backend',

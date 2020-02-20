@@ -1,6 +1,6 @@
 const models = require('./models');
 
-module.exports = async () => {
+export default async () => {
   const force = process.env.NODE_ENV === 'test';
   try {
     await models.sequelize.sync({ force });
