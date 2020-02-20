@@ -25,7 +25,7 @@ beforeAll(async () => {
 
 describe('answers', () => {
   let response = null;
-  const file = path.join(__dirname, '/bigSizeimg.jpeg');
+  const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
   const date = moment().format('YYYY-MM-DD');
   let missionId = null;
   it('Post /api/v1/answers', async () => {

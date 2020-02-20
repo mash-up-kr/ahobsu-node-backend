@@ -7,7 +7,7 @@ const { checkStatus } = require('./util');
 const { signin } = require('./signin.test');
 
 const date = '2020-01-23';
-const file = path.join(__dirname, '/bigSizeimg.jpeg');
+const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
 const req = request(app);
 let token = null;
 

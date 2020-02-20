@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "start": "env TZ='Asia/Seoul' nodemon --watch ./ --delay 1 --exec 'ts-node' ./bin/www.ts",
-    "build": "rm -rf ./dist && npx webpack",
+    "build": "rm -rf ./dist && tsc && mkdir ./dist/public && cp -r ./public/* ./dist/public ",
     "deploy": "git pull origin dev && npm install && npm run build && pm2 kill && env TZ='Asia/Seoul' pm2 start ecosystem.config.js",
-    "test": "NODE_ENV=test jest __test__/*.test.js --forceExit",
+    "test": "NODE_ENV=test jest ./__test__/*.test.js --detectOpenHandles --forceExit",
     "start:test": "NODE_ENV=test env TZ='Asia/Seoul' nodemon ./bin/www.js",
-    "build:tsc": "rm -rf ./dist && tsc",
+    "build:webpack": "rm -rf ./dist && npx webpack --progress && mkdir ./dist/public && cp -r ./public/* ./dist/public && cp -r ./models/* ./dist/bin",
     "deploy:ts": "git pull origin dev && npm install && pm2 kill && env TZ='Asia/Seoul' pm2 start ts-node -- -P tsconfig.json ./bin/www.ts",
-    "test:co": "NODE_ENV=test jest __test__/*.test.js --forceExit --coverage"
+    "test:co": "NODE_ENV=test jest ./dist/__test__/*.test.js --forceExit --coverage"
   },
   "dependencies": {
     "aws-sdk": "^2.595.0",
@@ -42,12 +42,14 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.2",
     "@types/http-errors": "^1.6.3",
+    "@types/jest": "^25.1.3",
     "@types/morgan": "^1.7.37",
     "@types/swagger-ui-express": "^4.1.1",
     "clean-webpack-plugin": "^3.0.0",
     "file-loader": "^5.0.2",
     "jest": "^24.9.0",
     "supertest": "^4.0.2",
+    "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
@@ -55,6 +57,23 @@
   "husky": {
     "hooks": {
       "pre-push": "npm test"
+    }
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "\\.test\\.js$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": true
+      }
     }
   }
 }
