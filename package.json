@@ -6,7 +6,7 @@
     "start": "env TZ='Asia/Seoul' nodemon --watch ./ --delay 1 --exec 'ts-node' ./bin/www.ts",
     "build": "rm -rf ./dist && tsc && mkdir ./dist/public && cp -r ./public/* ./dist/public ",
     "deploy": "git pull origin dev && npm install && npm run build && pm2 kill && env TZ='Asia/Seoul' pm2 start ecosystem.config.js",
-    "test": "NODE_ENV=test jest ./__test__/*.test.js --detectOpenHandles --forceExit",
+    "test": "NODE_ENV=test jest ./__test__/*.test.ts --detectOpenHandles --forceExit",
     "start:test": "NODE_ENV=test env TZ='Asia/Seoul' nodemon ./bin/www.js",
     "build:webpack": "rm -rf ./dist && npx webpack --progress && mkdir ./dist/public && cp -r ./public/* ./dist/public && cp -r ./models/* ./dist/bin",
     "deploy:ts": "git pull origin dev && npm install && pm2 kill && env TZ='Asia/Seoul' pm2 start ts-node -- -P tsconfig.json ./bin/www.ts",
@@ -63,7 +63,7 @@
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
-    "testRegex": "\\.test\\.js$",
+    "testRegex": "\\.test\\.ts$",
     "moduleFileExtensions": [
       "ts",
       "tsx",

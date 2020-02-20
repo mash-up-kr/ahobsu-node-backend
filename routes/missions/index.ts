@@ -11,4 +11,4 @@ router.post('/', checkToken, ctrl.create);
 router.put('/:id', checkToken, ctrl.update);
 router.delete('/:id', checkToken, ctrl.destroy);
 
-module.exports = router;
+export default router;

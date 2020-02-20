@@ -1,8 +1,8 @@
 // tests/status.test.js
 const request = require('supertest');
 
-const app = require('../app');
-const connectDB = require('../connectDB');
+import app from '../app';
+import connectDB from '../connectDB';
 const { checkStatus } = require('./util');
 const { signin } = require('./signin.test');
 

@@ -2,8 +2,8 @@ const request = require('supertest');
 const path = require('path');
 const moment = require('moment');
 
-const app = require('../app');
-const connectDB = require('../connectDB');
+import app from '../app';
+import connectDB from '../connectDB';
 const { checkStatus } = require('./util');
 const { hasMissionKeys, postMission } = require('./missions.test');
 const { signin } = require('./signin.test');

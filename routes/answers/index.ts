@@ -12,4 +12,4 @@ router.post('/', checkToken, imageUploader, ctrl.create);
 router.put('/:id', checkToken, imageUploader, ctrl.update);
 router.delete('/:id', checkToken, ctrl.destroy);
 
-module.exports = router;
+export default router;

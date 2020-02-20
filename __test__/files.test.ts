@@ -1,8 +1,8 @@
 const request = require('supertest');
 const path = require('path');
 
-const app = require('../app');
-const connectDB = require('../connectDB');
+import app from '../app';
+import connectDB from '../connectDB';
 const { checkStatus } = require('./util');
 const { signin } = require('./signin.test');
 
@@ -90,7 +90,7 @@ const deleteFileById = async ({ req, token, id }) => {
   return req.delete(`/api/v1/files/${id}`).set('Authorization', token);
 };
 
-const putFile = async ({ req, token, id }) => {
+const putFile = async ({ req, token, id, file }) => {
   return req
     .put(`/api/v1/files/${id}`)
     .set('Authorization', token)

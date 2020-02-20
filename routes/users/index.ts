@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ctrl = require('./users.ctrl');
+import ctrl from './users.ctrl';
 const checkToken = require('../../middleware/checkToken');
 
 router.get('/', checkToken, ctrl.users);
@@ -11,4 +11,4 @@ router.put('/', checkToken, ctrl.update);
 router.put('/refresh', checkToken, ctrl.refresh);
 router.delete('/', checkToken, ctrl.destroy);
 
-module.exports = router;
+export default router;
