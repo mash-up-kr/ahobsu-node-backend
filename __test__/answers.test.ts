@@ -95,7 +95,6 @@ describe('answers', () => {
 
   it('Get /api/v1/answers/week', async () => {
     const response = await getAnswersWeek({ req, token });
-    console.log(111111111, response.body.data);
     checkStatus(response);
     expect(response.body.data.today).toBeTruthy();
   });

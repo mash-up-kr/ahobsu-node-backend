@@ -1,7 +1,8 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
 
-const ctrl = require('./signIn.ctrl');
+const router = Router();
+
+import ctrl from './signIn.ctrl';
 
 router.post('/refresh', ctrl.refresh);
 router.post('/', ctrl.create);

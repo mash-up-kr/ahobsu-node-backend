@@ -1,7 +1,7 @@
 const moment = require('moment');
 const { Op } = require('sequelize');
 
-const db = require('../../models');
+import db from '../../models';
 const response = require('../../lib/response');
 const { getUserById } = require('../users/users.ctrl');
 

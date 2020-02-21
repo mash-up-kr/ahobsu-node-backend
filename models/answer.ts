@@ -1,4 +1,4 @@
-module.exports = (Sequelize, DataTypes) => {
+export default (Sequelize, DataTypes) => {
   const answers = Sequelize.define(
     'answers',
     {
@@ -26,7 +26,7 @@ module.exports = (Sequelize, DataTypes) => {
     },
     {},
   );
-  answers.associate = db => {
+  answers.associate = (db: any) => {
     db.answers.belongsTo(db.missions);
   };
   return answers;

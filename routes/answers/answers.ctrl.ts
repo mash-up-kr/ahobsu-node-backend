@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { Op } from 'sequelize';
-import * as db from '../../models';
+import db from '../../models';
 import { getFileByPart } from '../files/files.ctrl';
 const response = require('../../lib/response');
 const { getMissionById } = require('../missions/missions.ctrl');
@@ -209,10 +209,6 @@ const getAnswerByDateAndUserId = async ({ userId, date }) => {
       },
     ],
   });
-};
-
-const getProvideTemporaryId = () => {
-  return moment().day() === 0 ? 7 : moment().day();
 };
 
 const createAnswer = async ({ userId, missionId, imageUrl, cardUrl, content, date, setDate }) => {

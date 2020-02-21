@@ -1,9 +1,9 @@
-const models = require('./models');
+import db from './models';
 
 export default async () => {
   const force = process.env.NODE_ENV === 'test';
   try {
-    await models.sequelize.sync({ force });
+    await db.sequelize.sync({ force });
     console.log('✓ DB connection success.');
     console.log('  Press CTRL-C to stop\n');
   } catch (err) {

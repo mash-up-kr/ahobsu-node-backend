@@ -8,7 +8,6 @@ import * as swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-
 require('dotenv').config();
 
 const app = express();

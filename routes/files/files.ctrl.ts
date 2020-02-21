@@ -1,4 +1,4 @@
-const db = require('../../models');
+import db from '../../models';
 const response = require('../../lib/response');
 
 // const date = async (req, res, next) => {

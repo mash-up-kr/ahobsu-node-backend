@@ -1,4 +1,4 @@
-module.exports = (Sequelize, DataTypes) => {
+export default (Sequelize, DataTypes) => {
   const missions = Sequelize.define(
     'missions',
     {
@@ -23,7 +23,7 @@ module.exports = (Sequelize, DataTypes) => {
     },
     {},
   );
-  missions.associate = db => {
+  missions.associate = (db: any) => {
     db.missions.hasMany(db.answers);
   };
   return missions;
