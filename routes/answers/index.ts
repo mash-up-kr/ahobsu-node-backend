@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
-
+import { Router } from 'express';
 import ctrl from './answers.ctrl';
 const checkToken = require('../../middleware/checkToken');
 const imageUploader = require('../../middleware/imageUploader');
+
+const router = Router();
 
 router.get('/week', checkToken, ctrl.week);
 router.get('/month', checkToken, ctrl.month);

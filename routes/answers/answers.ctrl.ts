@@ -1,9 +1,9 @@
 import * as moment from 'moment';
 import { Op } from 'sequelize';
 import * as db from '../../models';
+import { getFileByPart } from '../files/files.ctrl';
 const response = require('../../lib/response');
 const { getMissionById } = require('../missions/missions.ctrl');
-const { getFileByPart } = require('../files/files.ctrl');
 
 export default {
   week: async (req, res, next) => {

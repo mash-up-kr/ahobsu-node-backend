@@ -1,10 +1,9 @@
-const express = require('express');
-const router = express.Router();
-
-const ctrl = require('./files.ctrl');
+import { Router } from 'express';
+import ctrl from './files.ctrl';
 const checkToken = require('../../middleware/checkToken');
 const imageUploader = require('../../middleware/imageUploader');
 
+const router = Router();
 // router.get('/:date', checkToken, ctrl.date);
 router.post('/', checkToken, imageUploader, ctrl.create);
 router.put('/:id', checkToken, imageUploader, ctrl.update);
