@@ -32,7 +32,6 @@ export default {
       const { id: userId } = req.user;
       const { date: queryDate } = req.query;
       const { firstDay, lastDay } = getMonthDate(queryDate);
-      console.log(77777, firstDay, lastDay);
       const answers = await getMonthAnswers({ firstDay, lastDay, userId });
       res.json(response({ data: { date: firstDay, answers } }));
     } catch (error) {
@@ -184,7 +183,7 @@ const getMonthAnswers = ({ firstDay, lastDay, userId }) => {
   return db.answers.findAll({
     where: {
       userId,
-      date: {
+      setDate: {
         [Op.gt]: firstDay,
         [Op.lt]: lastDay,
       },
