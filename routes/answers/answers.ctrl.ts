@@ -1,7 +1,6 @@
-const moment = require('moment');
-const { Op } = require('sequelize');
+import * as moment from 'moment';
 
-const db = require('../../models');
+import * as db from '../../models';
 const response = require('../../lib/response');
 const { getMissionById } = require('../missions/missions.ctrl');
 const { getFileByDate, getFileById } = require('../files/files.ctrl');
@@ -15,6 +14,10 @@ export default {
       let recentAnswers = null;
       if (answers[0] && answers[0].setDate) {
         recentAnswers = await getRecentAnswers({ userId, setDate: answers[0].setDate });
+      }
+      // 6개의 파츠를 모두 모았다면 새로운 것을 준다(당일이면 6개 짜리 줘야할지도...)
+      if (!!recentAnswers && recentAnswers.length === 6 && recentAnswers[5].data !== moment().format('YYYY-MM-dd')) {
+        recentAnswers = null;
       }
       res.json(response({ data: { today, answers: recentAnswers } }));
     } catch (error) {
@@ -180,15 +183,15 @@ const getAnswers = async ({ userId }) => {
 
 const getMonthDate = queryDate => {
   const date = !!queryDate ? moment(queryDate).date(1) : moment().date(1);
-  let { firstDay, lastDay } = getFirstDayAndLastDay(date);
+  const { firstDay, lastDay } = getFirstDayAndLastDay(date);
   const weeks = [[firstDay, lastDay]];
-  firstDay = moment(firstDay);
-  lastDay = moment(lastDay);
+  let firstDayMoment = moment(firstDay);
+  let lastDayMoment = moment(lastDay);
 
-  while (lastDay.month() === date.month()) {
-    firstDay = moment(firstDay).add(7, 'days');
-    lastDay = moment(lastDay).add(7, 'days');
-    weeks.push([firstDay.format('YYYY-MM-DD'), lastDay.format('YYYY-MM-DD')]);
+  while (lastDayMoment.month() === date.month()) {
+    firstDayMoment = moment(firstDayMoment).add(7, 'days');
+    lastDayMoment = moment(lastDayMoment).add(7, 'days');
+    weeks.push([firstDayMoment.format('YYYY-MM-DD'), lastDayMoment.format('YYYY-MM-DD')]);
   }
   return { weeks, date: date.format('YYYY-MM-DD') };
 };
