@@ -1,9 +1,9 @@
 import * as moment from 'moment';
-
+import { Op } from 'sequelize';
 import * as db from '../../models';
 const response = require('../../lib/response');
 const { getMissionById } = require('../missions/missions.ctrl');
-const { getFileByDate, getFileById } = require('../files/files.ctrl');
+const { getFileByPart } = require('../files/files.ctrl');
 
 export default {
   week: async (req, res, next) => {
@@ -11,13 +11,14 @@ export default {
       const { id: userId } = req.user;
       const today = moment().format('YYYY-MM-DD');
       const answers = await getAnswers({ userId });
-      let recentAnswers = null;
+      let recentAnswers = [] as any;
       if (answers[0] && answers[0].setDate) {
         recentAnswers = await getRecentAnswers({ userId, setDate: answers[0].setDate });
+        if (!recentAnswers) recentAnswers = [];
       }
-      // 6개의 파츠를 모두 모았다면 새로운 것을 준다(당일이면 6개 짜리 줘야할지도...)
-      if (!!recentAnswers && recentAnswers.length === 6 && recentAnswers[5].data !== moment().format('YYYY-MM-dd')) {
-        recentAnswers = null;
+      // 6개의 파츠를 모두 모았다면 새로운 것을 준다
+      if (recentAnswers.length === 6 && recentAnswers[5] && recentAnswers[5].data !== moment().format('YYYY-MM-DD')) {
+        recentAnswers = [];
       }
       res.json(response({ data: { today, answers: recentAnswers } }));
     } catch (error) {
@@ -30,9 +31,10 @@ export default {
     try {
       const { id: userId } = req.user;
       const { date: queryDate } = req.query;
-      const { weeks, date } = getMonthDate(queryDate);
-      const answers = await getMonthAnswers({ weeks, userId });
-      res.json(response({ data: { date, answers } }));
+      const { firstDay, lastDay } = getMonthDate(queryDate);
+      console.log(77777, firstDay, lastDay);
+      const answers = await getMonthAnswers({ firstDay, lastDay, userId });
+      res.json(response({ data: { date: firstDay, answers } }));
     } catch (error) {
       console.log(error.message);
       res.json(response({ status: 500, message: error.message }));
@@ -45,6 +47,7 @@ export default {
     const answer = await getAnswerByDateAndUserId({ userId, date });
     res.json(response({ data: answer }));
   },
+
   create: async (req, res, next) => {
     try {
       const { id: userId } = req.user;
@@ -65,19 +68,25 @@ export default {
         return res.json(response({ status: 412, message: '존재하지않는 missionId.' }));
       }
 
-      let cardFile = await getFileByDate(date);
-      if (!cardFile) {
-        let id = getProvideTemporaryId();
-        cardFile = await getFileById(id);
-        if (!cardFile) {
-          id += 7;
-          cardFile = await getFileById(id);
-        }
+      const allAnswers = await getAnswers({ userId });
+      let recentAnswers = [] as any;
+      let setDate = 'null';
+      // 데이터가 있어야 무언가를 할수가...
+      if (!!allAnswers && !!allAnswers[0] && !!allAnswers[0].setDate) {
+        recentAnswers = await getRecentAnswers({ userId, setDate: allAnswers[0].setDate });
       }
+      // 6개의 파츠를 모두 모았다면 새로운 파츠를 시작한다.
+      if (recentAnswers.length === 6 || recentAnswers.length === 0) {
+        setDate = moment().format('YYYY-MM-DD');
+      } else {
+        console.log(999, recentAnswers);
+        const answer = recentAnswers[0];
+        setDate = answer.setDate;
+      }
+      let cardFile = await getFileByPart(!!recentAnswers ? recentAnswers.length + 1 : 1);
 
       const { cardUrl } = cardFile;
-
-      const { id } = await createAnswer({ userId, missionId, imageUrl, cardUrl, content, date });
+      const { id } = await createAnswer({ userId, missionId, imageUrl, cardUrl, content, date, setDate });
       {
         const answer = await getAnswerById(id);
         return res.json(response({ status: 201, data: answer }));
@@ -150,23 +159,6 @@ export default {
   },
 };
 
-const getFirstDayAndLastDay = today => {
-  const day = moment(today).day();
-  let first = -7;
-  let last = 1;
-  if (day != 0) {
-    first = day * -1;
-    last = 8 - day;
-  }
-  const firstDay = moment(today)
-    .add(first, 'days')
-    .format('YYYY-MM-DD');
-  const lastDay = moment(today)
-    .add(last, 'days')
-    .format('YYYY-MM-DD');
-  return { firstDay, lastDay };
-};
-
 const getAnswers = async ({ userId }) => {
   return db.answers.findAll({
     where: {
@@ -182,26 +174,28 @@ const getAnswers = async ({ userId }) => {
 };
 
 const getMonthDate = queryDate => {
-  const date = !!queryDate ? moment(queryDate).date(1) : moment().date(1);
-  const { firstDay, lastDay } = getFirstDayAndLastDay(date);
-  const weeks = [[firstDay, lastDay]];
-  let firstDayMoment = moment(firstDay);
-  let lastDayMoment = moment(lastDay);
-
-  while (lastDayMoment.month() === date.month()) {
-    firstDayMoment = moment(firstDayMoment).add(7, 'days');
-    lastDayMoment = moment(lastDayMoment).add(7, 'days');
-    weeks.push([firstDayMoment.format('YYYY-MM-DD'), lastDayMoment.format('YYYY-MM-DD')]);
-  }
-  return { weeks, date: date.format('YYYY-MM-DD') };
+  const now = !!queryDate ? new Date(queryDate) : new Date();
+  const firstDay = moment(new Date(now.getFullYear(), now.getMonth(), 1)).format('YYYY-MM-DD');
+  const lastDay = moment(new Date(now.getFullYear(), now.getMonth() + 1, 0)).format('YYYY-MM-DD');
+  return { firstDay, lastDay };
 };
 
-const getMonthAnswers = ({ weeks, userId }) => {
-  return Promise.all(
-    weeks.map(([firstDay, lastDay]) => {
-      return getAnswers({ userId });
-    }),
-  );
+const getMonthAnswers = ({ firstDay, lastDay, userId }) => {
+  return db.answers.findAll({
+    where: {
+      userId,
+      date: {
+        [Op.gt]: firstDay,
+        [Op.lt]: lastDay,
+      },
+    },
+    group: 'setDate',
+    include: [
+      {
+        model: db.missions,
+      },
+    ],
+  });
 };
 
 const getAnswerByDateAndUserId = async ({ userId, date }) => {
@@ -222,7 +216,7 @@ const getProvideTemporaryId = () => {
   return moment().day() === 0 ? 7 : moment().day();
 };
 
-const createAnswer = async ({ userId, missionId, imageUrl, cardUrl, content, date }) => {
+const createAnswer = async ({ userId, missionId, imageUrl, cardUrl, content, date, setDate }) => {
   return db.answers.create({
     userId,
     missionId,
@@ -230,6 +224,7 @@ const createAnswer = async ({ userId, missionId, imageUrl, cardUrl, content, dat
     cardUrl,
     content,
     date,
+    setDate,
   });
 };
 

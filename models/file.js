@@ -11,10 +11,7 @@ module.exports = (Sequelize, DataTypes) => {
       cardUrl: {
         type: DataTypes.STRING,
       },
-      date: {
-        type: DataTypes.STRING,
-      },
-      parts: {
+      part: {
         type: DataTypes.INTEGER,
       },
     },

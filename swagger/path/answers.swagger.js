@@ -53,6 +53,7 @@ module.exports = {
                   cardUrl: '',
                   content: 'bbb',
                   date: '2020-01-30',
+                  setDate: '2020-01-30',
                   createdAt: '2020-01-30T09:48:29.927Z',
                   updatedAt: '2020-01-30T09:48:30.029Z',
                   mission: {
@@ -136,6 +137,7 @@ module.exports = {
                 cardUrl: '',
                 content: 'bbb',
                 date: '2020-01-30',
+                setDate: '2020-01-30',
                 createdAt: '2020-01-30T09:48:29.927Z',
                 updatedAt: '2020-01-30T09:48:30.029Z',
                 mission: {
@@ -216,9 +218,6 @@ module.exports = {
               data: {
                 today: '2020-01-30',
                 answers: [
-                  null,
-                  null,
-                  null,
                   {
                     id: 1,
                     userId: 1,
@@ -227,6 +226,7 @@ module.exports = {
                     cardUrl: '',
                     content: 'bbb',
                     date: '2020-01-30',
+                    setDate: '2020-01-30',
                     createdAt: '2020-01-30T09:48:29.927Z',
                     updatedAt: '2020-01-30T09:48:30.029Z',
                     mission: {
@@ -239,9 +239,6 @@ module.exports = {
                       updatedAt: '2020-01-30T09:48:29.896Z',
                     },
                   },
-                  null,
-                  null,
-                  null,
                 ],
               },
             },
@@ -291,6 +288,7 @@ module.exports = {
                       cardUrl: '',
                       content: 'bbb',
                       date: '2020-01-27',
+                      setDate: '2020-01-27',
                       createdAt: '2020-01-30T09:48:29.927Z',
                       updatedAt: '2020-01-30T09:48:30.029Z',
                       mission: {
@@ -362,6 +360,7 @@ module.exports = {
                   cardUrl: '',
                   content: 'bbb',
                   date: '2020-01-30',
+                  setDate: '2020-01-30',
                   createdAt: '2020-01-30T09:48:29.927Z',
                   updatedAt: '2020-01-30T09:48:30.029Z',
                   mission: {

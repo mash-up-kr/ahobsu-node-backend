@@ -6,7 +6,6 @@ import connectDB from '../connectDB';
 const { checkStatus } = require('./util');
 const { signin } = require('./signin.test');
 
-const date = '2020-01-23';
 const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
 const req = request(app);
 let token = null;
@@ -24,36 +23,19 @@ beforeAll(async () => {
 
 describe('files', () => {
   let response = null;
+  const part = 1;
   it('Post /api/v1/files', async () => {
-    response = await getFileByDate({ req, token, date });
-    checkStatus(response);
-
-    if (response.body.data) {
-      const { id } = response.body.data;
-      response = await deleteFileById({ req, token, id });
-      checkStatus(response);
-    }
-
-    response = await postFile({ req, token, date, file });
+    const part = 1;
+    response = await postFile({ req, token, part, file });
     checkStatus(response, 201);
     expect(hasFileKeys(response.body.data));
-    expect(response.body.data.date).toBe(date);
-  });
-  it('Post /api/v1/files Exist', async () => {
-    const ExistResponse = await postFile({ req, token, date, file });
-    checkStatus(ExistResponse, 400);
-    expect(ExistResponse.body.message).toBe('해당날짜에 이미지가 이미 있습니다.');
-  });
-
-  it('Get /api/v1/files/{id}', async () => {
-    response = await getFileByDate({ req, token, date });
-    checkStatus(response);
-    expect(hasFileKeys(response.body.data));
+    expect(response.body.data.part).toBe(part);
   });
 
   it('Put /api/v1/files/{id}', async () => {
     const { id } = response.body.data;
-    response = await putFile({ req, token, id, file });
+    const part = 2;
+    response = await putFile({ req, token, id, file, part });
     checkStatus(response);
     expect(hasFileKeys(response.body.data));
   });
@@ -69,30 +51,27 @@ describe('files', () => {
 function hasFileKeys(data) {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
-  if (!('date' in data)) throw new Error('missing date key');
+  if (!('part' in data)) throw new Error('missing part key');
 }
 
-const postFile = async ({ req, token, file, date }) => {
+const postFile = async ({ req, token, file, part }) => {
   return req
     .post('/api/v1/files')
     .set('Authorization', token)
-    .field('date', date)
+    .field('part', part)
     .attach('file', file);
 };
 
 module.exports = { postFile };
 
-const getFileByDate = async ({ req, token, date }) => {
-  return req.get(`/api/v1/files/${date}`).set('Authorization', token);
-};
-
 const deleteFileById = async ({ req, token, id }) => {
   return req.delete(`/api/v1/files/${id}`).set('Authorization', token);
 };
 
-const putFile = async ({ req, token, id, file }) => {
+const putFile = async ({ req, token, id, file, part }) => {
   return req
     .put(`/api/v1/files/${id}`)
     .set('Authorization', token)
+    .field('part', part)
     .attach('file', file);
 };
