@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const response = require('../../lib/response');
+import response from '../../lib/response';
 const { getUserBySnsIdAndSnsType, createUser } = require('../users/users.ctrl');
 
 export default {

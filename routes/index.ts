@@ -1,17 +1,18 @@
 import { Router } from 'express';
-
-import usersRouter from './users';
-import filesRouter from './files';
-import siginInRouter from './signIn';
-import missionRouter from './missions';
 import answerRouter from './answers';
+import filesRouter from './files';
+import missionRouter from './missions';
+import questionRouter from './questions';
+import siginInRouter from './signIn';
+import usersRouter from './users';
 
 const router = Router();
 
-router.use('/users', usersRouter);
-router.use('/files', filesRouter);
-router.use('/signIn', siginInRouter);
-router.use('/missions', missionRouter);
 router.use('/answers', answerRouter);
+router.use('/files', filesRouter);
+router.use('/missions', missionRouter);
+router.use('/questions', questionRouter);
+router.use('/signIn', siginInRouter);
+router.use('/users', usersRouter);
 
 export default router;

@@ -1,5 +1,5 @@
 import db from '../../models';
-const response = require('../../lib/response');
+import response from '../../lib/response';
 
 export default {
   users: async (_, res) => {

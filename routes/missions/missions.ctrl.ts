@@ -2,7 +2,7 @@ const moment = require('moment');
 const { Op } = require('sequelize');
 
 import db from '../../models';
-const response = require('../../lib/response');
+import response from '../../lib/response';
 const { getUserById } = require('../users/users.ctrl');
 
 const missoins = async (req, res) => {

@@ -1,5 +1,5 @@
 import db from '../../models';
-const response = require('../../lib/response');
+import response from '../../lib/response';
 
 // const date = async (req, res, next) => {
 //   const { date } = req.params;

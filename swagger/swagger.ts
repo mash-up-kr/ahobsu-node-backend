@@ -4,6 +4,11 @@ const files = require('./path/files.swagger');
 const missions = require('./path/missions.swagger');
 const signin = require('./path/signin.swagger');
 const users = require('./path/users.swagger');
+const questions = require('./path/questions.swagger');
+
+Object.keys(questions).forEach(key => {
+  paths[key] = questions[key];
+});
 
 Object.keys(answers).forEach(key => {
   paths[key] = answers[key];

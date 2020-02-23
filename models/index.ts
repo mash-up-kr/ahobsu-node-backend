@@ -1,9 +1,10 @@
 import * as Sequelize from 'sequelize';
+import configDate from '../config/config';
 import answer from './answer';
 import file from './file';
 import mission from './mission';
 import user from './user';
-import configDate from '../config/config';
+import question from './question';
 
 const env = process.env.NODE_ENV || 'development';
 const config = configDate[env];
@@ -52,6 +53,7 @@ db.answers = answer(sequelize, Sequelize);
 db.files = file(sequelize, Sequelize);
 db.missions = mission(sequelize, Sequelize);
 db.users = user(sequelize, Sequelize);
+db.questions = question(sequelize, Sequelize);
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { Op } from 'sequelize';
 import db from '../../models';
 import { getFileByPart } from '../files/files.ctrl';
-const response = require('../../lib/response');
+import response from '../../lib/response';
 const { getMissionById } = require('../missions/missions.ctrl');
 
 export default {
