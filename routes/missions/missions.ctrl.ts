@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 
 import db from '../../models';
 import response from '../../lib/response';
+import { Mission } from '../../models/mission';
 const { getUserById } = require('../users/users.ctrl');
 
 const missoins = async (req, res) => {
@@ -150,8 +151,8 @@ const getNewMission = async userId => {
       },
     ],
   });
-  const ids = [];
-  oneYearData.forEach(data => {
+  const ids = [] as number[];
+  oneYearData.forEach((data: { date: string; cycle: number; mission: { date: { mission: Mission } } }) => {
     if (
       moment(data.date)
         .add(data.cycle, 'days')
@@ -173,7 +174,7 @@ const getNewMission = async userId => {
   return missions;
 };
 
-const setMissionsInUser = async ({ missions, id }) => {
+const setMissionsInUser = async ({ missions, id }: { id: number; missions: Mission[] }) => {
   const date = moment().format('YYYY-MM-DD');
   return db.users.update(
     { mission: JSON.stringify({ date, missions }) },
@@ -185,15 +186,15 @@ const setMissionsInUser = async ({ missions, id }) => {
   );
 };
 
-const isRequired = ({ title, isContent, isImage, cycle }) => {
+const isRequired = ({ title, isContent, isImage, cycle }: Mission) => {
   return !title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle;
 };
 
-const createMission = async ({ title, isContent, isImage, cycle }) => {
+const createMission = async ({ title, isContent, isImage, cycle }: Mission) => {
   return db.missions.create({ title, isContent, isImage, cycle });
 };
 
-const updateMission = async (id, { title, isContent, isImage, cycle }) => {
+const updateMission = async (id: number, { title, isContent, isImage, cycle }: Mission) => {
   db.missions.update(
     { title, isContent, isImage, cycle },
     {
@@ -204,7 +205,7 @@ const updateMission = async (id, { title, isContent, isImage, cycle }) => {
   );
 };
 
-const setMissionsAndRefeshDateInUser = async ({ id, missions }) => {
+const setMissionsAndRefeshDateInUser = async ({ id, missions }: { id: number; missions: Mission[] }) => {
   const date = moment().format('YYYY-MM-DD');
   return db.users.update(
     { refreshDate: date, mission: JSON.stringify({ date, missions }) },
@@ -216,7 +217,7 @@ const setMissionsAndRefeshDateInUser = async ({ id, missions }) => {
   );
 };
 
-const deleteMission = async id => {
+const deleteMission = async (id: number) => {
   return db.missions.destroy({
     where: {
       id,

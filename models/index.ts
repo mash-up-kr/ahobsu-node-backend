@@ -6,7 +6,7 @@ import mission from './mission';
 import user from './user';
 import question from './question';
 
-const env = process.env.NODE_ENV || 'development';
+const env = (process.env.NODE_ENV || 'development') as 'development' | 'test' | 'production';
 const config = configDate[env];
 const db = {} as any;
 
@@ -46,7 +46,7 @@ const options =
 // if (config.use_env_variable) {
 // sequelize = new Sequelize(process.env[config.use_env_variable], config.options);
 // } else {
-const sequelize: any = new Sequelize(config.database, config.username, config.password, options);
+const sequelize = new Sequelize(config.database, config.username, config.password, options);
 // }
 
 db.answers = answer(sequelize, Sequelize);

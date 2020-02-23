@@ -1,4 +1,6 @@
-export default (Sequelize, DataTypes) => {
+import { Sequelize, SequelizeStatic } from 'sequelize';
+
+export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   const answers = Sequelize.define(
     'answers',
     {
@@ -31,3 +33,14 @@ export default (Sequelize, DataTypes) => {
   };
   return answers;
 };
+
+export interface Answers {
+  id?: number;
+  userId: number;
+  missionId: number;
+  imageUrl: string | null;
+  cardUrl?: string;
+  content: string | null;
+  date?: string;
+  setDate?: string;
+}

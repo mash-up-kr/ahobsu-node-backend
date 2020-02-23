@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import answerRouter from './answers';
 import filesRouter from './files';
 import missionRouter from './missions';
@@ -16,3 +16,13 @@ router.use('/signIn', siginInRouter);
 router.use('/users', usersRouter);
 
 export default router;
+
+export interface MyRequest extends Request {
+  user?: {
+    id: number;
+  };
+}
+
+export interface RequestResponseNext {
+  (req: MyRequest, res: Response, next: NextFunction): any;
+}

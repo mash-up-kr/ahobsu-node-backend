@@ -1,4 +1,6 @@
-export default (Sequelize, DataTypes) => {
+import { Sequelize, SequelizeStatic } from 'sequelize';
+
+export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   const missions = Sequelize.define(
     'missions',
     {
@@ -28,3 +30,11 @@ export default (Sequelize, DataTypes) => {
   };
   return missions;
 };
+
+export interface Mission {
+  id?: number;
+  title: string;
+  isContent: boolean;
+  isImage: boolean;
+  cycle: number;
+}

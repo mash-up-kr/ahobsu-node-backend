@@ -1,14 +1,17 @@
 import moment from 'moment';
 import path from 'path';
-import request from 'supertest';
+import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
+import { Answers } from '../models/answer';
 import { postFile } from './files.test';
 import { hasMissionKeys, postMission } from './missions.test';
 import { signin } from './signin.test';
 import { checkStatus } from './util';
 
-let token = null;
+type Request = request.SuperTest<request.Test>;
+
+let token = '';
 const req = request(app);
 
 beforeAll(async () => {
@@ -23,10 +26,10 @@ beforeAll(async () => {
 });
 
 describe('answers', () => {
-  let response = null;
+  let response: Response;
   const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
   const date = moment().format('YYYY-MM-DD');
-  let missionId = null;
+  let missionId = 0;
   it('Post /api/v1/answers', async () => {
     response = await getAnswerByDate({ req, date, token });
     checkStatus(response);
@@ -100,7 +103,7 @@ describe('answers', () => {
 
   it('Get /api/v1/answers/month', async () => {
     const today = moment();
-    const response = await getAnswersMonthByDate({ req, token, date: null });
+    const response = await getAnswersMonthByDate({ req, token, date: '' });
     checkStatus(response);
     // expect(response.body.data.answers.length > 0).toBeTruthy();
     expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
@@ -126,7 +129,7 @@ describe('answers', () => {
   });
 });
 
-const hasAnswerKeys = data => {
+const hasAnswerKeys = (data: Answers) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('userId' in data)) throw new Error('missing userId key');
   if (!('missionId' in data)) throw new Error('missing missionId key');
@@ -137,24 +140,66 @@ const hasAnswerKeys = data => {
   if (!('setDate' in data)) throw new Error('missing setDate key');
 };
 
-const getAnswerByDate = async ({ req, date, token }) => {
+const getAnswerByDate = async ({ req, date, token }: { req: Request; date: string; token: string }) => {
   return req.get(`/api/v1/answers/${date}`).set('Authorization', token);
 };
 
-const deleteAnswerById = async ({ req, id, token }) => {
+const deleteAnswerById = async ({ req, id, token }: { req: Request; id: number; token: string }) => {
   return req.delete(`/api/v1/answers/${id}`).set('Authorization', token);
 };
 
-const postAnswer = async ({ req, token, missionId, content, file }) => {
-  return req
-    .post('/api/v1/answers')
-    .set('Authorization', token)
-    .field('missionId', missionId)
-    .field('content', content)
-    .attach('file', file);
+const postAnswer = async ({
+  req,
+  token,
+  missionId,
+  content,
+  file,
+}: {
+  req: Request;
+  token: string;
+  missionId: number;
+  content: string | null;
+  file: string | null;
+}) => {
+  // 둘다 있는 경우
+  if (!!content && file) {
+    return req
+      .post('/api/v1/answers')
+      .set('Authorization', token)
+      .field('missionId', missionId)
+      .field('content', content)
+      .attach('file', file);
+    // content만 있는 경우
+  } else if (!file && !!content) {
+    return req
+      .post('/api/v1/answers')
+      .set('Authorization', token)
+      .field('missionId', missionId)
+      .field('content', content);
+    // file만 있는 경우
+  } else if (!content && !!file) {
+    return req
+      .post('/api/v1/answers')
+      .set('Authorization', token)
+      .field('missionId', missionId)
+      .attach('file', file);
+  }
+  throw 'content, file 둘 중 하나는 있어야 합니다.';
 };
 
-const putAnswer = async ({ req, token, id, content, file }) => {
+const putAnswer = async ({
+  req,
+  token,
+  id,
+  content,
+  file,
+}: {
+  req: Request;
+  token: string;
+  id: number;
+  content: string;
+  file: string;
+}) => {
   return req
     .put(`/api/v1/answers/${id}`)
     .set('Authorization', token)
@@ -162,10 +207,10 @@ const putAnswer = async ({ req, token, id, content, file }) => {
     .attach('file', file);
 };
 
-const getAnswersWeek = async ({ req, token }) => {
+const getAnswersWeek = async ({ req, token }: { req: Request; token: string }) => {
   return req.get('/api/v1/answers/week').set('Authorization', token);
 };
 
-const getAnswersMonthByDate = async ({ req, token, date }) => {
+const getAnswersMonthByDate = async ({ req, token, date }: { req: Request; token: string; date: string }) => {
   return req.get(`/api/v1/answers/month${date ? `?date=${date}` : ''}`).set('Authorization', token);
 };

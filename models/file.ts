@@ -1,4 +1,6 @@
-export default (Sequelize, DataTypes) => {
+import { Sequelize, SequelizeStatic } from 'sequelize';
+
+export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   const files = Sequelize.define(
     'files',
     {

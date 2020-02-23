@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser';
-import express from 'express';
-import { NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import express, { NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
 import logger from 'morgan';
 import path from 'path';
@@ -12,6 +12,7 @@ require('dotenv').config();
 
 const app = express();
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
