@@ -9,6 +9,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
+    // "strict": true,
+    "esModuleInterop": true, // <-- ADD THIS LINE
+
     "allowJs": true
   },
   "exclude": ["node_modules"]

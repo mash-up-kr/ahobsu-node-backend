@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { Op } from 'sequelize';
 import db from '../../models';
 import { getFileByPart } from '../files/files.ctrl';

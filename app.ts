@@ -1,10 +1,10 @@
-import * as cookieParser from 'cookie-parser';
-import * as express from 'express';
+import cookieParser from 'cookie-parser';
+import express from 'express';
 import { NextFunction, Request, Response } from 'express';
-import * as createError from 'http-errors';
-import * as logger from 'morgan';
-import * as path from 'path';
-import * as swaggerUi from 'swagger-ui-express';
+import createError from 'http-errors';
+import logger from 'morgan';
+import path from 'path';
+import swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';

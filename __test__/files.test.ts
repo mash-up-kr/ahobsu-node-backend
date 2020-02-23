@@ -1,5 +1,5 @@
-import * as path from 'path';
-import * as request from 'supertest';
+import path from 'path';
+import request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
 import { signin } from './signin.test';

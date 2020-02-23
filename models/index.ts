@@ -1,4 +1,4 @@
-import * as Sequelize from 'sequelize';
+import Sequelize from 'sequelize';
 import configDate from '../config/config';
 import answer from './answer';
 import file from './file';

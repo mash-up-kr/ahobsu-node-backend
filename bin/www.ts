@@ -1,6 +1,6 @@
-import * as debug from 'debug';
-import * as http from 'http';
-import * as https from 'https';
+import debug from 'debug';
+import http from 'http';
+import https from 'https';
 import app from '../app';
 
 debug('ahubsu-node:server');

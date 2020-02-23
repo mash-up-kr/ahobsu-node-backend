@@ -1,6 +1,6 @@
-import * as moment from 'moment';
-import * as path from 'path';
-import * as request from 'supertest';
+import moment from 'moment';
+import path from 'path';
+import request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
 import { postFile } from './files.test';
