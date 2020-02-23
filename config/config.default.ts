@@ -10,6 +10,7 @@ module.exports = {
   test: {
     username: 'root',
     password: 'root',
+    database: 'database_test',
     storage: ':memory:',
     host: 'localhost',
     dialect: 'sqlite',
@@ -17,7 +18,7 @@ module.exports = {
   },
   production: {
     username: 'root',
-    password: null,
+    password: '',
     database: 'database_production',
     host: '127.0.0.1',
     dialect: 'mysql',
