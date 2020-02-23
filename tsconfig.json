@@ -10,8 +10,8 @@
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true, // <-- ADD THIS LINE
-    "allowJs": true
-    // "strict": true
+    "allowJs": true,
+    "strict": true
   },
   "exclude": ["node_modules"]
 }

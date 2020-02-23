@@ -1,10 +1,11 @@
-import request from 'supertest';
+import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
+import { User } from '../models/user';
 import { signin } from './signin.test';
-import { checkStatus } from './util';
+import { checkStatus, Request } from './util';
 
-let token = null;
+let token = '';
 const req = request(app);
 
 beforeAll(async () => {
@@ -19,7 +20,7 @@ beforeAll(async () => {
 });
 
 describe('users', () => {
-  let response = null;
+  let response: Response;
   it('Put /api/v1/users', async () => {
     const name = '김유정';
     const birthday = '1997-01-16';
@@ -58,7 +59,7 @@ describe('users', () => {
   });
 });
 
-export const hasUserKeys = data => {
+export const hasUserKeys = (data: User) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('birthday' in data)) throw new Error('missing birthday key');
   if (!('email' in data)) throw new Error('missing email key');
@@ -68,29 +69,34 @@ export const hasUserKeys = data => {
   if (!('snsType' in data)) throw new Error('missing snsType key');
 };
 
-export const putUserRefresh = async ({ req, token }) => {
+export const putUserRefresh = async ({ req, token }: { req: Request; token: string }) => {
   return req.put(`/api/v1/users/refresh`).set('Authorization', token);
 };
 
-const putUser = async ({ req, token, name, birthday, gender }) => {
+interface RequestUser extends User {
+  req: Request;
+  token: string;
+}
+
+const putUser = async ({ req, token, name, birthday, gender }: RequestUser) => {
   return req
     .put(`/api/v1/users`)
     .set('Authorization', token)
     .send({ name, birthday, gender });
 };
 
-const getUsers = async ({ req, token }) => {
+const getUsers = async ({ req, token }: { req: Request; token: string }) => {
   return req.get(`/api/v1/users`).set('Authorization', token);
 };
 
-const getUserByToken = async ({ req, token }) => {
+const getUserByToken = async ({ req, token }: { req: Request; token: string }) => {
   return req.get(`/api/v1/users/my`).set('Authorization', token);
 };
 
-const getUser = async ({ req, token, id }) => {
+const getUser = async ({ req, token, id }: { req: Request; token: string; id: number }) => {
   return req.get(`/api/v1/users/${id}`).set('Authorization', token);
 };
 
-const deleteUser = async ({ req, token }) => {
+const deleteUser = async ({ req, token }: { req: Request; token: string }) => {
   return req.delete(`/api/v1/users`).set('Authorization', token);
 };

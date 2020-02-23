@@ -1,7 +1,8 @@
 import request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-import { checkStatus } from './util';
+import { Questions } from '../models/question';
+import { checkStatus, Request } from './util';
 
 const req = request(app);
 
@@ -18,11 +19,11 @@ describe('signin', () => {
   });
 });
 
-const hasPostApiV1Questions = data => {
+const hasPostApiV1Questions = (data: Questions) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('content' in data)) throw new Error('missing content key');
 };
 
-const postQuestion = async ({ req, content }) => {
+const postQuestion = async ({ req, content }: { req: Request; content: string }) => {
   return req.post('/api/v1/questions').send({ content });
 };

@@ -7,9 +7,8 @@ import { Answers } from '../models/answer';
 import { postFile } from './files.test';
 import { hasMissionKeys, postMission } from './missions.test';
 import { signin } from './signin.test';
-import { checkStatus } from './util';
+import { checkStatus, Request } from './util';
 
-type Request = request.SuperTest<request.Test>;
 
 let token = '';
 const req = request(app);

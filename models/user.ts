@@ -45,3 +45,16 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   // };
   return users;
 };
+
+export interface User {
+  id?: number;
+  birthday: string;
+  email?: string;
+  name: string;
+  gender: string;
+  refreshDate?: string;
+  refreshToken?: string;
+  mission?: string;
+  snsId?: string;
+  snsType?: string;
+}

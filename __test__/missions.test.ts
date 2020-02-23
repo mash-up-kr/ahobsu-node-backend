@@ -1,12 +1,13 @@
-import request from 'supertest';
+import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
+import { Mission } from '../models/mission';
 import { signin } from './signin.test';
 import { hasUserKeys, putUserRefresh } from './users.test';
-import { checkStatus } from './util';
+import { checkStatus, Request } from './util';
 
 const req = request(app);
-let token = null;
+let token = '';
 
 beforeAll(async () => {
   await connectDB();
@@ -20,7 +21,7 @@ beforeAll(async () => {
 });
 
 describe('missions', () => {
-  let response = null;
+  let response: Response;
   it('Post /api/v1/missions', async () => {
     const title = '안녕';
     const isContent = true;
@@ -37,7 +38,7 @@ describe('missions', () => {
 
   it('Get /api/v1/missions/{id}', async () => {
     const { id } = response.body.data;
-    response = await getMissionById(req, token, id);
+    response = await getMissionById({ req, token, id });
     checkStatus(response);
     expect(hasMissionKeys(response.body.data));
   });
@@ -66,10 +67,10 @@ describe('missions', () => {
 });
 
 describe('missions', () => {
-  let response = null;
-  let mission1 = null;
-  let mission2 = null;
-  let mission3 = null;
+  let response: Response;
+  let mission1: Response;
+  let mission2: Response;
+  let mission3: Response;
 
   it('Post /api/v1/missions', async () => {
     const title = '안녕';
@@ -130,7 +131,7 @@ describe('missions', () => {
   });
 });
 
-export const hasMissionKeys = data => {
+export const hasMissionKeys = (data: Mission) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('title' in data)) throw new Error('missing title key');
   if (!('isContent' in data)) throw new Error('missing isContent key');
@@ -138,32 +139,36 @@ export const hasMissionKeys = data => {
   if (!('cycle' in data)) throw new Error('missing cycle key');
 };
 
-export const postMission = async ({ req, token, title, isContent, isImage, cycle }) => {
+interface RequsetMission extends Mission {
+  req: Request;
+  token: string;
+}
+export const postMission = async ({ req, token, title, isContent, isImage, cycle }: RequsetMission) => {
   return req
     .post('/api/v1/missions')
     .set('Authorization', token)
     .send({ title, isContent, isImage, cycle });
 };
 
-const getMissionById = async (req, token, id) => {
+const getMissionById = async ({ req, token, id }: { req: Request; token: string; id: number }) => {
   return req.get(`/api/v1/missions/${id}`).set('Authorization', token);
 };
 
-const putMission = async ({ req, token, id, title, isContent, isImage, cycle }) => {
+const putMission = async ({ req, token, id, title, isContent, isImage, cycle }: RequsetMission) => {
   return req
     .put(`/api/v1/missions/${id}`)
     .set('Authorization', token)
     .send({ title, isContent, isImage, cycle });
 };
 
-const deleteMission = async ({ req, token, id }) => {
+const deleteMission = async ({ req, token, id }: { req: Request; token: string; id: number }) => {
   return req.delete(`/api/v1/missions/${id}`).set('Authorization', token);
 };
 
-const getMissions = async ({ req, token }) => {
+const getMissions = async ({ req, token }: { req: Request; token: string }) => {
   return req.get(`/api/v1/missions`).set('Authorization', token);
 };
 
-const getMissionRefresh = async ({ req, token }) => {
+const getMissionRefresh = async ({ req, token }: { req: Request; token: string }) => {
   return req.get(`/api/v1/missions/refresh`).set('Authorization', token);
 };

@@ -1,4 +1,5 @@
 import { Sequelize, SequelizeStatic } from 'sequelize';
+import { Mission } from './mission';
 
 export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   const answers = Sequelize.define(
@@ -43,4 +44,5 @@ export interface Answers {
   content: string | null;
   date?: string;
   setDate?: string;
+  mission?: Mission;
 }

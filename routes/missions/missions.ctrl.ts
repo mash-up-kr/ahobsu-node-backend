@@ -1,15 +1,20 @@
-const moment = require('moment');
-const { Op } = require('sequelize');
-
-import db from '../../models';
+import moment from 'moment';
+import { Op } from 'sequelize';
+import { RequestResponseNext } from '..';
 import response from '../../lib/response';
+import db from '../../models';
+import { Answers } from '../../models/answer';
 import { Mission } from '../../models/mission';
-const { getUserById } = require('../users/users.ctrl');
+import { getUserById } from '../users/users.ctrl';
 
-const missoins = async (req, res) => {
+const missoins: RequestResponseNext = async (req, res) => {
   try {
-    const { id } = req.user;
-    const user = await getUserById(id);
+    let userId = 0;
+    if (req.user) {
+      const { id } = req.user;
+      userId = id;
+    }
+    const user = await getUserById(userId);
     if (!user) {
       return res.json(response({ status: 400, message: '유저가 존재하지 없습니다.' }));
     }
@@ -21,8 +26,8 @@ const missoins = async (req, res) => {
     if (!!oldMission && oldMission.date === date && oldMission.missions.length > 0) {
       return res.json(response({ data: { refresh, missions: oldMission.missions } }));
     }
-    const missions = await getNewMission(id);
-    await setMissionsInUser({ missions, id });
+    const missions = await getNewMission(userId);
+    await setMissionsInUser({ missions, id: userId });
     res.json(response({ data: { refresh, missions } }));
   } catch (e) {
     console.log(e);
@@ -30,10 +35,14 @@ const missoins = async (req, res) => {
   }
 };
 
-const refresh = async (req, res) => {
+const refresh: RequestResponseNext = async (req, res) => {
   try {
-    const { id } = req.user;
-    const user = await getUserById(id);
+    let userId = 0;
+    if (req.user) {
+      const { id } = req.user;
+      userId = id;
+    }
+    const user = await getUserById(userId);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
@@ -41,8 +50,8 @@ const refresh = async (req, res) => {
     if (!!user.refreshDate && user.refreshDate === date) {
       return res.json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
     }
-    const missions = await getNewMission(id);
-    await setMissionsAndRefeshDateInUser({ missions, id });
+    const missions = await getNewMission(userId);
+    await setMissionsAndRefeshDateInUser({ missions, id: userId });
     res.json(response({ data: { refresh: false, missions } }));
   } catch (e) {
     console.log(e);
@@ -50,7 +59,7 @@ const refresh = async (req, res) => {
   }
 };
 
-const mission = async (req, res) => {
+const mission: RequestResponseNext = async (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
     return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
@@ -64,7 +73,7 @@ const mission = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+const create: RequestResponseNext = async (req, res) => {
   try {
     if (isRequired(req.body)) {
       return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
@@ -77,7 +86,7 @@ const create = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+const update: RequestResponseNext = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -102,7 +111,7 @@ const update = async (req, res) => {
   }
 };
 
-const destroy = async (req, res) => {
+const destroy: RequestResponseNext = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -121,18 +130,18 @@ const destroy = async (req, res) => {
   }
 };
 
-const getMissionById = async id => {
+export default { missoins, refresh, mission, create, update, destroy };
+
+export const getMissionById = async (id: number) => {
   return db.missions.findOne({ where: { id } });
 };
 
-module.exports = { missoins, refresh, mission, create, update, destroy, getMissionById };
-
-const getOldMission = user => {
+const getOldMission = (user: { mission: string }) => {
   const { mission } = user;
   return mission && JSON.parse(mission);
 };
 
-const getNewMission = async userId => {
+const getNewMission = async (userId: number) => {
   const date = moment().format('YYYY-MM-DD');
   const oneYearAgo = moment()
     .add(-1, 'years')
@@ -152,10 +161,15 @@ const getNewMission = async userId => {
     ],
   });
   const ids = [] as number[];
-  oneYearData.forEach((data: any) => {
+  oneYearData.forEach((data: Answers) => {
     if (
+      !!data &&
+      !!data.date &&
+      data.mission &&
+      data.mission.cycle &&
+      data.mission.id &&
       moment(data.date)
-        .add(data.cycle, 'days')
+        .add(data.mission.cycle, 'days')
         .format('YYYY-MM-DD') >= date
     ) {
       ids.push(data.mission.id);

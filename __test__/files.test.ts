@@ -1,13 +1,13 @@
 import path from 'path';
-import request from 'supertest';
+import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
 import { signin } from './signin.test';
-import { checkStatus } from './util';
+import { checkStatus, Request } from './util';
 
 const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
 const req = request(app);
-let token = null;
+let token = '';
 
 beforeAll(async () => {
   await connectDB();
@@ -21,7 +21,7 @@ beforeAll(async () => {
 });
 
 describe('files', () => {
-  let response = null;
+  let response: Response;
   const part = 1;
   it('Post /api/v1/files', async () => {
     const part = 1;
@@ -47,13 +47,23 @@ describe('files', () => {
   });
 });
 
-const hasFileKeys = data => {
+const hasFileKeys = (data: File) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
   if (!('part' in data)) throw new Error('missing part key');
 };
 
-export const postFile = async ({ req, token, file, part }) => {
+export const postFile = async ({
+  req,
+  token,
+  file,
+  part,
+}: {
+  req: Request;
+  token: string;
+  file: string;
+  part: number;
+}) => {
   return req
     .post('/api/v1/files')
     .set('Authorization', token)
@@ -61,11 +71,23 @@ export const postFile = async ({ req, token, file, part }) => {
     .attach('file', file);
 };
 
-const deleteFileById = async ({ req, token, id }) => {
+const deleteFileById = async ({ req, token, id }: { req: Request; token: string; id: number }) => {
   return req.delete(`/api/v1/files/${id}`).set('Authorization', token);
 };
 
-const putFile = async ({ req, token, id, file, part }) => {
+const putFile = async ({
+  req,
+  token,
+  id,
+  file,
+  part,
+}: {
+  req: Request;
+  token: string;
+  id: number;
+  file: string;
+  part: number;
+}) => {
   return req
     .put(`/api/v1/files/${id}`)
     .set('Authorization', token)

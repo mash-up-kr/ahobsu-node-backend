@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ctrl = require('./missions.ctrl');
+import ctrl from './missions.ctrl';
 const checkToken = require('../../middleware/checkToken');
 
 router.get('/', checkToken, ctrl.missoins);

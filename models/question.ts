@@ -10,7 +10,6 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-
       content: { type: DataTypes.STRING },
     },
     {},
@@ -20,3 +19,8 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   // };
   return questions;
 };
+
+export interface Questions {
+  id: number;
+  content: string;
+}

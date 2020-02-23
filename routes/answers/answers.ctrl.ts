@@ -1,11 +1,11 @@
-import moment, { weekdays } from 'moment';
+import moment from 'moment';
 import { Op } from 'sequelize';
-import db from '../../models';
-import { getFileByPart } from '../files/files.ctrl';
-import response from '../../lib/response';
 import { RequestResponseNext } from '..';
+import response from '../../lib/response';
+import db from '../../models';
 import { Answers } from '../../models/answer';
-const { getMissionById } = require('../missions/missions.ctrl');
+import { getFileByPart } from '../files/files.ctrl';
+import { getMissionById } from '../missions/missions.ctrl';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {

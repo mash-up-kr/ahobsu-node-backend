@@ -24,3 +24,9 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   // };
   return files;
 };
+
+export interface File {
+  id: number;
+  cardUrl: string;
+  part: number;
+}
