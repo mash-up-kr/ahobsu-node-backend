@@ -152,7 +152,7 @@ const getNewMission = async userId => {
     ],
   });
   const ids = [] as number[];
-  oneYearData.forEach((data: { date: string; cycle: number; mission: { date: { mission: Mission } } }) => {
+  oneYearData.forEach((data: any) => {
     if (
       moment(data.date)
         .add(data.cycle, 'days')
