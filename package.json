@@ -10,7 +10,7 @@
     "start:test": "NODE_ENV=test env TZ='Asia/Seoul' nodemon ./bin/www.js",
     "build:tsc": "rm -rf ./dist && tsc ",
     "deploy:ts": "git pull origin dev && npm install && pm2 kill && env TZ='Asia/Seoul' pm2 start ts-node -- -P tsconfig.json ./bin/www.ts",
-    "test:co": "NODE_ENV=test jest ./dist/__test__/*.test.js --forceExit --coverage"
+    "test:co": "NODE_ENV=test jest ./__test__/*.test.ts --forceExit --coverage"
   },
   "dependencies": {
     "aws-sdk": "^2.595.0",

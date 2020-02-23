@@ -1,13 +1,12 @@
-const request = require('supertest');
-const path = require('path');
-const moment = require('moment');
-
+import * as moment from 'moment';
+import * as path from 'path';
+import * as request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-const { checkStatus } = require('./util');
-const { hasMissionKeys, postMission } = require('./missions.test');
-const { signin } = require('./signin.test');
-const { postFile } = require('./files.test');
+import { postFile } from './files.test';
+import { hasMissionKeys, postMission } from './missions.test';
+import { signin } from './signin.test';
+import { checkStatus } from './util';
 
 let token = null;
 const req = request(app);
@@ -127,7 +126,7 @@ describe('answers', () => {
   });
 });
 
-function hasAnswerKeys(data) {
+const hasAnswerKeys = data => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('userId' in data)) throw new Error('missing userId key');
   if (!('missionId' in data)) throw new Error('missing missionId key');
@@ -136,7 +135,7 @@ function hasAnswerKeys(data) {
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
   if (!('setDate' in data)) throw new Error('missing setDate key');
-}
+};
 
 const getAnswerByDate = async ({ req, date, token }) => {
   return req.get(`/api/v1/answers/${date}`).set('Authorization', token);

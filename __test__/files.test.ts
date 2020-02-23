@@ -1,10 +1,9 @@
-const request = require('supertest');
-const path = require('path');
-
+import * as path from 'path';
+import * as request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-const { checkStatus } = require('./util');
-const { signin } = require('./signin.test');
+import { signin } from './signin.test';
+import { checkStatus } from './util';
 
 const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
 const req = request(app);
@@ -48,21 +47,19 @@ describe('files', () => {
   });
 });
 
-function hasFileKeys(data) {
+const hasFileKeys = data => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
   if (!('part' in data)) throw new Error('missing part key');
-}
+};
 
-const postFile = async ({ req, token, file, part }) => {
+export const postFile = async ({ req, token, file, part }) => {
   return req
     .post('/api/v1/files')
     .set('Authorization', token)
     .field('part', part)
     .attach('file', file);
 };
-
-module.exports = { postFile };
 
 const deleteFileById = async ({ req, token, id }) => {
   return req.delete(`/api/v1/files/${id}`).set('Authorization', token);

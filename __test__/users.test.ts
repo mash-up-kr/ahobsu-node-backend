@@ -1,10 +1,8 @@
-// tests/status.test.js
-const request = require('supertest');
-
+import request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-const { checkStatus } = require('./util');
-const { signin } = require('./signin.test');
+import { signin } from './signin.test';
+import { checkStatus } from './util';
 
 let token = null;
 const req = request(app);
@@ -60,7 +58,7 @@ describe('users', () => {
   });
 });
 
-function hasUserKeys(data) {
+export const hasUserKeys = data => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('birthday' in data)) throw new Error('missing birthday key');
   if (!('email' in data)) throw new Error('missing email key');
@@ -68,12 +66,11 @@ function hasUserKeys(data) {
   if (!('gender' in data)) throw new Error('missing gender key');
   if (!('snsId' in data)) throw new Error('missing snsId key');
   if (!('snsType' in data)) throw new Error('missing snsType key');
-}
+};
 
-const putUserRefresh = async ({ req, token }) => {
+export const putUserRefresh = async ({ req, token }) => {
   return req.put(`/api/v1/users/refresh`).set('Authorization', token);
 };
-module.exports = { putUserRefresh, hasUserKeys };
 
 const putUser = async ({ req, token, name, birthday, gender }) => {
   return req

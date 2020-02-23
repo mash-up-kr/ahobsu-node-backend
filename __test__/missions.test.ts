@@ -1,10 +1,9 @@
-const request = require('supertest');
-
+import * as request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-const { checkStatus } = require('./util');
-const { signin } = require('./signin.test');
-const { putUserRefresh, hasUserKeys } = require('./users.test');
+import { signin } from './signin.test';
+import { hasUserKeys, putUserRefresh } from './users.test';
+import { checkStatus } from './util';
 
 const req = request(app);
 let token = null;
@@ -131,22 +130,20 @@ describe('missions', () => {
   });
 });
 
-function hasMissionKeys(data) {
+export const hasMissionKeys = data => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('title' in data)) throw new Error('missing title key');
   if (!('isContent' in data)) throw new Error('missing isContent key');
   if (!('isImage' in data)) throw new Error('missing isImage key');
   if (!('cycle' in data)) throw new Error('missing cycle key');
-}
+};
 
-const postMission = async ({ req, token, title, isContent, isImage, cycle }) => {
+export const postMission = async ({ req, token, title, isContent, isImage, cycle }) => {
   return req
     .post('/api/v1/missions')
     .set('Authorization', token)
     .send({ title, isContent, isImage, cycle });
 };
-
-module.exports = { hasMissionKeys, postMission };
 
 const getMissionById = async (req, token, id) => {
   return req.get(`/api/v1/missions/${id}`).set('Authorization', token);

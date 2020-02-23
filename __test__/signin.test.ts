@@ -1,8 +1,7 @@
-const request = require('supertest');
-
+import * as request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-const { checkStatus } = require('./util');
+import { checkStatus } from './util';
 
 const req = request(app);
 
@@ -31,13 +30,13 @@ describe('signin refresh', () => {
   });
 });
 
-function hasPostApiV1SigninRefreshKeys(data) {
+const hasPostApiV1SigninRefreshKeys = data => {
   if (!('accessToken' in data)) throw new Error('missing accessToken key');
   if (!('refreshToken' in data)) throw new Error('missing refreshToken key');
   if (!('signUp' in data)) throw new Error('missing signUp key');
-}
+};
 
-const signin = async req => {
+export const signin = async req => {
   const snsType = 'apple';
   const token = 'aaa';
   return req
@@ -45,8 +44,6 @@ const signin = async req => {
     .set('Authorization', token)
     .send({ snsType });
 };
-
-module.exports = { signin };
 
 const checkRefreshToken = async ({ req, refreshToken }) => {
   return req.post('/api/v1/signin/refresh').set('Authorization', refreshToken);
