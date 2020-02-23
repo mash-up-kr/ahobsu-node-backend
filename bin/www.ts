@@ -29,7 +29,7 @@ const normalizePort = (val: string) => {
  * Event listener for HTTP server "error" event.
  */
 
-const onError = (error: { syscall: string; code: string }) => {
+const onError = (error: any) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === 'production') {
     version: 'draft-11', // 버전2
     configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
     server: 'https://acme-v02.api.letsencrypt.org/directory',
-    approveDomains: (opts: { domains: string[]; email: string; agreeTos: boolean }, certs, cb) => {
+    approveDomains: (opts: { domains: string[]; email: string; agreeTos: boolean }, certs: any, cb: any) => {
       if (certs) {
         opts.domains = ['example.com', 'www.example.com'];
       } else {
@@ -85,16 +85,16 @@ if (process.env.NODE_ENV === 'production') {
   /**
    * Event listener for HTTP server "listening" event.
    */
-  const onListening = () => {
-    const addr = server.address();
-    const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-    debug('Listening on ' + bind);
-  };
+  // const onListening = () => {
+  //   const addr = server.address();
+  //   const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  //   debug('Listening on ' + bind);
+  // };
 
   const server = http.createServer(app);
   server.listen(process.env.PORT || port, () => console.log(`http://localhost:${port}`));
   server.on('error', onError);
-  server.on('listening', onListening);
+  // server.on('listening', onListening);
 }
 
 /**
