@@ -2,7 +2,7 @@ import moment from 'moment';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
 
-import { getUserById } from '../users/users.controller';
+import { getUserById } from '../users/users.repository';
 import {
   getNewMission,
   setMissionsAndRefeshDateInUser,

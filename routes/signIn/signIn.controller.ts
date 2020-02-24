@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { createUser, getUserBySnsIdAndSnsType } from '../users/users.controller';
+import { createUser, getUserBySnsIdAndSnsType } from '../users/users.repository';
 import { isRequired, createToken, isSignUp } from './signIn.service';
 
 const refresh: RequestResponseNext = async (req, res) => {
