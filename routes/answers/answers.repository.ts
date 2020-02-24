@@ -16,20 +16,20 @@ export const getAnswerByUserId = async ({ userId }: { userId: number }): Promise
   });
 };
 export const getMonthAnswers = ({
-  firstDay,
-  lastDay,
+  firstDate,
+  lastDate,
   userId,
 }: {
-  firstDay: string;
-  lastDay: string;
+  firstDate: string;
+  lastDate: string;
   userId: number;
 }) => {
   return db.answers.findAll({
     where: {
       userId,
       setDate: {
-        [Op.gt]: firstDay,
-        [Op.lt]: lastDay,
+        [Op.gt]: firstDate,
+        [Op.lt]: lastDate,
       },
     },
     group: 'setDate',

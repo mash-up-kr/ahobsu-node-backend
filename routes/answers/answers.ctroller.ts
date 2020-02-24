@@ -1,28 +1,20 @@
-import moment from 'moment';
 import { RequestResponseNext } from '..';
+import { getDateString, getNow, getMonthDate } from '../../lib/date';
 import response from '../../lib/response';
+import { Answers } from '../../models/answer';
 import { getFileByPart } from '../files/files.repository';
 import { getMissionById } from '../missions/missions.repository';
 import {
-  getRecentAnswers,
-  getMonthAnswers,
-  getAnswerByDateAndUserId,
   createAnswer,
-  getAnswerById,
-  updateAnswer,
   deleteAnswer,
+  getAnswerByDateAndUserId,
+  getAnswerById,
   getAnswerByUserId,
+  getMonthAnswers,
+  getRecentAnswers,
+  updateAnswer,
 } from './answers.repository';
-import {
-  getMonthDate,
-  isRequiredoneOfThem,
-  hasSixParsAndNotToday,
-  hasSetDate,
-  getSetDate,
-  getPartNumber,
-} from './answers.service';
-import { getDateString } from '../../lib/date';
-import { Answers } from '../../models/answer';
+import { getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday, isRequiredoneOfThem } from './answers.service';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
@@ -48,9 +40,10 @@ const month: RequestResponseNext = async (req, res, next) => {
   try {
     const userId = req.user!.id;
     const { date: queryDate } = req.query;
-    const { firstDay, lastDay } = getMonthDate(queryDate);
-    const answers = await getMonthAnswers({ firstDay, lastDay, userId });
-    res.json(response({ data: { date: firstDay, answers } }));
+    const now = getNow(queryDate);
+    const { firstDate, lastDate } = getMonthDate(now);
+    const answers = await getMonthAnswers({ firstDate, lastDate, userId });
+    res.json(response({ data: { date: firstDate, answers } }));
   } catch (error) {
     console.log(error.message);
     res.json(response({ status: 500, message: error.message }));
