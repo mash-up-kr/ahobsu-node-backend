@@ -4,7 +4,6 @@ import response from '../../lib/response';
 import { getFileByPart } from '../files/files.repository';
 import { getMissionById } from '../missions/missions.repository';
 import {
-  getAnswers,
   getRecentAnswers,
   getMonthAnswers,
   getAnswerByDateAndUserId,
@@ -12,22 +11,26 @@ import {
   getAnswerById,
   updateAnswer,
   deleteAnswer,
+  getAnswerByUserId,
 } from './answers.repository';
-import { getMonthDate, isRequiredoneOfThem, hasSixParsAndNotToday } from './answers.service';
-import { hasUserIdInRequest } from '../users/users.service';
+import {
+  getMonthDate,
+  isRequiredoneOfThem,
+  hasSixParsAndNotToday,
+  hasSetDate,
+  getSetDate,
+  getPartNumber,
+} from './answers.service';
 import { getDateString } from '../../lib/date';
 import { Answers } from '../../models/answer';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
-    const userId = hasUserIdInRequest(req);
-    if (!userId) {
-      return res.json(response({ status: 400, message: '유저 아이디가 존재하지 않습니다. 토큰을 확인해 주세요.' }));
-    }
-    const answers = await getAnswers({ userId });
+    const userId = req.user!.id;
+    const answers = await getAnswerByUserId({ userId });
     let recentAnswers: Answers[] = [];
-    if (answers[0] && answers[0].setDate) {
-      recentAnswers = await getRecentAnswers({ userId, setDate: answers[0].setDate });
+    if (answers && answers.setDate) {
+      recentAnswers = await getRecentAnswers({ userId, setDate: answers.setDate });
       if (!recentAnswers) recentAnswers = [];
     }
     // 6개의 파츠를 모두 모은 날이 오늘이 아니면 새로운 것을 준다
@@ -43,11 +46,7 @@ const week: RequestResponseNext = async (req, res, next) => {
 };
 const month: RequestResponseNext = async (req, res, next) => {
   try {
-    let userId = 0;
-    if (req.user) {
-      const { id } = req.user;
-      userId = id;
-    }
+    const userId = req.user!.id;
     const { date: queryDate } = req.query;
     const { firstDay, lastDay } = getMonthDate(queryDate);
     const answers = await getMonthAnswers({ firstDay, lastDay, userId });
@@ -59,11 +58,7 @@ const month: RequestResponseNext = async (req, res, next) => {
 };
 
 const date: RequestResponseNext = async (req, res, next) => {
-  let userId = 0;
-  if (req.user) {
-    const { id } = req.user;
-    userId = id;
-  }
+  const userId = req.user!.id;
   const { date } = req.params;
   const answer = await getAnswerByDateAndUserId({ userId, date });
   res.json(response({ data: answer }));
@@ -71,12 +66,8 @@ const date: RequestResponseNext = async (req, res, next) => {
 
 const create: RequestResponseNext = async (req, res, next) => {
   try {
-    let userId = 0;
-    if (req.user) {
-      const { id } = req.user;
-      userId = id;
-    }
-    const date = moment().format('YYYY-MM-DD');
+    const userId = req.user!.id;
+    const date = getDateString();
     const { content, missionId, file: imageUrl } = req.body;
 
     if (isRequiredoneOfThem({ imageUrl, content })) {
@@ -90,24 +81,19 @@ const create: RequestResponseNext = async (req, res, next) => {
 
     const checkMission = await getMissionById(missionId);
     if (!checkMission) {
-      return res.json(response({ status: 412, message: '존재하지않는 missionId.' }));
+      return res.json(response({ status: 412, message: 'missionId가 존재하지 않습니다.' }));
     }
 
-    const allAnswers = await getAnswers({ userId });
-    let recentAnswers = [] as any;
-    let setDate = 'null';
+    const lastAnswer = await getAnswerByUserId({ userId });
     // 데이터가 있어야 무언가를 할수가...
-    if (!!allAnswers && !!allAnswers[0] && !!allAnswers[0].setDate) {
-      recentAnswers = await getRecentAnswers({ userId, setDate: allAnswers[0].setDate });
-    }
+    const recentAnswers: Answers[] = hasSetDate(lastAnswer)
+      ? await getRecentAnswers({ userId, setDate: lastAnswer.setDate as string })
+      : [];
+
     // 6개의 파츠를 모두 모았다면 새로운 파츠를 시작한다.
-    if (recentAnswers.length === 6 || recentAnswers.length === 0) {
-      setDate = moment().format('YYYY-MM-DD');
-    } else {
-      const answer = recentAnswers[0];
-      setDate = answer.setDate;
-    }
-    let cardFile = await getFileByPart(!!recentAnswers ? recentAnswers.length + 1 : 1);
+    const setDate = getSetDate(recentAnswers);
+    const partNumber = getPartNumber(recentAnswers);
+    let cardFile = await getFileByPart(partNumber);
 
     const { cardUrl } = cardFile;
     const { id } = await createAnswer({ userId, missionId, imageUrl, cardUrl, content, date, setDate });

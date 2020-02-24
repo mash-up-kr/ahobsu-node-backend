@@ -28,6 +28,9 @@ const checkToken: RequestResponseNext = async (req, res, next) => {
         }),
       );
     }
+    if (!result.user.id) {
+      return res.json(response({ status: 400, message: '유저 아이디가 존재하지 않습니다. 토큰을 확인해 주세요.' }));
+    }
     req.user = result.user;
     next();
   } catch (e) {

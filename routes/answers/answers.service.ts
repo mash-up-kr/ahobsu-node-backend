@@ -16,3 +16,19 @@ export const isRequiredoneOfThem = ({ imageUrl, content }: { imageUrl: string; c
 export const hasSixParsAndNotToday = (answers: Answers[]) => {
   return answers.length === 6 && answers[5] && answers[5].date !== getDateString();
 };
+
+export const hasSetDate = (answer: Answers) => {
+  return !!answer && !!answer.setDate;
+};
+
+export const getSetDate = (answers: Answers[]) => {
+  if (answers.length === 6 || answers.length === 0) {
+    return getDateString();
+  } else {
+    return answers[0].setDate;
+  }
+};
+
+export const getPartNumber = (answers: Answers[]) => {
+  return answers.length >= 6 ? 1 : answers.length + 1;
+};

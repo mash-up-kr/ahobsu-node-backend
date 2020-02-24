@@ -2,8 +2,8 @@ import { Op } from 'sequelize';
 import db from '../../models';
 import { Answers } from '../../models/answer';
 
-export const getAnswers = async ({ userId }: { userId: number }): Promise<Answers[]> => {
-  return db.answers.findAll({
+export const getAnswerByUserId = async ({ userId }: { userId: number }): Promise<Answers> => {
+  return db.answers.findOne({
     where: {
       userId,
     },
