@@ -15,13 +15,16 @@ import { createFile, getFileById, updateFile, deleteFile } from './files.reposit
 // };
 const create: RequestResponseNext = async (req, res, next) => {
   try {
-    const { file: cardUrl, part } = req.body;
-
+    const { file: cardUrl, part: partString } = req.body;
+    const part = parseInt(partString, 10);
     if (isRequired({ cardUrl, part })) {
       return res.json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
     }
+    if (isNaN(part)) {
+      return res.json(response({ status: 412, message: 'part는 숫자이어야 합니다.' }));
+    }
     {
-      const file = await createFile({ cardUrl, part: parseInt(part, 10) });
+      const file = await createFile({ cardUrl, part });
       res.json(response({ status: 201, data: file }));
     }
   } catch (e) {
@@ -31,23 +34,24 @@ const create: RequestResponseNext = async (req, res, next) => {
 };
 const update: RequestResponseNext = async (req, res, next) => {
   try {
-    const { file: cardUrl, part } = req.body;
+    const { file: cardUrl, part: partString } = req.body;
     const id = parseInt(req.params.id, 10);
-
+    const part = parseInt(partString, 10);
     if (isNaN(id)) {
       return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
     }
-
+    if (isNaN(part)) {
+      return res.json(response({ status: 412, message: 'part는 숫자이어야 합니다.' }));
+    }
     if (!cardUrl) {
       return res.json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
     }
-
     const file = await getFileById(id);
     if (!file) {
       return res.json(response({ status: 404, message: '존재하지않는 fileId.' }));
     }
 
-    await updateFile({ id, cardUrl, part: parseInt(part, 10) });
+    await updateFile({ id, cardUrl, part });
     {
       const file = await getFileById(id);
       res.json(response({ data: file }));
