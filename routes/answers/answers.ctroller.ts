@@ -1,11 +1,19 @@
 import moment from 'moment';
-import { Op } from 'sequelize';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import db from '../../models';
-import { Answers } from '../../models/answer';
 import { getFileByPart } from '../files/files.controller';
 import { getMissionById } from '../missions/missions.controller';
+import {
+  getAnswers,
+  getRecentAnswers,
+  getMonthAnswers,
+  getAnswerByDateAndUserId,
+  createAnswer,
+  getAnswerById,
+  updateAnswer,
+  deleteAnswer,
+} from './answers.repository';
+import { getMonthDate, isRequiredoneOfThem } from './answers.service';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
@@ -188,112 +196,4 @@ export default {
   create,
   update,
   destroy,
-};
-
-const getAnswers = async ({ userId }: { userId: number }) => {
-  return db.answers.findAll({
-    where: {
-      userId,
-    },
-    order: [['setDate', 'DESC']],
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
-};
-
-const getMonthDate = (queryDate: string | null) => {
-  const now = !!queryDate ? new Date(queryDate) : new Date();
-  const firstDay = moment(new Date(now.getFullYear(), now.getMonth(), 1)).format('YYYY-MM-DD');
-  const lastDay = moment(new Date(now.getFullYear(), now.getMonth() + 1, 0)).format('YYYY-MM-DD');
-  return { firstDay, lastDay };
-};
-
-const getMonthAnswers = ({ firstDay, lastDay, userId }: { firstDay: string; lastDay: string; userId: number }) => {
-  return db.answers.findAll({
-    where: {
-      userId,
-      setDate: {
-        [Op.gt]: firstDay,
-        [Op.lt]: lastDay,
-      },
-    },
-    group: 'setDate',
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
-};
-
-const getAnswerByDateAndUserId = async ({ userId, date }: { userId: number; date: string }) => {
-  return db.answers.findOne({
-    where: {
-      userId,
-      date,
-    },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
-};
-
-const createAnswer = async ({ userId, missionId, imageUrl, cardUrl, content, date, setDate }: Answers) => {
-  return db.answers.create({
-    userId,
-    missionId,
-    imageUrl,
-    cardUrl,
-    content,
-    date,
-    setDate,
-  });
-};
-
-const getAnswerById = async (id: number) => {
-  return db.answers.findOne({
-    where: { id },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
-};
-
-const updateAnswer = async ({ id, userId, missionId, imageUrl, content }: Answers) => {
-  await db.answers.update(
-    { userId, missionId, imageUrl, content },
-    {
-      where: {
-        id,
-      },
-    },
-  );
-};
-
-const deleteAnswer = async (id: number) => {
-  return db.answers.destroy({
-    where: {
-      id,
-    },
-  });
-};
-
-const isRequiredoneOfThem = ({ imageUrl, content }: { imageUrl: string; content: string }) => {
-  return !imageUrl && !content;
-};
-
-const getRecentAnswers = async ({ userId, setDate }: { userId: number; setDate: string }) => {
-  db.answers.findAll({
-    where: {
-      userId,
-      setDate,
-    },
-  });
 };
