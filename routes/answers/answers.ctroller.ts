@@ -24,7 +24,6 @@ const week: RequestResponseNext = async (req, res, next) => {
     if (!userId) {
       return res.json(response({ status: 400, message: '유저 아이디가 존재하지 않습니다. 토큰을 확인해 주세요.' }));
     }
-    const today = getDateString();
     const answers = await getAnswers({ userId });
     let recentAnswers: Answers[] = [];
     if (answers[0] && answers[0].setDate) {
@@ -35,6 +34,7 @@ const week: RequestResponseNext = async (req, res, next) => {
     if (hasSixParsAndNotToday(recentAnswers)) {
       recentAnswers = [];
     }
+    const today = getDateString();
     res.json(response({ data: { today, answers: recentAnswers } }));
   } catch (error) {
     console.log(error.message);
