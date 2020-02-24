@@ -1,6 +1,7 @@
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import db from '../../models';
+import { isRequired } from './questions.service';
+import { createQuestion } from './questions.repository';
 
 const post: RequestResponseNext = async (req, res) => {
   try {
@@ -16,13 +17,3 @@ const post: RequestResponseNext = async (req, res) => {
 };
 
 export default { post };
-
-const isRequired = ({ content }: { content: string }) => {
-  return !content;
-};
-
-const createQuestion = async ({ content }: { content: string }) => {
-  return db.questions.create({
-    content,
-  });
-};
