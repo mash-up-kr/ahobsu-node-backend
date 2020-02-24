@@ -4,8 +4,8 @@ import { RequestResponseNext } from '..';
 import response from '../../lib/response';
 import db from '../../models';
 import { Answers } from '../../models/answer';
-import { getFileByPart } from '../files/files.ctrl';
-import { getMissionById } from '../missions/missions.ctrl';
+import { getFileByPart } from '../files/files.controller';
+import { getMissionById } from '../missions/missions.controller';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {

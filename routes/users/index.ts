@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import checkToken from '../../middleware/checkToken';
-import ctrl from './users.ctrl';
+import ctrl from './users.controller';
 
 const router = Router();
 

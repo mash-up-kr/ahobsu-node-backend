@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { createUser, getUserBySnsIdAndSnsType } from '../users/users.ctrl';
+import { createUser, getUserBySnsIdAndSnsType } from '../users/users.controller';
 
 const refresh: RequestResponseNext = async (req, res) => {
   try {

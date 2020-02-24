@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ctrl from './questions.ctrl';
+import ctrl from './questions.controller';
 
 const router = Router();
 

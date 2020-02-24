@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import checkToken from '../../middleware/checkToken';
 import imageUploader from '../../middleware/imageUploader';
-import ctrl from './files.ctrl';
+import ctrl from './files.controller';
 
 const router = Router();
 

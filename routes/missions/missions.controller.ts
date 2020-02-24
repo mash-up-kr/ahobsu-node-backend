@@ -5,7 +5,7 @@ import response from '../../lib/response';
 import db from '../../models';
 import { Answers } from '../../models/answer';
 import { Mission } from '../../models/mission';
-import { getUserById } from '../users/users.ctrl';
+import { getUserById } from '../users/users.controller';
 
 const missoins: RequestResponseNext = async (req, res) => {
   try {
