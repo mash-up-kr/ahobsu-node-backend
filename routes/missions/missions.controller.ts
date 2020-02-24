@@ -1,11 +1,19 @@
 import moment from 'moment';
-import { Op } from 'sequelize';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import db from '../../models';
-import { Answers } from '../../models/answer';
-import { Mission } from '../../models/mission';
+
 import { getUserById } from '../users/users.controller';
+import {
+  getNewMission,
+  setMissionsAndRefeshDateInUser,
+  getMissionById,
+  getOldMission,
+  setMissionsInUser,
+  createMission,
+  updateMission,
+  deleteMission,
+} from './missions.repository';
+import { isRequired } from './missions.service';
 
 const missoins: RequestResponseNext = async (req, res) => {
   try {
@@ -131,110 +139,3 @@ const destroy: RequestResponseNext = async (req, res) => {
 };
 
 export default { missoins, refresh, mission, create, update, destroy };
-
-export const getMissionById = async (id: number) => {
-  return db.missions.findOne({ where: { id } });
-};
-
-const getOldMission = (user: { mission: string }) => {
-  const { mission } = user;
-  return mission && JSON.parse(mission);
-};
-
-const getNewMission = async (userId: number) => {
-  const date = moment().format('YYYY-MM-DD');
-  const oneYearAgo = moment()
-    .add(-1, 'years')
-    .format('YYYY-MM-DD');
-
-  const oneYearData = await db.answers.findAll({
-    where: {
-      userId,
-      date: {
-        [Op.gt]: oneYearAgo,
-      },
-    },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
-  });
-  const ids = [] as number[];
-  oneYearData.forEach((data: Answers) => {
-    if (
-      !!data &&
-      !!data.date &&
-      data.mission &&
-      data.mission.cycle &&
-      data.mission.id &&
-      moment(data.date)
-        .add(data.mission.cycle, 'days')
-        .format('YYYY-MM-DD') >= date
-    ) {
-      ids.push(data.mission.id);
-    }
-  });
-
-  const missions = db.missions.findAll({
-    where: {
-      id: {
-        [Op.notIn]: ids,
-      },
-    },
-    order: db.sequelize.random(),
-    limit: 3,
-  });
-  return missions;
-};
-
-const setMissionsInUser = async ({ missions, id }: { id: number; missions: Mission[] }) => {
-  const date = moment().format('YYYY-MM-DD');
-  return db.users.update(
-    { mission: JSON.stringify({ date, missions }) },
-    {
-      where: {
-        id,
-      },
-    },
-  );
-};
-
-const isRequired = ({ title, isContent, isImage, cycle }: Mission) => {
-  return !title || (!isContent && isContent !== false) || (!isImage && isImage !== false) || !cycle;
-};
-
-const createMission = async ({ title, isContent, isImage, cycle }: Mission) => {
-  return db.missions.create({ title, isContent, isImage, cycle });
-};
-
-const updateMission = async (id: number, { title, isContent, isImage, cycle }: Mission) => {
-  db.missions.update(
-    { title, isContent, isImage, cycle },
-    {
-      where: {
-        id,
-      },
-    },
-  );
-};
-
-const setMissionsAndRefeshDateInUser = async ({ id, missions }: { id: number; missions: Mission[] }) => {
-  const date = moment().format('YYYY-MM-DD');
-  return db.users.update(
-    { refreshDate: date, mission: JSON.stringify({ date, missions }) },
-    {
-      where: {
-        id,
-      },
-    },
-  );
-};
-
-const deleteMission = async (id: number) => {
-  return db.missions.destroy({
-    where: {
-      id,
-    },
-  });
-};
