@@ -1,9 +1,12 @@
-const jwt = require('jsonwebtoken');
+// import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+import response from '../lib/response';
 
-const response = require('../lib/response');
+import { RequestResponseNext } from '../routes';
 
-module.exports = async (req, res, next) => {
+const checkToken: RequestResponseNext = async (req, res, next) => {
   const token = req.headers.authorization;
+  console.log(9999, token, req.headers);
   if (!token) {
     return res.json(
       response({
@@ -13,8 +16,8 @@ module.exports = async (req, res, next) => {
     );
   }
   try {
-    const result = await jwt.verify(token, process.env.privateKey);
-    if (!result.user) {
+    const result = await jwt.verify(token, process.env.privateKey as string);
+    if (typeof result === 'object' && !('user' in result)) {
       return res.json(
         response({
           status: 1100,
@@ -22,7 +25,11 @@ module.exports = async (req, res, next) => {
         }),
       );
     }
-    req.user = result.user;
+    req.user = (result as {
+      user: {
+        id: number;
+      };
+    }).user;
     next();
   } catch (e) {
     console.log(e);
@@ -34,3 +41,5 @@ module.exports = async (req, res, next) => {
     );
   }
 };
+
+export default checkToken;

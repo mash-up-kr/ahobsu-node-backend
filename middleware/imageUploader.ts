@@ -1,11 +1,12 @@
-const AWS = require('aws-sdk');
-const formidable = require('formidable');
-const path = require('path');
-const fs = require('fs');
+import AWS from 'aws-sdk';
+import formidable from 'formidable';
+import path from 'path';
+import fs from 'fs';
+import { RequestResponseNext } from '../routes';
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-module.exports = async (req, res, next) => {
+const imageUploader: RequestResponseNext = async (req, res, next) => {
   const form = new formidable.IncomingForm();
   const file = await new Promise(function(resolve, reject) {
     form.parse(req, async (err, fields, files) => {
@@ -25,12 +26,12 @@ module.exports = async (req, res, next) => {
         const key = fileName + path.parse(file.name).ext;
         s3.upload(
           {
-            Bucket: process.env.buket,
+            Bucket: process.env.buket as string,
             Key: key,
             ACL: 'public-read',
             Body: fs.createReadStream(file.path),
           },
-          (error, result) => {
+          (error: any, result: any) => {
             if (error) {
               console.log(error);
               reject(error);
@@ -52,3 +53,5 @@ module.exports = async (req, res, next) => {
   req.body = { ...req.body, file };
   next();
 };
+
+export default imageUploader;

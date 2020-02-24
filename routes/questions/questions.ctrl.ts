@@ -1,6 +1,7 @@
-import db from '../../models';
-import response from '../../lib/response';
 import { RequestResponseNext } from '..';
+import response from '../../lib/response';
+import db from '../../models';
+
 const post: RequestResponseNext = async (req, res) => {
   try {
     if (isRequired(req.body)) {

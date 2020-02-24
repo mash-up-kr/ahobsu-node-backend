@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-
+import { Router } from 'express';
+import checkToken from '../../middleware/checkToken';
 import ctrl from './missions.ctrl';
-const checkToken = require('../../middleware/checkToken');
+
+const router = Router();
 
 router.get('/', checkToken, ctrl.missoins);
 router.get('/refresh', checkToken, ctrl.refresh);

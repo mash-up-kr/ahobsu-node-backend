@@ -1,17 +1,18 @@
+// tsconfig.json
 {
   "compilerOptions": {
     "target": "es2016",
     "lib": ["es2016"],
-    "outDir": "dist",
+    "outDir": "./dist",
     "typeRoots": ["./node_modules/@types"],
     "module": "commonjs",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true, // <-- ADD THIS LINE
+    "esModuleInterop": true,
     "allowJs": true,
     "strict": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

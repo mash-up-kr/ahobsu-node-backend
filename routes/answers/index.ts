@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import checkToken from '../../middleware/checkToken';
+import imageUploader from '../../middleware/imageUploader';
 import ctrl from './answers.ctrl';
-const checkToken = require('../../middleware/checkToken');
-const imageUploader = require('../../middleware/imageUploader');
 
 const router = Router();
 
