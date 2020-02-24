@@ -1,6 +1,7 @@
-import db from '../../models';
 import response from '../../lib/response';
 import { RequestResponseNext } from '..';
+import { isRequired } from './files.service';
+import { createFile, getFileById, updateFile, deleteFile } from './files.repository';
 
 // const date = async (req, res, next) => {
 //   const { date } = req.params;
@@ -78,51 +79,4 @@ export default {
   create,
   update,
   destroy,
-};
-
-// const getFileByDate = async date => {
-//   return db.files.findOne({ where: { date } });
-// };
-
-export const getFileByPart = async (part: number) => {
-  return db.files.findAll({
-    where: {
-      part,
-    },
-    order: db.sequelize.random(),
-    limit: 1,
-  });
-};
-export const getFileById = async (id: number) => {
-  return db.files.findOne({ where: { id } });
-};
-
-const isRequired = ({ cardUrl, part }: { cardUrl: string; part: number }) => {
-  return !cardUrl || !part;
-};
-
-const createFile = async ({ cardUrl, part }: { cardUrl: string; part: number }) => {
-  return db.files.create({ cardUrl, part });
-};
-
-const updateFile = ({ id, cardUrl, part }: { id: number; cardUrl: string; part: number }) => {
-  db.files.update(
-    {
-      cardUrl,
-      part,
-    },
-    {
-      where: {
-        id,
-      },
-    },
-  );
-};
-
-const deleteFile = async (id: number) => {
-  return db.files.destroy({
-    where: {
-      id,
-    },
-  });
 };

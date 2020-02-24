@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { getFileByPart } from '../files/files.controller';
-import { getMissionById } from '../missions/missions.controller';
+import { getFileByPart } from '../files/files.repository';
+import { getMissionById } from '../missions/missions.repository';
 import {
   getAnswers,
   getRecentAnswers,
