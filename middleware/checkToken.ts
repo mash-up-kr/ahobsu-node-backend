@@ -15,7 +15,11 @@ const checkToken: RequestResponseNext = async (req, res, next) => {
     );
   }
   try {
-    const result = await jwt.verify(token, process.env.privateKey as string);
+    const result = (await jwt.verify(token, process.env.privateKey as string)) as {
+      user: {
+        id: number;
+      };
+    };
     if (typeof result === 'object' && !('user' in result)) {
       return res.json(
         response({
@@ -24,11 +28,7 @@ const checkToken: RequestResponseNext = async (req, res, next) => {
         }),
       );
     }
-    req.user = (result as {
-      user: {
-        id: number;
-      };
-    }).user;
+    req.user = result.user;
     next();
   } catch (e) {
     console.log(e);

@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken');
-
-import response from '../../lib/response';
+import jwt from 'jsonwebtoken';
 import { RequestResponseNext } from '..';
-import { getUserBySnsIdAndSnsType, createUser } from '../users/users.ctrl';
+import response from '../../lib/response';
+import { createUser, getUserBySnsIdAndSnsType } from '../users/users.ctrl';
 
 const refresh: RequestResponseNext = async (req, res) => {
   try {
@@ -10,7 +9,7 @@ const refresh: RequestResponseNext = async (req, res) => {
     if (!token) {
       return res.json(response({ status: 400, message: '토큰이 필요합니다.' }));
     }
-    const result = jwt.verify(token, process.env.privateKey);
+    const result = jwt.verify(token, process.env.privateKey as string) as { snsId: string; snsType: string };
     if (isRequired(result)) {
       return res.json(response({ status: 1100, message: '올바르지 못한 토큰 입니다.' }));
     }
@@ -30,10 +29,10 @@ const refresh: RequestResponseNext = async (req, res) => {
 const create: RequestResponseNext = async (req, res) => {
   try {
     const { snsType } = req.body;
-    if (isRequired(req.body)) {
+    const token = req.headers.authorization;
+    if (isRequired(req.body) || !token) {
       return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
     }
-    const token = req.headers.authorization;
     const snsData =
       process.env.NODE_ENV === 'test'
         ? {
@@ -49,7 +48,7 @@ const create: RequestResponseNext = async (req, res) => {
             auth_time: 1581254190,
           }
         : await jwt.decode(token);
-    const { sub: snsId, email } = snsData;
+    const { sub: snsId, email } = snsData as { sub: string; email: string };
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
@@ -75,7 +74,7 @@ const createToken = async ({ id, snsId, snsType }: { id: number; snsId: string; 
         id,
       },
     },
-    process.env.privateKey,
+    process.env.privateKey as string,
     { expiresIn: 7 * 24 * 60 * 60 },
   );
   const refreshToken = await jwt.sign(
@@ -83,7 +82,7 @@ const createToken = async ({ id, snsId, snsType }: { id: number; snsId: string; 
       snsId,
       snsType,
     },
-    process.env.privateKey,
+    process.env.privateKey as string,
     { expiresIn: 30 * 24 * 60 * 60 },
   );
   return { accessToken, refreshToken };
