@@ -13,24 +13,26 @@ import {
   updateAnswer,
   deleteAnswer,
 } from './answers.repository';
-import { getMonthDate, isRequiredoneOfThem } from './answers.service';
+import { getMonthDate, isRequiredoneOfThem, hasSixParsAndNotToday } from './answers.service';
+import { hasUserIdInRequest } from '../users/users.service';
+import { getDateString } from '../../lib/date';
+import { Answers } from '../../models/answer';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
-    let userId = 0;
-    if (req.user) {
-      const { id } = req.user;
-      userId = id;
+    const userId = hasUserIdInRequest(req);
+    if (!userId) {
+      return res.json(response({ status: 400, message: '유저 아이디가 존재하지 않습니다. 토큰을 확인해 주세요.' }));
     }
-    const today = moment().format('YYYY-MM-DD');
+    const today = getDateString();
     const answers = await getAnswers({ userId });
-    let recentAnswers = [] as any;
+    let recentAnswers: Answers[] = [];
     if (answers[0] && answers[0].setDate) {
       recentAnswers = await getRecentAnswers({ userId, setDate: answers[0].setDate });
       if (!recentAnswers) recentAnswers = [];
     }
-    // 6개의 파츠를 모두 모았다면 새로운 것을 준다
-    if (recentAnswers.length === 6 && recentAnswers[5] && recentAnswers[5].data !== moment().format('YYYY-MM-DD')) {
+    // 6개의 파츠를 모두 모은 날이 오늘이 아니면 새로운 것을 준다
+    if (hasSixParsAndNotToday(recentAnswers)) {
       recentAnswers = [];
     }
     res.json(response({ data: { today, answers: recentAnswers } }));

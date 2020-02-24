@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { Answers } from '../../models/answer';
+import { getDateString } from '../../lib/date';
 
 export const getMonthDate = (queryDate: string | null) => {
   const now = !!queryDate ? new Date(queryDate) : new Date();
@@ -9,4 +11,8 @@ export const getMonthDate = (queryDate: string | null) => {
 
 export const isRequiredoneOfThem = ({ imageUrl, content }: { imageUrl: string; content: string }) => {
   return !imageUrl && !content;
+};
+
+export const hasSixParsAndNotToday = (answers: Answers[]) => {
+  return answers.length === 6 && answers[5] && answers[5].date !== getDateString();
 };

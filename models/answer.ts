@@ -39,9 +39,9 @@ export interface Answers {
   id?: number;
   userId: number;
   missionId: number;
-  imageUrl: string | null;
+  imageUrl?: string;
   cardUrl?: string;
-  content: string | null;
+  content?: string;
   date?: string;
   setDate?: string;
   mission?: Mission;

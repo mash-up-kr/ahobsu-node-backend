@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import db from '../../models';
 import { Answers } from '../../models/answer';
 
-export const getAnswers = async ({ userId }: { userId: number }) => {
+export const getAnswers = async ({ userId }: { userId: number }): Promise<Answers[]> => {
   return db.answers.findAll({
     where: {
       userId,
@@ -97,8 +97,14 @@ export const deleteAnswer = async (id: number) => {
   });
 };
 
-export const getRecentAnswers = async ({ userId, setDate }: { userId: number; setDate: string }) => {
-  db.answers.findAll({
+export const getRecentAnswers = async ({
+  userId,
+  setDate,
+}: {
+  userId: number;
+  setDate: string;
+}): Promise<Answers[]> => {
+  return db.answers.findAll({
     where: {
       userId,
       setDate,
