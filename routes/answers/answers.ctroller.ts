@@ -109,11 +109,7 @@ const create: RequestResponseNext = async (req, res, next) => {
 const update: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
-    let userId = 0;
-    if (req.user) {
-      const { id } = req.user;
-      userId = id;
-    }
+    const userId = req.user!.id;
     const { content, missionId } = req.body;
     let { file: imageUrl } = req.body;
 
@@ -149,13 +145,8 @@ const update: RequestResponseNext = async (req, res, next) => {
 };
 const destroy: RequestResponseNext = async (req, res, next) => {
   try {
-    let userId = 0;
-    if (req.user) {
-      const { id } = req.user;
-      userId = id;
-    }
-
     const id = parseInt(req.params.id, 10);
+    const userId = req.user!.id;
     if (isNaN(id)) {
       return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
     }
