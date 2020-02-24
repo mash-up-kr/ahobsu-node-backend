@@ -94,7 +94,6 @@ const create: RequestResponseNext = async (req, res, next) => {
     if (recentAnswers.length === 6 || recentAnswers.length === 0) {
       setDate = moment().format('YYYY-MM-DD');
     } else {
-      console.log(999, recentAnswers);
       const answer = recentAnswers[0];
       setDate = answer.setDate;
     }
