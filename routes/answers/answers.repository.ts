@@ -67,9 +67,9 @@ export const createAnswer = async ({ userId, missionId, imageUrl, cardUrl, conte
   });
 };
 
-export const getAnswerById = async (id: number) => {
+export const getAnswerByIdAndUserId = async ({ id, userId }: { id: number; userId: number }) => {
   return db.answers.findOne({
-    where: { id },
+    where: { id, userId },
     include: [
       {
         model: db.missions,
