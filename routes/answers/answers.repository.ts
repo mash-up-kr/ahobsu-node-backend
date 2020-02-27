@@ -28,7 +28,6 @@ export const getMonthAnswers = ({
         [Op.lt]: lastDate,
       },
     },
-    group: 'setDate',
     include: [{ all: true }],
   });
 };

@@ -40,7 +40,11 @@ const month: RequestResponseNext = async (req, res, next) => {
     const now = getNow(queryDate);
     const { firstDate, lastDate } = getMonthDate(now);
     const userId = req.user!.id;
-    const answers = await getMonthAnswers({ firstDate, lastDate, userId });
+    const notGorupAnswers = await getMonthAnswers({ firstDate, lastDate, userId });
+    const answers = notGorupAnswers.reduce(
+      (acc: any, it: Answers) => ({ ...acc, [it.setDate!]: [...(acc[it.setDate!] || []), it] }),
+      {},
+    );
     res.json(response({ data: { date: firstDate, answers } }));
   } catch (error) {
     console.log(error.message);
