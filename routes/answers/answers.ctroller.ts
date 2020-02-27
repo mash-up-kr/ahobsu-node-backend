@@ -67,10 +67,10 @@ const create: RequestResponseNext = async (req, res, next) => {
     const setDate = getSetDate(recentAnswers);
     const partNumber = getPartNumber(recentAnswers);
     const cardFile = await getFileByPart(partNumber);
-    const { cardUrl } = cardFile;
+    const { id: fileId } = cardFile;
     const { content, missionId, file: imageUrl } = req.body;
     const date = getDateString();
-    const { id } = await createAnswer({ userId, missionId, imageUrl, cardUrl, content, date, setDate });
+    const { id } = await createAnswer({ userId, missionId, imageUrl, fileId, content, date, setDate });
     {
       const answer = await getAnswerByIdAndUserId({ id, userId });
       return res.json(response({ status: 201, data: answer }));

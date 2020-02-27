@@ -19,9 +19,9 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
     },
     {},
   );
-  // Answer.associate = (models) => {
-  //   // associations can be defined here
-  // };
+  files.associate = (db: any) => {
+    db.files.hasMany(db.answers);
+  };
   return files;
 };
 

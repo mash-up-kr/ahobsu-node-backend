@@ -1,5 +1,6 @@
 import { Sequelize, SequelizeStatic } from 'sequelize';
 import { Mission } from './mission';
+import { File } from './file';
 
 export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   const answers = Sequelize.define(
@@ -17,10 +18,10 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
       missionId: {
         type: DataTypes.INTEGER,
       },
-      imageUrl: {
-        type: DataTypes.STRING,
+      fileId: {
+        type: DataTypes.INTEGER,
       },
-      cardUrl: {
+      imageUrl: {
         type: DataTypes.STRING,
       },
       content: { type: DataTypes.STRING },
@@ -31,6 +32,7 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
   );
   answers.associate = (db: any) => {
     db.answers.belongsTo(db.missions);
+    db.answers.belongsTo(db.files);
   };
   return answers;
 };
@@ -39,10 +41,11 @@ export interface Answers {
   id?: number;
   userId: number;
   missionId: number;
+  fileId?: number;
   imageUrl?: string;
-  cardUrl?: string;
   content?: string;
   date?: string;
   setDate?: string;
   mission?: Mission;
+  file?: File;
 }

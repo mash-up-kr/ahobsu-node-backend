@@ -9,7 +9,6 @@ import { hasMissionKeys, postMission } from './missions.test';
 import { signin } from './signin.test';
 import { checkStatus, Request } from './util';
 
-
 let token = '';
 const req = request(app);
 
@@ -133,7 +132,6 @@ const hasAnswerKeys = (data: Answers) => {
   if (!('userId' in data)) throw new Error('missing userId key');
   if (!('missionId' in data)) throw new Error('missing missionId key');
   if (!('imageUrl' in data)) throw new Error('missing imageUrl key');
-  if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
   if (!('setDate' in data)) throw new Error('missing setDate key');
