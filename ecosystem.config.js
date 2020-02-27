@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'Yuni-Q_TOAST',
+      name: 'ahobsu-node-backend',
       script: './dist/bin/www.js',
       exec_mode: 'cluster',
       instances: '0',
