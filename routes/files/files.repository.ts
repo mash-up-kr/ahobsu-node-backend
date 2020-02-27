@@ -5,7 +5,7 @@ import db from '../../models';
 // };
 
 export const getFileByPart = async (part: number) => {
-  return db.files.findAll({
+  return db.files.findOne({
     where: {
       part,
     },
@@ -13,6 +13,7 @@ export const getFileByPart = async (part: number) => {
     limit: 1,
   });
 };
+
 export const getFileById = async (id: number) => {
   return db.files.findOne({ where: { id } });
 };
