@@ -7,7 +7,8 @@ import { getQuestions } from './questions.repository';
 const get: RequestResponseNext = async (req, res) => {
   try {
     const question = await getQuestions();
-    res.json(response({ status: 201, data: question }));
+    const sum = question.length;
+    res.json(response({ status: 201, data: { sum, question } }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
