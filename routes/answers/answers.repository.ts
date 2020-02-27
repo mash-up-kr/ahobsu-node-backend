@@ -109,5 +109,8 @@ export const getRecentAnswers = async ({
       userId,
       setDate,
     },
+    include: {
+      model: db.missions,
+    },
   });
 };
