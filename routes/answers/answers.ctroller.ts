@@ -45,7 +45,8 @@ const month: RequestResponseNext = async (req, res, next) => {
       (acc: any, it: Answers) => ({ ...acc, [it.setDate!]: [...(acc[it.setDate!] || []), it] }),
       {},
     );
-    res.json(response({ data: { date: firstDate, answers } }));
+    const monthAnswer = Object.values(answers);
+    res.json(response({ data: { date: firstDate, monthAnswer } }));
   } catch (error) {
     console.log(error.message);
     res.json(response({ status: 500, message: error.message }));
