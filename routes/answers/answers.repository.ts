@@ -8,11 +8,7 @@ export const getAnswerByUserId = async ({ userId }: { userId: number }): Promise
       userId,
     },
     order: [['setDate', 'DESC']],
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
+    include: [{ all: true }],
   });
 };
 export const getMonthAnswers = ({
@@ -33,11 +29,7 @@ export const getMonthAnswers = ({
       },
     },
     group: 'setDate',
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
+    include: [{ all: true }],
   });
 };
 
@@ -47,11 +39,7 @@ export const getAnswerByDateAndUserId = async ({ userId, date }: { userId: numbe
       userId,
       date,
     },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
+    include: [{ all: true }],
   });
 };
 
@@ -70,11 +58,7 @@ export const createAnswer = async ({ userId, missionId, imageUrl, fileId, conten
 export const getAnswerByIdAndUserId = async ({ id, userId }: { id: number; userId: number }) => {
   return db.answers.findOne({
     where: { id, userId },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
+    include: [{ all: true }],
   });
 };
 
@@ -109,8 +93,6 @@ export const getRecentAnswers = async ({
       userId,
       setDate,
     },
-    include: {
-      model: db.missions,
-    },
+    include: [{ all: true }],
   });
 };

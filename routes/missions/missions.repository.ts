@@ -26,11 +26,7 @@ export const getNewMission = async (userId: number) => {
         [Op.gt]: oneYearAgo,
       },
     },
-    include: [
-      {
-        model: db.missions,
-      },
-    ],
+    include: [{ all: true }],
   });
   const ids = [] as number[];
   oneYearData.forEach((data: Answers) => {
