@@ -33,6 +33,7 @@ const week: RequestResponseNext = async (req, res, next) => {
     res.json(response({ status: 500, message: error.message }));
   }
 };
+
 const month: RequestResponseNext = async (req, res, next) => {
   try {
     const { date: queryDate } = req.query;
@@ -79,6 +80,7 @@ const create: RequestResponseNext = async (req, res, next) => {
     return res.json(response({ status: 500, message: e.message }));
   }
 };
+
 const update: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
@@ -97,6 +99,7 @@ const update: RequestResponseNext = async (req, res, next) => {
     return res.json(response({ status: 500, message: e.message }));
   }
 };
+
 const destroy: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);

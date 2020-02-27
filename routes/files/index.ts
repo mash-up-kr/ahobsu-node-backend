@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import checkToken from '../../middleware/checkToken';
-import imageUploader from '../../middleware/imageUploader';
+import imageUploaderLiveName from '../../middleware/imageUploaderLiveName';
 import filesController from './files.controller';
 
 const router = Router();
 
 // router.get('/:date', checkToken, ctrl.date);
-router.post('/', checkToken, imageUploader, filesController.create);
-router.put('/:id', checkToken, imageUploader, filesController.update);
-router.delete('/:id', checkToken, filesController.destroy);
+router.post('/', checkToken, imageUploaderLiveName, filesController.create);
+router.put('/:id', checkToken, imageUploaderLiveName, filesController.update);
+router.delete('/:id', checkToken, imageUploaderLiveName, filesController.destroy);
 
 export default router;
