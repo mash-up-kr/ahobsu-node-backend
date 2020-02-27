@@ -2,6 +2,17 @@ import { RequestResponseNext } from '..';
 import response from '../../lib/response';
 import { isRequired } from './questions.service';
 import { createQuestion } from './questions.repository';
+import { getQuestions } from './questions.repository';
+
+const get: RequestResponseNext = async (req, res) => {
+  try {
+    const question = await getQuestions();
+    res.json(response({ status: 201, data: question }));
+  } catch (e) {
+    console.log(e);
+    res.json(response({ status: 500, message: e.message }));
+  }
+};
 
 const post: RequestResponseNext = async (req, res) => {
   try {
@@ -16,4 +27,4 @@ const post: RequestResponseNext = async (req, res) => {
   }
 };
 
-export default { post };
+export default { get, post };

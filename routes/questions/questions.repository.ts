@@ -5,3 +5,6 @@ export const createQuestion = async ({ content }: { content: string }) => {
     content,
   });
 };
+export const getQuestions = async () => {
+  return db.questions.findAll();
+};
