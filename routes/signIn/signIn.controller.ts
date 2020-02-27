@@ -50,6 +50,9 @@ const create: RequestResponseNext = async (req, res) => {
           }
         : await jwt.decode(token);
     const { sub: snsId, email } = snsData as { sub: string; email: string };
+    if (!email || !snsId) {
+      return res.json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
+    }
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
