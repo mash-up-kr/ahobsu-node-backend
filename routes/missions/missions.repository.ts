@@ -8,11 +8,6 @@ export const getMissionById = async (id: number) => {
   return db.missions.findOne({ where: { id } });
 };
 
-export const getOldMission = (user: { mission: string }) => {
-  const { mission } = user;
-  return mission && JSON.parse(mission);
-};
-
 export const getNewMission = async (userId: number) => {
   const date = moment().format('YYYY-MM-DD');
   const oneYearAgo = moment()

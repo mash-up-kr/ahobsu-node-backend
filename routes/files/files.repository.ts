@@ -1,9 +1,5 @@
 import db from '../../models';
 
-// const getFileByDate = async date => {
-//   return db.files.findOne({ where: { date } });
-// };
-
 export const getFileByPart = async (part: number) => {
   return db.files.findOne({
     where: {

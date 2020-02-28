@@ -32,14 +32,6 @@ export const checkMissionId: RequestResponseNext = async (req, res, next) => {
   next();
 };
 
-export const checkId: RequestResponseNext = async (req, res, next) => {
-  const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
-  next();
-};
-
 export const existAnswerByIdAndUserId: RequestResponseNext = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const userId = req.user!.id;

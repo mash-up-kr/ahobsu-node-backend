@@ -1,9 +1,9 @@
 import { Router } from 'express';
+import checkId from '../../middleware/checkId';
 import checkToken from '../../middleware/checkToken';
 import imageUploader from '../../middleware/imageUploader';
 import answersController from './answers.ctroller';
 import {
-  checkId,
   checkMissionId,
   checkRequiredoneOfThem,
   existAnswerByDateAndUserId,

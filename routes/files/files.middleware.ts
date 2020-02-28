@@ -19,14 +19,6 @@ export const checkPart: RequestResponseNext = (req, res, next) => {
   next();
 };
 
-export const checkId: RequestResponseNext = (req, res, next) => {
-  const id = parseInt(req.params.id, 10);
-  if (isNaN(id)) {
-    return res.json(response({ status: 412, message: 'id가 올바르지 않습니다.' }));
-  }
-  next();
-};
-
 export const checkFile: RequestResponseNext = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const file = await getFileById(id);

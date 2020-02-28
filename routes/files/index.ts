@@ -2,7 +2,8 @@ import { Router } from 'express';
 import checkToken from '../../middleware/checkToken';
 import imageUploaderLiveName from '../../middleware/imageUploaderLiveName';
 import filesController from './files.controller';
-import { checkRequire, checkPart, checkId, checkFile } from './files.middleware';
+import { checkRequire, checkPart, checkFile } from './files.middleware';
+import checkId from '../../middleware/checkId';
 
 const router = Router();
 
