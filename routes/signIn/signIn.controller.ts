@@ -6,15 +6,11 @@ import { isRequired, createToken, isSignUp } from './signIn.service';
 
 const refresh: RequestResponseNext = async (req, res) => {
   try {
-    const { authorization: token } = req.headers;
-    if (!token) {
-      return res.json(response({ status: 400, message: '토큰이 필요합니다.' }));
-    }
-    const result = jwt.verify(token, process.env.privateKey as string) as { snsId: string; snsType: string };
+    const token = req.headers.authorization;
+    const result = jwt.verify(token!, process.env.privateKey as string) as { snsId: string; snsType: string };
     if (isRequired(result)) {
       return res.json(response({ status: 1100, message: '올바르지 못한 토큰 입니다.' }));
     }
-
     const user = await getUserBySnsIdAndSnsType(result);
     if (!user) {
       return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
@@ -31,9 +27,7 @@ const create: RequestResponseNext = async (req, res) => {
   try {
     const { snsType } = req.body;
     const token = req.headers.authorization;
-    if (isRequired(req.body) || !token) {
-      return res.json(response({ status: 412, message: '필수 파라이터가 없습니다.' }));
-    }
+
     const snsData =
       process.env.NODE_ENV === 'test'
         ? {
@@ -48,7 +42,7 @@ const create: RequestResponseNext = async (req, res) => {
             is_private_email: 'true',
             auth_time: 1581254190,
           }
-        : await jwt.decode(token);
+        : await jwt.decode(token!);
     const { sub: snsId, email } = snsData as { sub: string; email: string };
     if (!email || !snsId) {
       return res.json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
