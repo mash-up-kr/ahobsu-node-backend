@@ -109,11 +109,10 @@ const update: RequestResponseNext = async (req, res, next) => {
     const answer = await getAnswerByIdAndUserId({ id, userId });
     const imageUrl = file ? file : answer.imageUrl;
     const { content, missionId } = req.body;
-    const mission = await getMissionById(missionId);
-    if (!!mission.isImage && !imageUrl) {
+    if (!!answer.mission.isImage && !imageUrl) {
       return res.json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
     }
-    if (!!mission.isContent && !content) {
+    if (!!answer.mission.isContent && !content) {
       return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     await updateAnswer({ id, userId, missionId, imageUrl, content });
@@ -123,6 +122,7 @@ const update: RequestResponseNext = async (req, res, next) => {
     }
   } catch (e) {
     console.log(e);
+    console.log(1111, e.message);
     return res.json(response({ status: 500, message: e.message }));
   }
 };
