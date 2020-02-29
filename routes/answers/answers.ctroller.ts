@@ -61,12 +61,12 @@ const date: RequestResponseNext = async (req, res, next) => {
   res.json(response({ data: answer }));
 };
 
-const get: RequestResponseNext = async (req, res, next) => {
-  const userId = req.user!.id;
-  const id = parseInt(req.params.id, 10);
-  const answer = await getAnswerByIdAndUserId({ id, userId });
-  res.json(response({ data: answer }));
-};
+// const get: RequestResponseNext = async (req, res, next) => {
+//   const userId = req.user!.id;
+//   const id = parseInt(req.params.id, 10);
+//   const answer = await getAnswerByIdAndUserId({ id, userId });
+//   res.json(response({ data: answer }));
+// };
 
 const create: RequestResponseNext = async (req, res, next) => {
   try {
@@ -122,7 +122,6 @@ const update: RequestResponseNext = async (req, res, next) => {
     }
   } catch (e) {
     console.log(e);
-    console.log(1111, e.message);
     return res.json(response({ status: 500, message: e.message }));
   }
 };
@@ -142,7 +141,7 @@ export default {
   week,
   month,
   date,
-  get,
+  // get,
   create,
   update,
   destroy,

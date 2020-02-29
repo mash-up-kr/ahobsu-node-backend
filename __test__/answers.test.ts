@@ -4,11 +4,11 @@ import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
 import { Answers } from '../models/answer';
-import { postFile } from './files.test';
+import { postFile, hasFileKeys } from './files.test';
 import { hasMissionKeys, postMission } from './missions.test';
 import { signin } from './signin.test';
 import { checkStatus, Request } from './util';
-import { getDateString } from '../lib/date';
+import { getDateString, getFirstDate, getNow } from '../lib/date';
 
 let token = '';
 const req = request(app);
@@ -109,6 +109,7 @@ describe('answers', () => {
     checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.content).toBe(null);
     expect(response.body.data.imageUrl).toBeTruthy();
     expect(response.body.data.missionId).toBe(missionId);
@@ -124,6 +125,7 @@ describe('answers', () => {
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.imageUrl.length).toBeTruthy();
   });
 
@@ -150,6 +152,7 @@ describe('answers', () => {
     checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.imageUrl.length).toBeTruthy();
     expect(response.body.data.missionId).toBe(missionId);
@@ -166,6 +169,7 @@ describe('answers', () => {
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.imageUrl.length).toBeTruthy();
   });
@@ -183,41 +187,54 @@ describe('answers', () => {
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
   });
 
   it('Get /api/v1/answers/week', async () => {
     const response = await getAnswersWeek({ req, token });
     checkStatus(response);
     expect(response.body.data.today).toBeTruthy();
+    checkStatus(response);
+    expect(hasAnswerKeys(response.body.data.answers[0]));
+    expect(hasMissionKeys(response.body.data.answers[0].mission));
+    expect(hasFileKeys(response.body.data.answers[0].file));
   });
 
   it('Get /api/v1/answers/month', async () => {
-    const today = moment();
+    const firstDate = getFirstDate(getNow());
     const response = await getAnswersMonthByDate({ req, token, date: '' });
     checkStatus(response);
-    // expect(response.body.data.answers.length > 0).toBeTruthy();
-    expect(response.body.data.date).toBe(`${today.format('YYYY-MM')}-01`);
-    // expect(hasAnswerKeys(response.body.data.answers[0][0]));
-    // expect(hasMissionKeys(response.body.data.answers[0][0].mission));
+    expect(response.body.data.date).toBe(firstDate);
+    expect(hasAnswerKeys(response.body.data.monthAnswer[0][0]));
+    expect(hasMissionKeys(response.body.data.monthAnswer[0][0].mission));
+    expect(hasFileKeys(response.body.data.monthAnswer[0][0].file));
   });
 
   it('Get /api/v1/answers/month?date={date}', async () => {
-    const month = moment().add(-1, 'months');
-    const date = month.format('YYYY-MM-DD');
-
-    const haveDateResponse = await getAnswersMonthByDate({ req, token, date });
+    const firstDate = getFirstDate(getNow(getDateString({ month: -1 })));
+    const haveDateResponse = await getAnswersMonthByDate({ req, token, date: firstDate });
     checkStatus(response);
-    // expect(haveDateResponse.body.data.answers.length > 0).toBeTruthy();
-    expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
+    expect(haveDateResponse.body.data.date).toBe(firstDate);
+    expect(haveDateResponse.body.data.monthAnswer.length).toBe(0);
   });
 
   it('Get /api/v1/answers/{date}', async () => {
-    const date = moment().format('YYYY-MM-DD');
+    const date = getDateString({});
     response = await getAnswerByDate({ req, date, token });
     checkStatus(response);
+    console.log(1111111111, response.body);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
   });
+
+  // it('Get /api/v1/answers/{id}', async () => {
+  //   const { id } = response.body.data;
+  //   response = await getAnswerById({ req, id, token });
+  //   expect(hasAnswerKeys(response.body.data));
+  //   expect(hasMissionKeys(response.body.data.mission));
+  //   expect(hasFileKeys(response.body.data.file));
+  // });
 
   it('Delete /api/v1/answers/{id}', async () => {
     const { id } = response.body.data;
@@ -245,6 +262,9 @@ const deleteAnswerById = async ({ req, id, token }: { req: Request; id: number; 
   return req.delete(`/api/v1/answers/${id}`).set('Authorization', token);
 };
 
+const getAnswerById = async ({ req, id, token }: { req: Request; id: number; token: string }) => {
+  return req.get(`/api/v1/answers/${id}`).set('Authorization', token);
+};
 const postAnswer = async ({
   req,
   token,

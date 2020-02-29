@@ -26,7 +26,7 @@ export const getLastDate = (now: Date) => {
   return moment(new Date(now.getFullYear(), now.getMonth() + 1, 0)).format('YYYY-MM-DD');
 };
 
-export const getNow = (date: string | null) => {
+export const getNow = (date?: string | null) => {
   return !!date ? new Date(date) : new Date();
 };
 

@@ -24,8 +24,8 @@ export const getMonthAnswers = ({
     where: {
       userId,
       setDate: {
-        [Op.gt]: firstDate,
-        [Op.lt]: lastDate,
+        [Op.gte]: firstDate,
+        [Op.lte]: lastDate,
       },
     },
     include: [{ all: true }],

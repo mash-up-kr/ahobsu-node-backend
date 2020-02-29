@@ -47,7 +47,7 @@ describe('files', () => {
   });
 });
 
-const hasFileKeys = (data: File) => {
+export const hasFileKeys = (data: File) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('cardUrl' in data)) throw new Error('missing cardUrl key');
   if (!('part' in data)) throw new Error('missing part key');
