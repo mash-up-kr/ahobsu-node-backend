@@ -48,13 +48,7 @@ describe('answers', () => {
   });
   it('Post /api/v1/answers with content', async () => {
     // 기존에 데이터가 있다면 제거
-    response = await getAnswerByDate({ req, date, token });
-    checkStatus(response);
-    if (response.body.data && response.body.data.id) {
-      const { id } = response.body.data;
-      response = await deleteAnswerById({ req, id, token });
-      checkStatus(response, 204);
-    }
+    await checkAnswer();
 
     // 미션 생성
     const title = '안녕';
@@ -83,53 +77,19 @@ describe('answers', () => {
     expect(response.body.data.mission.cycle).toBe(cycle);
   });
 
-  it('Post /api/v1/answers with content and file', async () => {
-    // 기존에 데이터가 있다면 제거
-    response = await getAnswerByDate({ req, date, token });
+  it('Put /api/v1/answers/{id} content', async () => {
+    const content = 'bbb';
+    const { id } = response.body.data;
+    response = await putAnswer({ req, token, id, content });
     checkStatus(response);
-    if (response.body.data && response.body.data.id) {
-      const { id } = response.body.data;
-      response = await deleteAnswerById({ req, id, token });
-      checkStatus(response, 204);
-    }
-
-    // 미션 생성
-    const title = '안녕';
-    const isContent = false;
-    const isImage = true;
-    const cycle = 1;
-    response = await postMission({ req, token, title, isContent, isImage, cycle });
-    checkStatus(response, 201);
-    expect(response.body.data.title).toBe(title);
-    expect(response.body.data.isContent).toBe(isContent);
-    expect(response.body.data.isImage).toBe(isImage);
-    expect(response.body.data.cycle).toBe(cycle);
-
-    // content, file
-    missionId = response.body.data.id;
-    const content = 'aaa';
-    response = await postAnswer({ req, token, missionId, content, file });
-    checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
-    expect(response.body.data.imageUrl.length).toBeTruthy();
-    expect(response.body.data.missionId).toBe(missionId);
-    expect(response.body.data.mission.title).toBe(title);
-    expect(response.body.data.mission.isContent).toBe(isContent);
-    expect(response.body.data.mission.isImage).toBe(isImage);
-    expect(response.body.data.mission.cycle).toBe(cycle);
   });
 
   it('Post /api/v1/answers with file', async () => {
     // 기존에 데이터가 있다면 제거
-    response = await getAnswerByDate({ req, date, token });
-    checkStatus(response);
-    if (response.body.data && response.body.data.id) {
-      const { id } = response.body.data;
-      response = await deleteAnswerById({ req, id, token });
-      checkStatus(response, 204);
-    }
+    await checkAnswer();
 
     // 미션 생성
     const title = '안녕';
@@ -158,6 +118,58 @@ describe('answers', () => {
     expect(response.body.data.mission.cycle).toBe(cycle);
   });
 
+  it('Put /api/v1/answers/{id} file', async () => {
+    const { id } = response.body.data;
+    response = await putAnswer({ req, token, id, file });
+    checkStatus(response);
+    expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(response.body.data.imageUrl.length).toBeTruthy();
+  });
+
+  it('Post /api/v1/answers with content and file', async () => {
+    // 기존에 데이터가 있다면 제거
+    await checkAnswer();
+
+    // 미션 생성
+    const title = '안녕';
+    const isContent = true;
+    const isImage = true;
+    const cycle = 1;
+    response = await postMission({ req, token, title, isContent, isImage, cycle });
+    checkStatus(response, 201);
+    expect(response.body.data.title).toBe(title);
+    expect(response.body.data.isContent).toBe(isContent);
+    expect(response.body.data.isImage).toBe(isImage);
+    expect(response.body.data.cycle).toBe(cycle);
+
+    // content, file
+    missionId = response.body.data.id;
+    const content = 'aaa';
+    response = await postAnswer({ req, token, missionId, content, file });
+    checkStatus(response, 201);
+    expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(response.body.data.content).toBe(content);
+    expect(response.body.data.imageUrl.length).toBeTruthy();
+    expect(response.body.data.missionId).toBe(missionId);
+    expect(response.body.data.mission.title).toBe(title);
+    expect(response.body.data.mission.isContent).toBe(isContent);
+    expect(response.body.data.mission.isImage).toBe(isImage);
+    expect(response.body.data.mission.cycle).toBe(cycle);
+  });
+
+  it('Put /api/v1/answers/{id} content and file', async () => {
+    const content = 'bbb';
+    const { id } = response.body.data;
+    response = await putAnswer({ req, token, id, content, file });
+    checkStatus(response);
+    expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(response.body.data.content).toBe(content);
+    expect(response.body.data.imageUrl.length).toBeTruthy();
+  });
+
   it('Post /api/v1/answers Exist', async () => {
     const content = 'aaa';
     const existResponse = await postAnswer({ req, token, missionId, content });
@@ -171,16 +183,6 @@ describe('answers', () => {
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
-  });
-
-  it('Put /api/v1/answers/{id}', async () => {
-    const content = 'bbb';
-    const { id } = response.body.data;
-    response = await putAnswer({ req, token, id, content, file });
-    checkStatus(response);
-    expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.mission));
-    expect(response.body.data.content).toBe(content);
   });
 
   it('Get /api/v1/answers/week', async () => {
@@ -207,6 +209,21 @@ describe('answers', () => {
     checkStatus(response);
     // expect(haveDateResponse.body.data.answers.length > 0).toBeTruthy();
     expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
+  });
+
+  it('Get /api/v1/answers/{date}', async () => {
+    const date = moment().format('YYYY-MM-DD');
+    response = await getAnswerByDate({ req, date, token });
+    checkStatus(response);
+    expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
+  });
+
+  it('Delete /api/v1/answers/{id}', async () => {
+    const { id } = response.body.data;
+    response = await deleteAnswerById({ req, id, token });
+    checkStatus(response, 204);
+    expect(response.body.message).toBe('답변을 삭제 했습니다.');
   });
 });
 
@@ -308,4 +325,16 @@ const getAnswersWeek = async ({ req, token }: { req: Request; token: string }) =
 
 const getAnswersMonthByDate = async ({ req, token, date }: { req: Request; token: string; date: string }) => {
   return req.get(`/api/v1/answers/month${date ? `?date=${date}` : ''}`).set('Authorization', token);
+};
+
+const checkAnswer = async () => {
+  // 기존에 데이터가 있다면 제거
+  const date = getDateString({});
+  let response = await getAnswerByDate({ req, date, token });
+  checkStatus(response);
+  if (response.body.data && response.body.data.id) {
+    const { id } = response.body.data;
+    response = await deleteAnswerById({ req, id, token });
+    checkStatus(response, 204);
+  }
 };
