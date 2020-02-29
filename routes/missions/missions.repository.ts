@@ -1,54 +1,10 @@
 import moment from 'moment';
 import { Op } from 'sequelize';
 import db from '../../models';
-import { Answers } from '../../models/answer';
 import { Mission } from '../../models/mission';
 
 export const getMissionById = async (id: number) => {
   return db.missions.findOne({ where: { id } });
-};
-
-export const getNewMission = async (userId: number) => {
-  const date = moment().format('YYYY-MM-DD');
-  const oneYearAgo = moment()
-    .add(-1, 'years')
-    .format('YYYY-MM-DD');
-
-  const oneYearData = await db.answers.findAll({
-    where: {
-      userId,
-      date: {
-        [Op.gt]: oneYearAgo,
-      },
-    },
-    include: [{ all: true }],
-  });
-  const ids = [] as number[];
-  oneYearData.forEach((data: Answers) => {
-    if (
-      !!data &&
-      !!data.date &&
-      data.mission &&
-      data.mission.cycle &&
-      data.mission.id &&
-      moment(data.date)
-        .add(data.mission.cycle, 'days')
-        .format('YYYY-MM-DD') >= date
-    ) {
-      ids.push(data.mission.id);
-    }
-  });
-
-  const missions = db.missions.findAll({
-    where: {
-      id: {
-        [Op.notIn]: ids,
-      },
-    },
-    order: db.sequelize.random(),
-    limit: 3,
-  });
-  return missions;
 };
 
 export const setMissionsInUser = async ({ missions, id }: { id: number; missions: Mission[] }) => {
@@ -95,5 +51,17 @@ export const deleteMission = async (id: number) => {
     where: {
       id,
     },
+  });
+};
+
+export const getMissionsByNotInIdAndLimit = async ({ ids, limit = 3 }: { ids: number[]; limit?: number }) => {
+  return db.missions.findAll({
+    where: {
+      id: {
+        [Op.notIn]: ids,
+      },
+    },
+    order: db.sequelize.random(),
+    limit: limit,
   });
 };

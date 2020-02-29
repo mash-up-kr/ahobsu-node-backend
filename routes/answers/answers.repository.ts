@@ -95,3 +95,21 @@ export const getRecentAnswers = async ({
     include: [{ all: true }],
   });
 };
+
+export const getAnswersByUserIdAndDateRange = async ({
+  userId,
+  dateGt,
+}: {
+  userId: number;
+  dateGt: string;
+}): Promise<Answers[]> => {
+  return await db.answers.findAll({
+    where: {
+      userId,
+      date: {
+        [Op.gt]: dateGt,
+      },
+    },
+    include: [{ all: true }],
+  });
+};

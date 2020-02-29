@@ -15,7 +15,7 @@ export const checkRequiredoneOfThem: RequestResponseNext = async (req, res, next
 
 export const existAnswerByDateAndUserId: RequestResponseNext = async (req, res, next) => {
   const userId = req.user!.id;
-  const date = getDateString();
+  const date = getDateString({});
   const answer = await getAnswerByDateAndUserId({ userId, date });
   if (!!answer) {
     return res.json(response({ status: 400, message: '해당날짜에 답변이 존재합니다.' }));

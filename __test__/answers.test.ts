@@ -32,7 +32,7 @@ describe('answers', () => {
     response = await getAnswerByDate({ req, date, token });
     checkStatus(response);
 
-    if (response.body.data) {
+    if (response.body.data && response.body.data.id) {
       const { id } = response.body.data;
       response = await deleteAnswerById({ req, id, token });
       checkStatus(response);
@@ -61,8 +61,10 @@ describe('answers', () => {
     response = await postMission({ req, token, title, isContent, isImage, cycle });
     missionId = response.body.data.id;
     response = await postAnswer({ req, token, missionId, content, file });
+    console.log(3333, response.body);
     checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
+    console.log(3333, response.body);
     expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.missionId).toBe(missionId);
@@ -119,7 +121,17 @@ describe('answers', () => {
     expect(haveDateResponse.body.data.date).toBe(`${month.format('YYYY-MM')}-01`);
   });
 
+  it('Get /api/v1/answers/{date}', async () => {
+    const date = moment().format('YYYY-MM-DD');
+    response = await getAnswerByDate({ req, date, token });
+    console.log(22222, response.body);
+    checkStatus(response);
+    expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
+  });
+
   it('Delete /api/v1/answers/{id}', async () => {
+    console.log(11111, response.body);
     const { id } = response.body.data;
     response = await deleteAnswerById({ req, id, token });
     checkStatus(response, 204);

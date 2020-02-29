@@ -6,7 +6,7 @@ export const isRequiredoneOfThem = ({ imageUrl, content }: { imageUrl: string; c
 };
 
 export const hasSixParsAndNotToday = (answers: Answers[]) => {
-  return answers.length === 6 && answers[5] && answers[5].date !== getDateString();
+  return answers.length === 6 && answers[5] && answers[5].date !== getDateString({});
 };
 
 export const hasSetDate = (answer: Answers) => {
@@ -15,7 +15,7 @@ export const hasSetDate = (answer: Answers) => {
 
 export const getSetDate = (answers: Answers[]) => {
   if (answers.length === 6 || answers.length === 0) {
-    return getDateString();
+    return getDateString({});
   } else {
     return answers[0].setDate;
   }

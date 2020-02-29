@@ -1,7 +1,21 @@
 import moment = require('moment');
 
-export const getDateString = (date?: string) => {
-  return !!date ? moment(date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+export const getDateString = ({
+  date = undefined,
+  years,
+  month,
+  day,
+}: {
+  date?: string;
+  years?: number;
+  month?: number;
+  day?: number;
+}) => {
+  return moment(date)
+    .add(years || 0, 'years')
+    .add(month || 0, 'months')
+    .add(day || 0, 'days')
+    .format('YYYY-MM-DD');
 };
 
 export const getFirstDate = (now: Date) => {

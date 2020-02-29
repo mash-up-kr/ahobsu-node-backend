@@ -6,12 +6,11 @@ import {
   createMission,
   deleteMission,
   getMissionById,
-  getNewMission,
   setMissionsAndRefeshDateInUser,
   setMissionsInUser,
   updateMission,
 } from './missions.repository';
-import { isRequired, getOldMission, hasOldMissions, isRefresh, hasRefresh } from './missions.service';
+import { getNewMission, getOldMission, hasOldMissions, isRefresh, hasRefresh } from './missions.service';
 import { getDateString } from '../../lib/date';
 
 const missoins: RequestResponseNext = async (req, res) => {
@@ -36,7 +35,7 @@ const refresh: RequestResponseNext = async (req, res) => {
   try {
     const userId = req.user!.id;
     const user = await getUserById(userId);
-    const date = getDateString();
+    const date = getDateString({});
     if (hasRefresh(user)) {
       return res.json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
     }

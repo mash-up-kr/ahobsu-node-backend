@@ -25,7 +25,7 @@ const week: RequestResponseNext = async (req, res, next) => {
     {
       // 6개의 파츠를 모두 모은 날이 오늘이 아니면 새로운 것을 준다
       const answers = !!recentAnswers && !hasSixParsAndNotToday(recentAnswers) ? recentAnswers : [];
-      const today = getDateString();
+      const today = getDateString({});
       res.json(response({ data: { today, answers } }));
     }
   } catch (error) {
@@ -56,6 +56,7 @@ const month: RequestResponseNext = async (req, res, next) => {
 const date: RequestResponseNext = async (req, res, next) => {
   const userId = req.user!.id;
   const { date } = req.params;
+  console.log(2222, date);
   const answer = await getAnswerByDateAndUserId({ userId, date });
   res.json(response({ data: answer }));
 };
@@ -74,7 +75,7 @@ const create: RequestResponseNext = async (req, res, next) => {
     const cardFile = await getFileByPart(partNumber);
     const { id: fileId } = cardFile;
     const { content, missionId, file: imageUrl } = req.body;
-    const date = getDateString();
+    const date = getDateString({});
     const { id } = await createAnswer({ userId, missionId, imageUrl, fileId, content, date, setDate });
     {
       const answer = await getAnswerByIdAndUserId({ id, userId });
