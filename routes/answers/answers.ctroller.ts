@@ -56,8 +56,14 @@ const month: RequestResponseNext = async (req, res, next) => {
 const date: RequestResponseNext = async (req, res, next) => {
   const userId = req.user!.id;
   const { date } = req.params;
-  console.log(2222, date);
   const answer = await getAnswerByDateAndUserId({ userId, date });
+  res.json(response({ data: answer }));
+};
+
+const get: RequestResponseNext = async (req, res, next) => {
+  const userId = req.user!.id;
+  const id = parseInt(req.params.id, 10);
+  const answer = await getAnswerByIdAndUserId({ id, userId });
   res.json(response({ data: answer }));
 };
 
@@ -121,6 +127,7 @@ export default {
   week,
   month,
   date,
+  get,
   create,
   update,
   destroy,
