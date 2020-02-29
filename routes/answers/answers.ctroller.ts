@@ -14,6 +14,7 @@ import {
   updateAnswer,
 } from './answers.repository';
 import { getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday } from './answers.service';
+import { getMissionById } from '../missions/missions.repository';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
@@ -81,6 +82,13 @@ const create: RequestResponseNext = async (req, res, next) => {
     const cardFile = await getFileByPart(partNumber);
     const { id: fileId } = cardFile;
     const { content, missionId, file: imageUrl } = req.body;
+    const mission = await getMissionById(missionId);
+    if (!!mission.isImage && !imageUrl) {
+      return res.json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
+    }
+    if (!!mission.isContent && !content) {
+      return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
+    }
     const date = getDateString({});
     const { id } = await createAnswer({ userId, missionId, imageUrl, fileId, content, date, setDate });
     {
@@ -101,6 +109,13 @@ const update: RequestResponseNext = async (req, res, next) => {
     const answer = await getAnswerByIdAndUserId({ id, userId });
     const imageUrl = file ? file : answer.imageUrl;
     const { content, missionId } = req.body;
+    const mission = await getMissionById(missionId);
+    if (!!mission.isImage && !imageUrl) {
+      return res.json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
+    }
+    if (!!mission.isContent && !content) {
+      return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
+    }
     await updateAnswer({ id, userId, missionId, imageUrl, content });
     {
       const answer = await getAnswerByIdAndUserId({ id, userId });

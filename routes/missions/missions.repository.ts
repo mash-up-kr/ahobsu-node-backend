@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import db from '../../models';
 import { Mission } from '../../models/mission';
 
-export const getMissionById = async (id: number) => {
+export const getMissionById = async (id: number): Promise<Mission> => {
   return db.missions.findOne({ where: { id } });
 };
 
