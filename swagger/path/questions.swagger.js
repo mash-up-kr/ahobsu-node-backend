@@ -1,10 +1,19 @@
 module.exports = {
-  '/api/v1/questions': {
+  '/api/v1/questions/{page}': {
     get: {
       tags: ['questions'],
       summary: '질문 데이터 조회',
       produces: ['application/json'],
-      parameters: [],
+      parameters: [
+        {
+          name: 'page',
+          in: 'path',
+          type: 'string',
+          default: '1',
+          description: '해당 페이비',
+          required: true,
+        },
+      ],
       responses: {
         '200': {
           schema: {
