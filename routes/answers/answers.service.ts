@@ -21,6 +21,15 @@ export const getSetDate = (answers: Answers[]) => {
   }
 };
 
+export const getNo = (answers: Answers[]): number => {
+  if (answers.length === 0) {
+    return 1;
+  } else if (answers.length === 6) {
+    return answers[0].no! + 1;
+  }
+  return answers[0].no!;
+};
+
 export const getPartNumber = (answers: Answers[]) => {
   return answers.length >= 6 ? 1 : answers.length + 1;
 };

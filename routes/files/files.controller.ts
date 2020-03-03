@@ -1,7 +1,6 @@
-import response from '../../lib/response';
 import { RequestResponseNext } from '..';
-import { isRequired } from './files.service';
-import { createFile, getFileById, updateFile, deleteFile } from './files.repository';
+import response from '../../lib/response';
+import { createFile, deleteFile, getFileById, updateFile } from './files.repository';
 
 const create: RequestResponseNext = async (req, res, next) => {
   try {

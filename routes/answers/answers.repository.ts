@@ -42,7 +42,7 @@ export const getAnswerByDateAndUserId = async ({ userId, date }: { userId: numbe
   });
 };
 
-export const createAnswer = async ({ userId, missionId, imageUrl, fileId, content, date, setDate }: Answers) => {
+export const createAnswer = async ({ userId, missionId, imageUrl, fileId, content, date, setDate, no }: Answers) => {
   return db.answers.create({
     userId,
     missionId,
@@ -51,6 +51,7 @@ export const createAnswer = async ({ userId, missionId, imageUrl, fileId, conten
     content,
     date,
     setDate,
+    no,
   });
 };
 

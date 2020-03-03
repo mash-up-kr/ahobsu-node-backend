@@ -13,7 +13,7 @@ import {
   getRecentAnswers,
   updateAnswer,
 } from './answers.repository';
-import { getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday } from './answers.service';
+import { getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday, getNo } from './answers.service';
 import { getMissionById } from '../missions/missions.repository';
 
 const week: RequestResponseNext = async (req, res, next) => {
@@ -78,6 +78,7 @@ const create: RequestResponseNext = async (req, res, next) => {
       : [];
     // 6개의 파츠를 모두 모았다면 새로운 파츠를 시작한다.
     const setDate = getSetDate(recentAnswers);
+    const no = getNo(recentAnswers);
     const partNumber = getPartNumber(recentAnswers);
     const cardFile = await getFileByPart(partNumber);
     const { id: fileId } = cardFile;
@@ -90,7 +91,7 @@ const create: RequestResponseNext = async (req, res, next) => {
       return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     const date = getDateString({});
-    const { id } = await createAnswer({ userId, missionId, imageUrl, fileId, content, date, setDate });
+    const { id } = await createAnswer({ userId, missionId, imageUrl, fileId, content, date, setDate, no });
     {
       const answer = await getAnswerByIdAndUserId({ id, userId });
       return res.json(response({ status: 201, data: answer }));

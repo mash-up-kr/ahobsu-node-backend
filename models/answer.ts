@@ -27,6 +27,9 @@ export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
       content: { type: DataTypes.STRING },
       date: { type: DataTypes.STRING },
       setDate: { type: DataTypes.STRING },
+      no: {
+        type: DataTypes.INTEGER,
+      },
     },
     {},
   );
@@ -46,6 +49,7 @@ export interface Answers {
   content?: string;
   date?: string;
   setDate?: string;
+  no?: number;
   mission?: Mission;
   file?: File;
 }
