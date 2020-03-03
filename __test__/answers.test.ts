@@ -252,6 +252,7 @@ const hasAnswerKeys = (data: Answers) => {
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
   if (!('setDate' in data)) throw new Error('missing setDate key');
+  if (!('no' in data)) throw new Error('missing no key');
 };
 
 const getAnswerByDate = async ({ req, date, token }: { req: Request; date: string; token: string }) => {
