@@ -65,3 +65,13 @@ export const getMissionsByNotInIdAndLimit = async ({ ids, limit = 3 }: { ids: nu
     limit: limit,
   });
 };
+
+export const getTempMission = async () => {
+  return db.missions.findAll({
+    where: {
+      id: {
+        [Op.in]: [1, 2, 10],
+      },
+    },
+  });
+};

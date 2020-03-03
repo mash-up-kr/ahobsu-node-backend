@@ -104,7 +104,7 @@ export const getAnswersByUserIdAndDateRange = async ({
   userId: number;
   dateGt: string;
 }): Promise<Answers[]> => {
-  return await db.answers.findAll({
+  return db.answers.findAll({
     where: {
       userId,
       date: {
