@@ -28,6 +28,7 @@ export const getMonthAnswers = ({
         [Op.lte]: lastDate,
       },
     },
+    order: [['no', 'DESC']],
     include: [{ all: true }],
   });
 };
