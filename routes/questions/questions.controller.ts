@@ -4,12 +4,11 @@ import { isRequired } from './questions.service';
 import { createQuestion } from './questions.repository';
 import { getQuestions } from './questions.repository';
 
-const get: RequestResponseNext = async (req, res, next) => {
+const get: RequestResponseNext = async (req, res) => {
   try {
-    const { page } = req.params;
-    const question = await getQuestions({ page });
-    const sum = question.length;
-    res.json(response({ status: 201, data: { sum, question } }));
+    const { number } = req.params;
+    const { sum, question } = await getQuestions({ number });
+    res.json(response({ status: 200, data: { sum, question } }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
