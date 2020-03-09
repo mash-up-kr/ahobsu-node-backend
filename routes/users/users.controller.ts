@@ -15,6 +15,7 @@ const my: RequestResponseNext = async (req, res) => {
   try {
     const userId = req.user!.id;
     const user = await getUserById(userId);
+    delete user.dataValues.mission;
     res.json(response({ data: user }));
   } catch (e) {
     console.log(e);

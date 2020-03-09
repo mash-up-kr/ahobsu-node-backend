@@ -1,14 +1,11 @@
 import db from '../../models';
 
 export const getUserById = async (id: number) => {
-  return db.users.findOne(
-    { attributes: { exclude: ['mission'] } },
-    {
-      where: {
-        id,
-      },
+  return db.users.findOne({
+    where: {
+      id,
     },
-  );
+  });
 };
 
 export const getUserBySnsIdAndSnsType = async ({ snsId, snsType }: { snsId: string; snsType: string }) => {
