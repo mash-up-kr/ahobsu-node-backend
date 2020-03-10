@@ -5,22 +5,18 @@ export const createQuestion = async ({ content }: { content: string }) => {
     content,
   });
 };
-export const getQuestions = async ({ number }: { number: string }) => {
-  const pageNum = parseInt(number, 10); // 요청 페이지 넘버
+export const getQuestions = async ({ page, listCount }: { page: string; listCount: string }) => {
+  const pageNum = parseInt(page, 10); // 요청 페이지 넘버
+  const limit = parseInt(listCount, 10); // 요청 data 갯수
   let offset = 0;
-  const limit = 5;
+  if (pageNum > 1) {
+    offset = limit * (pageNum - 1);
+  }
   const sum = (await db.questions.findAll()).length;
   const questions = await db.questions.findAll({
     offset,
     limit,
   });
-  console.log(333);
-  console.log(sum);
-
-  if (pageNum > 1) {
-    offset = limit * (pageNum - 1);
-  }
-
   return {
     sum,
     questions,
