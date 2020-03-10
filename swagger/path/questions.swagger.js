@@ -10,7 +10,7 @@ module.exports = {
           in: 'path',
           type: 'string',
           default: '1',
-          description: '해당 페이비',
+          description: '해당 페이지',
           required: true,
         },
       ],
@@ -35,6 +35,9 @@ module.exports = {
         },
       },
     },
+  },
+
+  '/api/v1/questions': {
     post: {
       tags: ['questions'],
       summary: '질문 작성',
