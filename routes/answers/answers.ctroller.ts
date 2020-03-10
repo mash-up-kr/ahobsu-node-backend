@@ -37,8 +37,8 @@ const week: RequestResponseNext = async (req, res, next) => {
 
 const month: RequestResponseNext = async (req, res, next) => {
   try {
-    const { date: queryDate } = req.query;
-    const now = getNow(queryDate);
+    const { date } = req.query;
+    const now = getNow(date);
     const { firstDate, lastDate } = getMonthDate(now);
     const userId = req.user!.id;
     const notGorupAnswers = await getMonthAnswers({ firstDate, lastDate, userId });
@@ -56,17 +56,17 @@ const month: RequestResponseNext = async (req, res, next) => {
 
 const date: RequestResponseNext = async (req, res, next) => {
   const userId = req.user!.id;
-  const { date } = req.params;
-  const answer = await getAnswerByDateAndUserId({ userId, date });
+  const { date } = req.query;
+  const answer = date ? await getAnswerByDateAndUserId({ userId, date }) : await getAnswerByUserId({ userId });
   res.json(response({ data: answer }));
 };
 
-// const get: RequestResponseNext = async (req, res, next) => {
-//   const userId = req.user!.id;
-//   const id = parseInt(req.params.id, 10);
-//   const answer = await getAnswerByIdAndUserId({ id, userId });
-//   res.json(response({ data: answer }));
-// };
+const get: RequestResponseNext = async (req, res, next) => {
+  const userId = req.user!.id;
+  const id = parseInt(req.params.id, 10);
+  const answer = await getAnswerByIdAndUserId({ id, userId });
+  res.json(response({ data: answer }));
+};
 
 const create: RequestResponseNext = async (req, res, next) => {
   try {
@@ -142,7 +142,7 @@ export default {
   week,
   month,
   date,
-  // get,
+  get,
   create,
   update,
   destroy,

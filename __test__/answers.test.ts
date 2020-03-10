@@ -181,13 +181,14 @@ describe('answers', () => {
     expect(existResponse.body.message).toBe('해당날짜에 답변이 존재합니다.');
   });
 
-  it('Get /api/v1/answers/{date}', async () => {
+  it('Get /api/v1/answers', async () => {
     const date = getDateString({});
-    response = await getAnswerByDate({ req, date, token });
+    response = await getAnswerByDate({ req, token });
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
     expect(hasFileKeys(response.body.data.file));
+    response = await getAnswerByDate({ req, date, token });
   });
 
   it('Get /api/v1/answers/week', async () => {
@@ -220,21 +221,20 @@ describe('answers', () => {
 
   it('Get /api/v1/answers/{date}', async () => {
     const date = getDateString({});
-    response = await getAnswerByDate({ req, date, token });
+    response = await getAnswerByDate({ req, token });
     checkStatus(response);
-    console.log(1111111111, response.body);
     expect(hasAnswerKeys(response.body.data));
     expect(hasMissionKeys(response.body.data.mission));
     expect(hasFileKeys(response.body.data.file));
   });
 
-  // it('Get /api/v1/answers/{id}', async () => {
-  //   const { id } = response.body.data;
-  //   response = await getAnswerById({ req, id, token });
-  //   expect(hasAnswerKeys(response.body.data));
-  //   expect(hasMissionKeys(response.body.data.mission));
-  //   expect(hasFileKeys(response.body.data.file));
-  // });
+  it('Get /api/v1/answers/{id}', async () => {
+    const { id } = response.body.data;
+    response = await getAnswerById({ req, id, token });
+    expect(hasAnswerKeys(response.body.data));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
+  });
 
   it('Delete /api/v1/answers/{id}', async () => {
     const { id } = response.body.data;
@@ -255,8 +255,8 @@ const hasAnswerKeys = (data: Answers) => {
   if (!('no' in data)) throw new Error('missing no key');
 };
 
-const getAnswerByDate = async ({ req, date, token }: { req: Request; date: string; token: string }) => {
-  return req.get(`/api/v1/answers/${date}`).set('Authorization', token);
+const getAnswerByDate = async ({ req, date, token }: { req: Request; date?: string; token: string }) => {
+  return req.get(`/api/v1/answers${date ? `?date=${date}` : ''}`).set('Authorization', token);
 };
 
 const deleteAnswerById = async ({ req, id, token }: { req: Request; id: number; token: string }) => {
@@ -351,7 +351,7 @@ const getAnswersMonthByDate = async ({ req, token, date }: { req: Request; token
 const checkAnswer = async () => {
   // 기존에 데이터가 있다면 제거
   const date = getDateString({});
-  let response = await getAnswerByDate({ req, date, token });
+  let response = await getAnswerByDate({ req, token });
   checkStatus(response);
   if (response.body.data && response.body.data.id) {
     const { id } = response.body.data;

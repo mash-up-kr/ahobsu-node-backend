@@ -14,8 +14,7 @@ const router = Router();
 
 router.get('/week', checkToken, answersController.week);
 router.get('/month', checkToken, answersController.month);
-router.get('/:date', checkToken, answersController.date);
-// router.get('/:id', checkToken, checkId, answersController.get);
+router.get('/', checkToken, answersController.date);
 router.post(
   '/',
   checkToken,
@@ -25,6 +24,7 @@ router.post(
   checkMissionId,
   answersController.create,
 );
+router.get('/:id', checkToken, checkId, answersController.get);
 router.put(
   '/:id',
   checkToken,
