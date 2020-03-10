@@ -43,9 +43,6 @@ module.exports = {
         },
       },
     },
-  },
-
-  '/api/v1/questions': {
     post: {
       tags: ['questions'],
       summary: '질문 작성',
