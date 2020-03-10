@@ -1,5 +1,5 @@
 module.exports = {
-  '/api/v1/questions/{page}': {
+  '/api/v1/questions/': {
     get: {
       tags: ['questions'],
       summary: '질문 데이터 조회',
@@ -7,11 +7,19 @@ module.exports = {
       parameters: [
         {
           name: 'page',
-          in: 'path',
+          in: 'query',
           type: 'string',
           default: '1',
           description: '해당 페이지',
-          required: true,
+          required: false,
+        },
+        {
+          name: 'listCount',
+          in: 'query',
+          type: 'string',
+          default: '10',
+          description: 'data 갯수',
+          required: false,
         },
       ],
       responses: {
@@ -19,7 +27,7 @@ module.exports = {
           schema: {
             type: 'object',
             example: {
-              status: 201,
+              status: 200,
               message: '',
               data: {
                 sum: 1,
