@@ -1,5 +1,5 @@
 module.exports = {
-  '/api/v1/questions/': {
+  '/api/v1/questions': {
     get: {
       tags: ['questions'],
       summary: '질문 데이터 조회',

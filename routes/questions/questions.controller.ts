@@ -3,13 +3,13 @@ import response from '../../lib/response';
 import { isRequired } from './questions.service';
 import { createQuestion } from './questions.repository';
 import { getQuestions } from './questions.repository';
+import { getQuestionSum } from './questions.repository';
 
 const get: RequestResponseNext = async (req, res) => {
   try {
-    let { page, listCount } = req.query;
-    if (!page) page = 1;
-    if (!listCount) listCount = 20;
-    const { sum, questions } = await getQuestions({ page, listCount });
+    const { page, listCount } = req.query;
+    const { sum } = await getQuestionSum();
+    const { questions } = await getQuestions({ page, listCount });
     res.json(response({ status: 200, data: { sum, questions } }));
   } catch (e) {
     console.log(e);
