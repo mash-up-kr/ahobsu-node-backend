@@ -14,7 +14,7 @@ module.exports = {
           required: false,
         },
         {
-          name: 'listCount',
+          name: 'limit',
           in: 'query',
           type: 'string',
           default: '10',
