@@ -18,7 +18,7 @@ export const getQuestions = async ({ page = '1', limit = '20' }: { page: string;
   if (pageNum > 1) {
     offset = num * (pageNum - 1);
   }
-  return await db.questions.findAll({
+  return db.questions.findAll({
     offset,
     limit: num,
   });

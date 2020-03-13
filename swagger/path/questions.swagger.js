@@ -30,7 +30,7 @@ module.exports = {
               status: 200,
               message: '',
               data: {
-                sum: 10,
+                total: 10,
                 question: {
                   id: 1,
                   content: '나는 누구인가?',
