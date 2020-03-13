@@ -30,7 +30,7 @@ module.exports = {
               status: 200,
               message: '',
               data: {
-                total: 10,
+                questionTotalCount: 10,
                 question: [
                   {
                     id: 1,
