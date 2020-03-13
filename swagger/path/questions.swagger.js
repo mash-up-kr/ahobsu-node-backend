@@ -31,12 +31,14 @@ module.exports = {
               message: '',
               data: {
                 total: 10,
-                question: {
-                  id: 1,
-                  content: '나는 누구인가?',
-                  updatedAt: '2020-02-23T08:07:59.120Z',
-                  createdAt: '2020-02-23T08:07:59.120Z',
-                },
+                question: [
+                  {
+                    id: 1,
+                    content: '나는 누구인가?',
+                    updatedAt: '2020-02-23T08:07:59.120Z',
+                    createdAt: '2020-02-23T08:07:59.120Z',
+                  },
+                ],
               },
             },
           },
