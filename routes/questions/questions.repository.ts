@@ -6,7 +6,7 @@ export const createQuestion = async ({ content }: { content: string }) => {
   });
 };
 export const getQuestionCount = async () => {
-  return db.questions.findAll().length;
+  return (await db.questions.findAll()).length;
 };
 
 export const getQuestions = async ({ page = '1', limit = '20' }: { page: string; limit: string }) => {
@@ -18,11 +18,8 @@ export const getQuestions = async ({ page = '1', limit = '20' }: { page: string;
   if (pageNum > 1) {
     offset = num * (pageNum - 1);
   }
-  const questions = await db.questions.findAll({
+  return await db.questions.findAll({
     offset,
     limit: num,
   });
-  return {
-    questions,
-  };
 };
