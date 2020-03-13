@@ -3,11 +3,14 @@ import response from '../../lib/response';
 import { isRequired } from './questions.service';
 import { createQuestion } from './questions.repository';
 import { getQuestions } from './questions.repository';
+import { getQuestionCount } from './questions.repository';
 
 const get: RequestResponseNext = async (req, res) => {
   try {
-    const question = await getQuestions();
-    res.json(response({ status: 201, data: question }));
+    const { page, limit } = req.query;
+    const questionTotalCount = await getQuestionCount();
+    const questions = await getQuestions({ page, limit });
+    res.json(response({ data: { questionTotalCount, questions } }));
   } catch (e) {
     console.log(e);
     res.json(response({ status: 500, message: e.message }));
