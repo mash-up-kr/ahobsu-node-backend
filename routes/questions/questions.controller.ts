@@ -9,7 +9,7 @@ const get: RequestResponseNext = async (req, res) => {
   try {
     const { page, limit } = req.query;
     const sum = await getQuestionCount();
-    const { questions } = await getQuestions({ page, limit });
+    const questions = await getQuestions({ page, limit });
     res.json(response({ status: 200, data: { sum, questions } }));
   } catch (e) {
     console.log(e);
