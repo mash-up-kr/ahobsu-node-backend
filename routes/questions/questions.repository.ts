@@ -6,20 +6,13 @@ export const createQuestion = async ({ content }: { content: string }) => {
   });
 };
 export const getQuestionCount = async () => {
-  return (await db.questions.findAll()).length;
+  const questions = await db.questions.findAll();
+  return questions.length;
 };
 
-export const getQuestions = async ({ page = '1', limit = '20' }: { page: string; limit: string }) => {
-  // 요청 페이지 넘버
-  const pageNum = parseInt(page, 10);
-  // 요청 data 갯수
-  const num = parseInt(limit, 10);
-  let offset = 0;
-  if (pageNum > 1) {
-    offset = num * (pageNum - 1);
-  }
+export const getQuestions = ({ offset, limit = 20 }: { offset: number; limit: number }) => {
   return db.questions.findAll({
     offset,
-    limit: num,
+    limit,
   });
 };

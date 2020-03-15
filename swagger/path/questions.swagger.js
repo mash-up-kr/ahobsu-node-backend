@@ -30,8 +30,8 @@ module.exports = {
               status: 200,
               message: '',
               data: {
-                questionTotalCount: 10,
-                question: [
+                questionTotalCount: 1,
+                questions: [
                   {
                     id: 1,
                     content: '나는 누구인가?',

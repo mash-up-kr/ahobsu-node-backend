@@ -1,15 +1,17 @@
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { isRequired } from './questions.service';
+import { isRequired, changeTypeToNumber, getOffset } from './questions.service';
 import { createQuestion } from './questions.repository';
 import { getQuestions } from './questions.repository';
 import { getQuestionCount } from './questions.repository';
 
 const get: RequestResponseNext = async (req, res) => {
   try {
-    const { page, limit } = req.query;
+    const { page: pageString, limit: limitString } = req.query;
+    const { page, limit } = changeTypeToNumber({ pageString, limitString });
+    const offset = getOffset({ page, limit });
+    const questions = await getQuestions({ offset, limit });
     const questionTotalCount = await getQuestionCount();
-    const questions = await getQuestions({ page, limit });
     res.json(response({ data: { questionTotalCount, questions } }));
   } catch (e) {
     console.log(e);

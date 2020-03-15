@@ -17,6 +17,17 @@ describe('signin', () => {
     checkStatus(response, 201);
     expect(hasPostApiV1Questions(response.body.data));
   });
+  it('Get /api/v1/questions', async () => {
+    const response = await GetQuestions({ req });
+    checkStatus(response);
+    expect(hasPostApiV1Questions(response.body.data.questions[0]));
+    expect(typeof response.body.data.questionTotalCount).toBe('number');
+  });
+  it('Get /api/v1/questions?page=2&limit=10', async () => {
+    const response = await GetQuestions({ req });
+    checkStatus(response);
+    expect(typeof response.body.data.questionTotalCount).toBe('number');
+  });
 });
 
 const hasPostApiV1Questions = (data: Questions) => {
@@ -26,4 +37,8 @@ const hasPostApiV1Questions = (data: Questions) => {
 
 const postQuestion = async ({ req, content }: { req: Request; content: string }) => {
   return req.post('/api/v1/questions').send({ content });
+};
+
+const GetQuestions = async ({ req }: { req: Request }) => {
+  return req.get('/api/v1/questions');
 };
