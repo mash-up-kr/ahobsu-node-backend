@@ -30,17 +30,16 @@ export const hasRefresh = (user: User) => {
 };
 
 export const getNewMission = async (userId: number) => {
-  // const date = getDateString({});
-  // const oneYearAgo = getDateString({ years: -1 });
-  // const oneYearData = await getAnswersByUserIdAndDateRange({ userId, dateGt: oneYearAgo });
-  // const ids = [] as number[];
-  // oneYearData.forEach((answer: Answers) => {
-  //   if (hasnMissionInAnswer({ answer, date })) {
-  //     ids.push(answer.mission!.id!);
-  //   }
-  // });
-  // const missions = getMissionsByNotInIdAndLimit({ ids });
-  const missions = getTempMission();
+  const date = getDateString({});
+  const oneYearAgo = getDateString({ years: -1 });
+  const oneYearData = await getAnswersByUserIdAndDateRange({ userId, dateGt: oneYearAgo });
+  const ids = [] as number[];
+  oneYearData.forEach((answer: Answers) => {
+    if (hasnMissionInAnswer({ answer, date })) {
+      ids.push(answer.mission!.id!);
+    }
+  });
+  const missions = getMissionsByNotInIdAndLimit({ ids });
   return missions;
 };
 
