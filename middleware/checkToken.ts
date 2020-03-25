@@ -1,7 +1,6 @@
 // import jwt from 'jsonwebtoken';
 import jwt from 'jsonwebtoken';
 import response from '../lib/response';
-
 import { RequestResponseNext } from '../routes';
 
 const checkToken: RequestResponseNext = async (req, res, next) => {

@@ -1,14 +1,27 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default {
+type Config = {
+  username: string;
+  password: string;
+  database: string;
+  host: string;
+  [key: string]: any;
+};
+
+interface IConfigGroup {
+  development: Config;
+  test: Config;
+  production: Config;
+}
+
+const config: IConfigGroup = {
   development: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: 'chocopie',
-    host: process.env.DB_HOST,
+    username: process.env.DB_USERNAME!,
+    password: process.env.DB_PASSWORD!,
+    database: 'test',
+    host: process.env.DB_HOST!,
     dialect: 'mysql',
-    operatorsAliases: false,
     timezone: '+09:00',
     define: {
       timestamps: true,
@@ -28,11 +41,10 @@ export default {
   test: {
     username: 'root',
     password: 'root',
-    database: 'chocopie',
+    database: 'test',
     storage: ':memory:',
     host: 'localhost',
     dialect: 'sqlite',
-    operatorsAliases: false,
     logging: false,
   },
   production: {
@@ -41,6 +53,7 @@ export default {
     database: 'database_production',
     host: '127.0.0.1',
     dialect: 'mysql',
-    operatorsAliases: false,
   },
 };
+
+export default config;

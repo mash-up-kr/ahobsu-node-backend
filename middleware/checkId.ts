@@ -1,5 +1,5 @@
-import { RequestResponseNext } from '../routes';
 import response from '../lib/response';
+import { RequestResponseNext } from '../routes';
 
 const checkId: RequestResponseNext = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);

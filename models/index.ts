@@ -1,35 +1,15 @@
-import Sequelize from 'sequelize';
-import configDate from '../config/config';
-import answer from './answer';
-import file from './file';
-import mission from './mission';
-import user from './user';
-import question from './question';
+export * from './sequelize';
+import Answer, { associate as associateAnswer } from './answer';
+import File, { associate as associateFile } from './file';
+import Mission, { associate as associateMission } from './mission';
+import Question from './question';
+import User from './user';
+const db = { Answer, File, Mission, Question, User };
 
-const env = (process.env.NODE_ENV || 'development') as 'development' | 'test' | 'production';
-const config = configDate[env];
-const db = {} as any;
+export type dbType = typeof db;
 
-// let sequelize;
-// if (config.use_env_variable) {
-// sequelize = new Sequelize(process.env[config.use_env_variable], config.options);
-// } else {
-const sequelize = new Sequelize(config.database, config.username!, config.password!, config);
-// }
-
-db.answers = answer(sequelize, Sequelize);
-db.files = file(sequelize, Sequelize);
-db.missions = mission(sequelize, Sequelize);
-db.users = user(sequelize, Sequelize);
-db.questions = question(sequelize, Sequelize);
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+associateAnswer(db);
+associateFile(db);
+// associateMission(db);
 
 export default db;

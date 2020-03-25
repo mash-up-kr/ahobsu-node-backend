@@ -1,7 +1,7 @@
 import { RequestResponseNext } from '..';
-import { isRequired } from './files.service';
 import response from '../../lib/response';
 import { getFileById } from './files.repository';
+import { isRequired } from './files.service';
 
 export const checkRequire: RequestResponseNext = (req, res, next) => {
   const { file: cardUrl, part } = req.body;
@@ -23,7 +23,7 @@ export const checkFile: RequestResponseNext = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const file = await getFileById(id);
   if (!file) {
-    return res.json(response({ status: 404, message: '존재하지않는 fileId.' }));
+    return res.json(response({ status: 404, message: '존재하지않는 FileId.' }));
   }
   next();
 };

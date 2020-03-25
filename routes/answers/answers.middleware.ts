@@ -24,10 +24,10 @@ export const existAnswerByDateAndUserId: RequestResponseNext = async (req, res, 
 };
 
 export const checkMissionId: RequestResponseNext = async (req, res, next) => {
-  const { missionId } = req.body;
-  const checkMission = await getMissionById(missionId);
+  const { MissionId } = req.body;
+  const checkMission = await getMissionById(MissionId);
   if (!checkMission) {
-    return res.json(response({ status: 412, message: 'missionId가 존재하지 않습니다.' }));
+    return res.json(response({ status: 412, message: 'MissionId가 존재하지 않습니다.' }));
   }
   next();
 };

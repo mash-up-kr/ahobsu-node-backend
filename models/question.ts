@@ -1,26 +1,30 @@
-import { Sequelize, SequelizeStatic } from 'sequelize';
+import { dbType } from '.';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from './sequelize';
 
-export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
-  const questions = Sequelize.define(
-    'questions',
-    {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      content: { type: DataTypes.STRING },
-    },
-    {},
-  );
-  // questions.associate = (db: any) => {
-  //   db.questions.belongsTo(db.missions);
-  // };
-  return questions;
-};
-
-export interface Questions {
-  id: number;
-  content: string;
+class Question extends Model {
+  public readonly id!: number;
+  public content!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
+Question.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    content: { type: DataTypes.STRING },
+  },
+  {
+    sequelize,
+    modelName: 'Question',
+    tableName: 'questions',
+    charset: 'utf8mb4',
+    // collate: 'Default Collation',
+  },
+);
+
+export default Question;

@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-import { Questions } from '../models/question';
+import Question from '../models/question';
 import { checkStatus, Request } from './util';
 
 const req = request(app);
@@ -30,7 +30,7 @@ describe('signin', () => {
   });
 });
 
-const hasPostApiV1Questions = (data: Questions) => {
+const hasPostApiV1Questions = (data: Question) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('content' in data)) throw new Error('missing content key');
 };

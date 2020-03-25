@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import formidable from 'formidable';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import { RequestResponseNext } from '../routes';
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -14,7 +14,7 @@ const imageUploader: RequestResponseNext = async (req, res, next) => {
         req.body = fields;
         const { file } = files;
         if (!file) {
-          resolve(null);
+          return resolve(null);
         }
         AWS.config.update({
           accessKeyId: process.env.AWSAccessKeyId,

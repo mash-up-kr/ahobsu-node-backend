@@ -1,32 +1,40 @@
-import { Sequelize, SequelizeStatic } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
+import { dbType } from '.';
+import { sequelize } from './sequelize';
 
-export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
-  const files = Sequelize.define(
-    'files',
-    {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      cardUrl: {
-        type: DataTypes.STRING,
-      },
-      part: {
-        type: DataTypes.INTEGER,
-      },
+class File extends Model {
+  public readonly id!: number;
+  public cardUrl!: string;
+  public part!: number;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+File.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
     },
-    {},
-  );
-  files.associate = (db: any) => {
-    db.files.hasMany(db.answers);
-  };
-  return files;
+    cardUrl: {
+      type: DataTypes.STRING,
+    },
+    part: {
+      type: DataTypes.INTEGER,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'File',
+    tableName: 'files',
+    charset: 'utf8mb4',
+    // collate: 'Default Collation',
+  },
+);
+
+export const associate = (db: dbType) => {
+  // db.File.hasMany(db.Answer);
 };
 
-export interface File {
-  id: number;
-  cardUrl: string;
-  part: number;
-}
+export default File;

@@ -4,6 +4,7 @@ import app from '../app';
 import connectDB from '../connectDB';
 import { signin } from './signin.test';
 import { checkStatus, Request } from './util';
+import File from '../models/file';
 
 const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
 const req = request(app);

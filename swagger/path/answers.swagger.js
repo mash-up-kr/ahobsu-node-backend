@@ -1,5 +1,62 @@
 module.exports = {
   '/api/v1/answers': {
+    get: {
+      tags: ['answers'],
+      summary: '해당 날짜 데이터',
+      produces: ['application/json'],
+      parameters: [
+        {
+          name: 'Authorization',
+          in: 'header',
+          type: 'string',
+          description: 'API 인증 키',
+          default:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+          required: true,
+        },
+        {
+          name: 'date',
+          in: 'query',
+          type: 'string',
+          description: '원하는 일(2020-01-01)',
+        },
+      ],
+      responses: {
+        '200': {
+          schema: {
+            type: 'object',
+            example: {
+              id: 88,
+              userId: 121,
+              MissionId: 1,
+              FileId: 3,
+              imageUrl: null,
+              content: '335',
+              date: '2020-02-28',
+              setDate: '2020-02-27',
+              createdAt: '2020-02-28 00:08:15',
+              updatedAt: '2020-02-28 00:08:15',
+              mission: {
+                id: 1,
+                title: '좋아하는 디저트가 있나요?',
+                isContent: true,
+                isImage: true,
+                cycle: 3,
+                createdAt: '2020-01-12 20:54:34',
+                updatedAt: '2020-01-12 20:54:34',
+              },
+              file: {
+                id: 3,
+                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/J9smJXN7.pdf',
+                part: 3,
+                createdAt: '2020-01-27 18:05:56',
+                updatedAt: '2020-01-27 18:05:56',
+              },
+            },
+          },
+        },
+      },
+    },
     post: {
       tags: ['answers'],
       summary: '답 작성',
@@ -23,7 +80,7 @@ module.exports = {
           type: 'file',
         },
         {
-          name: 'missionId',
+          name: 'MissionId',
           in: 'formData',
           description: 'file to upload',
           required: true,
@@ -47,8 +104,8 @@ module.exports = {
               data: {
                 id: 88,
                 userId: 121,
-                missionId: 1,
-                fileId: 3,
+                MissionId: 1,
+                FileId: 3,
                 imageUrl: null,
                 content: '335',
                 date: '2020-02-28',
@@ -123,8 +180,8 @@ module.exports = {
               data: {
                 id: 88,
                 userId: 121,
-                missionId: 1,
-                fileId: 3,
+                MissionId: 1,
+                FileId: 3,
                 imageUrl: null,
                 content: '335',
                 date: '2020-02-28',
@@ -201,8 +258,8 @@ module.exports = {
               data: {
                 id: 88,
                 userId: 121,
-                missionId: 1,
-                fileId: 3,
+                MissionId: 1,
+                FileId: 3,
                 imageUrl: null,
                 content: '335',
                 date: '2020-02-28',
@@ -300,8 +357,8 @@ module.exports = {
                     {
                       id: 40,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 7,
+                      MissionId: 1,
+                      FileId: 7,
                       imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
                       content: '2134',
                       date: '2020-02-27',
@@ -328,8 +385,8 @@ module.exports = {
                     {
                       id: 87,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 7,
+                      MissionId: 1,
+                      FileId: 7,
                       imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
                       content: '2134',
                       date: '2020-02-27',
@@ -356,8 +413,8 @@ module.exports = {
                     {
                       id: 88,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 3,
+                      MissionId: 1,
+                      FileId: 3,
                       imageUrl: null,
                       content: '335',
                       date: '2020-02-28',
@@ -426,8 +483,8 @@ module.exports = {
                     {
                       id: 40,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 7,
+                      MissionId: 1,
+                      FileId: 7,
                       imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
                       content: '2134',
                       date: '2020-02-27',
@@ -454,8 +511,8 @@ module.exports = {
                     {
                       id: 87,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 7,
+                      MissionId: 1,
+                      FileId: 7,
                       imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
                       content: '2134',
                       date: '2020-02-27',
@@ -484,8 +541,8 @@ module.exports = {
                     {
                       id: 50,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 7,
+                      MissionId: 1,
+                      FileId: 7,
                       imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
                       content: '2134',
                       date: '2020-02-27',
@@ -512,8 +569,8 @@ module.exports = {
                     {
                       id: 70,
                       userId: 121,
-                      missionId: 1,
-                      fileId: 7,
+                      MissionId: 1,
+                      FileId: 7,
                       imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
                       content: '2134',
                       date: '2020-02-27',
@@ -539,65 +596,6 @@ module.exports = {
                     },
                   ],
                 ],
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  '/api/v1/answers': {
-    get: {
-      tags: ['answers'],
-      summary: '해당 날짜 데이터',
-      produces: ['application/json'],
-      parameters: [
-        {
-          name: 'Authorization',
-          in: 'header',
-          type: 'string',
-          description: 'API 인증 키',
-          default:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
-          required: true,
-        },
-        {
-          name: 'date',
-          in: 'query',
-          type: 'string',
-          description: '원하는 일(2020-01-01)',
-        },
-      ],
-      responses: {
-        '200': {
-          schema: {
-            type: 'object',
-            example: {
-              id: 88,
-              userId: 121,
-              missionId: 1,
-              fileId: 3,
-              imageUrl: null,
-              content: '335',
-              date: '2020-02-28',
-              setDate: '2020-02-27',
-              createdAt: '2020-02-28 00:08:15',
-              updatedAt: '2020-02-28 00:08:15',
-              mission: {
-                id: 1,
-                title: '좋아하는 디저트가 있나요?',
-                isContent: true,
-                isImage: true,
-                cycle: 3,
-                createdAt: '2020-01-12 20:54:34',
-                updatedAt: '2020-01-12 20:54:34',
-              },
-              file: {
-                id: 3,
-                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/J9smJXN7.pdf',
-                part: 3,
-                createdAt: '2020-01-27 18:05:56',
-                updatedAt: '2020-01-27 18:05:56',
               },
             },
           },

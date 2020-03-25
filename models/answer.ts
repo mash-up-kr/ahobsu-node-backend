@@ -1,55 +1,58 @@
-import { Sequelize, SequelizeStatic } from 'sequelize';
-import { Mission } from './mission';
-import { File } from './file';
+import { DataTypes, Model } from 'sequelize';
+import File from './file';
+import { dbType } from './index';
+import Mission from './mission';
+import { sequelize } from './sequelize';
 
-export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
-  const answers = Sequelize.define(
-    'answers',
-    {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-      },
-      missionId: {
-        type: DataTypes.INTEGER,
-      },
-      fileId: {
-        type: DataTypes.INTEGER,
-      },
-      imageUrl: {
-        type: DataTypes.STRING,
-      },
-      content: { type: DataTypes.STRING },
-      date: { type: DataTypes.STRING },
-      setDate: { type: DataTypes.STRING },
-      no: {
-        type: DataTypes.INTEGER,
-      },
+class Answer extends Model {
+  public readonly id!: number;
+  public userId!: number;
+  public MissionId!: number;
+  public FileId!: number;
+  public imageUrl!: string;
+  public content!: string;
+  public date!: string;
+  public setDate!: string;
+  public no!: number;
+  public file!: File;
+  public mission!: Mission;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+Answer.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
     },
-    {},
-  );
-  answers.associate = (db: any) => {
-    db.answers.belongsTo(db.missions);
-    db.answers.belongsTo(db.files);
-  };
-  return answers;
+    userId: {
+      type: DataTypes.INTEGER,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+    },
+    content: { type: DataTypes.STRING },
+    date: { type: DataTypes.STRING },
+    setDate: { type: DataTypes.STRING },
+    no: {
+      type: DataTypes.INTEGER,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Answer',
+    tableName: 'answers',
+    charset: 'utf8mb4',
+    // collate: 'Default Collation',
+  },
+);
+
+export const associate = (db: dbType) => {
+  db.Answer.belongsTo(db.Mission);
+  db.Answer.belongsTo(db.File);
 };
 
-export interface Answers {
-  id?: number;
-  userId: number;
-  missionId: number;
-  fileId?: number;
-  imageUrl?: string;
-  content?: string;
-  date?: string;
-  setDate?: string;
-  no?: number;
-  mission?: Mission;
-  file?: File;
-}
+export default Answer;

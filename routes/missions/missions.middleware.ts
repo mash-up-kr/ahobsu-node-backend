@@ -1,7 +1,7 @@
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { isRequired } from './missions.service';
 import { getMissionById } from './missions.repository';
+import { isRequired } from './missions.service';
 
 export const checkBody: RequestResponseNext = (req, res, next) => {
   if (isRequired(req.body)) {

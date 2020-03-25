@@ -1,60 +1,64 @@
-import { Sequelize, SequelizeStatic } from 'sequelize';
+import { dbType } from '.';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from './sequelize';
 
-export default (Sequelize: Sequelize, DataTypes: SequelizeStatic) => {
-  const users = Sequelize.define(
-    'users',
-    {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      birthday: {
-        type: DataTypes.STRING,
-      },
-      email: {
-        type: DataTypes.STRING,
-      },
-      name: {
-        type: DataTypes.STRING,
-      },
-      gender: {
-        type: DataTypes.STRING,
-      },
-      refreshDate: {
-        type: DataTypes.STRING,
-      },
-      refreshToken: {
-        type: DataTypes.STRING,
-      },
-      mission: {
-        type: DataTypes.TEXT,
-      },
-      snsId: {
-        type: DataTypes.STRING,
-      },
-      snsType: {
-        type: DataTypes.STRING,
-      },
-    },
-    {},
-  );
-  // Users.associate = (models) => {
-  //   // associations can be defined here
-  // };
-  return users;
-};
-
-export interface User {
-  id?: number;
-  birthday: string;
-  email?: string;
-  name: string;
-  gender: string;
-  refreshDate?: string;
-  refreshToken?: string;
-  mission?: string;
-  snsId?: string;
-  snsType?: string;
+class User extends Model {
+  public readonly id!: number;
+  public birthday!: string;
+  public email!: string;
+  public name!: string;
+  public gender!: string;
+  public refreshDate!: string;
+  public refreshToken!: string;
+  public mission!: string;
+  public snsId!: string;
+  public snsType!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
+User.init(
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    birthday: {
+      type: DataTypes.STRING,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    gender: {
+      type: DataTypes.STRING,
+    },
+    refreshDate: {
+      type: DataTypes.STRING,
+    },
+    refreshToken: {
+      type: DataTypes.STRING,
+    },
+    mission: {
+      type: DataTypes.TEXT,
+    },
+    snsId: {
+      type: DataTypes.STRING,
+    },
+    snsType: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    charset: 'utf8mb4',
+    // collate: 'Default Collation',
+  },
+);
+
+export default User;
