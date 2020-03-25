@@ -37,6 +37,9 @@ Answer.init(
     no: {
       type: DataTypes.INTEGER,
     },
+    UserId: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     sequelize,
@@ -50,7 +53,7 @@ Answer.init(
 export const associate = (db: dbType) => {
   db.Answer.belongsTo(db.Mission);
   db.Answer.belongsTo(db.File);
-  db.Answer.belongsTo(db.User);
+  // db.Answer.belongsTo(db.User);
 };
 
 export default Answer;

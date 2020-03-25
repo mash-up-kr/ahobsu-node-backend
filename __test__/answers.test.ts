@@ -245,8 +245,9 @@ describe('answers', () => {
 
 const hasAnswerKeys = (data: Answer) => {
   if (!('id' in data)) throw new Error('missing id key');
-  if (!('userId' in data)) throw new Error('missing userId key');
+  if (!('UserId' in data)) throw new Error('missing UserId key');
   if (!('MissionId' in data)) throw new Error('missing MissionId key');
+  if (!('FileId' in data)) throw new Error('missing FileId key');
   if (!('imageUrl' in data)) throw new Error('missing imageUrl key');
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
