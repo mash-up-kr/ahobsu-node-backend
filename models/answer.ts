@@ -3,6 +3,7 @@ import File from './file';
 import { dbType } from './index';
 import Mission from './mission';
 import { sequelize } from './sequelize';
+import User from './user';
 
 class Answer extends Model {
   public readonly id!: number;
@@ -16,6 +17,7 @@ class Answer extends Model {
   public no!: number;
   public file!: File;
   public mission!: Mission;
+  public user!: User;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -37,9 +39,6 @@ Answer.init(
     no: {
       type: DataTypes.INTEGER,
     },
-    userId: {
-      type: DataTypes.INTEGER,
-    },
   },
   {
     sequelize,
@@ -53,7 +52,7 @@ Answer.init(
 export const associate = (db: dbType) => {
   db.Answer.belongsTo(db.Mission);
   db.Answer.belongsTo(db.File);
-  // db.Answer.belongsTo(db.User);
+  db.Answer.belongsTo(db.User);
 };
 
 export default Answer;

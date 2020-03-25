@@ -20,7 +20,6 @@ const week: RequestResponseNext = async (req, res, next) => {
   try {
     const userId = req.user!.id;
     const answers = await getAnswerByuserId({ userId });
-    console.log(111, answers);
     const recentAnswers: Answer[] =
       answers && answers.setDate ? await getRecentAnswers({ userId, setDate: answers.setDate }) : [];
     {
