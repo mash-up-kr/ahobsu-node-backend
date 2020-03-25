@@ -57,9 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-config.json
 .DS_Store
 .vscode
 dist
-config.js
-config.ts

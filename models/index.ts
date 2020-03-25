@@ -10,43 +10,11 @@ const env = (process.env.NODE_ENV || 'development') as 'development' | 'test' | 
 const config = configDate[env];
 const db = {} as any;
 
-const options =
-  process.env.NODE_ENV === 'test'
-    ? {
-        username: 'root',
-        password: 'root',
-        storage: ':memory:',
-        host: 'localhost',
-        dialect: 'sqlite',
-        operatorsAliases: false,
-        logging: false,
-      }
-    : {
-        host: config.host,
-        dialect: 'mysql',
-        timezone: '+09:00',
-        operatorsAliases: false,
-        define: {
-          timestamps: true,
-        },
-        dialectOptions: {
-          dateStrings: true,
-          typeCast: true,
-        },
-        pool: {
-          min: 0,
-          max: 10,
-          idle: 10000,
-          acquire: 10000,
-        },
-        logging: true,
-      };
-
 // let sequelize;
 // if (config.use_env_variable) {
 // sequelize = new Sequelize(process.env[config.use_env_variable], config.options);
 // } else {
-const sequelize = new Sequelize(config.database, config.username, config.password, options);
+const sequelize = new Sequelize(config.database, config.username!, config.password!, config);
 // }
 
 db.answers = answer(sequelize, Sequelize);
