@@ -2,7 +2,7 @@ import { getDateString } from '../../lib/date';
 import Answer from '../../models/answer';
 import Mission from '../../models/mission';
 import User from '../../models/user';
-import { getAnswersByUserIdAndDateRange } from '../answers/answers.repository';
+import { getAnswersByuserIdAndDateRange } from '../answers/answers.repository';
 import { getMissionsByNotInIdAndLimit } from './missions.repository';
 
 export const isRequired = ({ title, isContent, isImage, cycle }: Mission) => {
@@ -29,10 +29,10 @@ export const hasRefresh = (user: User) => {
   return !!user.refreshDate && user.refreshDate === date;
 };
 
-export const getNewMission = async (UserId: number) => {
+export const getNewMission = async (userId: number) => {
   const date = getDateString({});
   const oneYearAgo = getDateString({ years: -1 });
-  const oneYearData = await getAnswersByUserIdAndDateRange({ UserId, dateGt: oneYearAgo });
+  const oneYearData = await getAnswersByuserIdAndDateRange({ userId, dateGt: oneYearAgo });
   const ids = [] as number[];
   oneYearData.forEach((answer: Answer) => {
     if (hasnMissionInAnswer({ answer, date })) {

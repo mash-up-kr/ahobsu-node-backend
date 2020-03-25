@@ -20,7 +20,7 @@ Question.init(
   },
   {
     sequelize,
-    modelName: 'Question',
+    modelName: 'question',
     tableName: 'questions',
     charset: 'utf8mb4',
     // collate: 'Default Collation',

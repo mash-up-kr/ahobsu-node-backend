@@ -34,7 +34,7 @@ Mission.init(
   },
   {
     sequelize,
-    modelName: 'Mission',
+    modelName: 'mission',
     tableName: 'missions',
     charset: 'utf8mb4',
     // collate: 'Default Collation',

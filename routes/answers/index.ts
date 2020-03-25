@@ -4,10 +4,10 @@ import checkToken from '../../middleware/checkToken';
 import imageUploader from '../../middleware/imageUploader';
 import answersController from './answers.ctroller';
 import {
-  checkMissionId,
+  checkmissionId,
   checkRequiredoneOfThem,
-  existAnswerByDateAndUserId,
-  existAnswerByIdAndUserId,
+  existAnswerByDateAnduserId,
+  existAnswerByIdAnduserId,
 } from './answers.middleware';
 
 const router = Router();
@@ -20,8 +20,8 @@ router.post(
   checkToken,
   imageUploader,
   checkRequiredoneOfThem,
-  existAnswerByDateAndUserId,
-  checkMissionId,
+  existAnswerByDateAnduserId,
+  checkmissionId,
   answersController.create,
 );
 router.get('/:id', checkToken, checkId, answersController.get);
@@ -31,9 +31,9 @@ router.put(
   imageUploader,
   checkId,
   checkRequiredoneOfThem,
-  existAnswerByIdAndUserId,
+  existAnswerByIdAnduserId,
   answersController.update,
 );
-router.delete('/:id', checkToken, checkId, existAnswerByIdAndUserId, answersController.destroy);
+router.delete('/:id', checkToken, checkId, existAnswerByIdAnduserId, answersController.destroy);
 
 export default router;

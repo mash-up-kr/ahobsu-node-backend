@@ -27,7 +27,7 @@ describe('answers', () => {
   let response: Response;
   const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
   const date = getDateString({});
-  let MissionId = 0;
+  let missionId = 0;
 
   it('6개의 파츠 생성', async () => {
     await Promise.all([
@@ -61,19 +61,19 @@ describe('answers', () => {
     expect(response.body.data.cycle).toBe(cycle);
 
     // content만
-    MissionId = response.body.data.id;
+    missionId = response.body.data.id;
     const content = 'aaa';
-    response = await postAnswer({ req, token, MissionId, content });
+    response = await postAnswer({ req, token, missionId, content });
     checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
+    expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.imageUrl).toBe(null);
-    expect(response.body.data.MissionId).toBe(MissionId);
-    expect(response.body.data.Mission.title).toBe(title);
-    expect(response.body.data.Mission.isContent).toBe(isContent);
-    expect(response.body.data.Mission.isImage).toBe(isImage);
-    expect(response.body.data.Mission.cycle).toBe(cycle);
+    expect(response.body.data.missionId).toBe(missionId);
+    expect(response.body.data.mission.title).toBe(title);
+    expect(response.body.data.mission.isContent).toBe(isContent);
+    expect(response.body.data.mission.isImage).toBe(isImage);
+    expect(response.body.data.mission.cycle).toBe(cycle);
   });
 
   it('Put /api/v1/answers/{id} content', async () => {
@@ -82,7 +82,7 @@ describe('answers', () => {
     response = await putAnswer({ req, token, id, content });
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
+    expect(hasMissionKeys(response.body.data.mission));
     expect(response.body.data.content).toBe(content);
   });
 
@@ -103,19 +103,19 @@ describe('answers', () => {
     expect(response.body.data.cycle).toBe(cycle);
 
     // file만
-    MissionId = response.body.data.id;
-    response = await postAnswer({ req, token, MissionId, file });
+    missionId = response.body.data.id;
+    response = await postAnswer({ req, token, missionId, file });
     checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.content).toBe(null);
     expect(response.body.data.imageUrl).toBeTruthy();
-    expect(response.body.data.MissionId).toBe(MissionId);
-    expect(response.body.data.Mission.title).toBe(title);
-    expect(response.body.data.Mission.isContent).toBe(isContent);
-    expect(response.body.data.Mission.isImage).toBe(isImage);
-    expect(response.body.data.Mission.cycle).toBe(cycle);
+    expect(response.body.data.missionId).toBe(missionId);
+    expect(response.body.data.mission.title).toBe(title);
+    expect(response.body.data.mission.isContent).toBe(isContent);
+    expect(response.body.data.mission.isImage).toBe(isImage);
+    expect(response.body.data.mission.cycle).toBe(cycle);
   });
 
   it('Put /api/v1/answers/{id} file', async () => {
@@ -123,8 +123,8 @@ describe('answers', () => {
     response = await putAnswer({ req, token, id, file });
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.imageUrl.length).toBeTruthy();
   });
 
@@ -145,20 +145,20 @@ describe('answers', () => {
     expect(response.body.data.cycle).toBe(cycle);
 
     // content, file
-    MissionId = response.body.data.id;
+    missionId = response.body.data.id;
     const content = 'aaa';
-    response = await postAnswer({ req, token, MissionId, content, file });
+    response = await postAnswer({ req, token, missionId, content, file });
     checkStatus(response, 201);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.imageUrl.length).toBeTruthy();
-    expect(response.body.data.MissionId).toBe(MissionId);
-    expect(response.body.data.Mission.title).toBe(title);
-    expect(response.body.data.Mission.isContent).toBe(isContent);
-    expect(response.body.data.Mission.isImage).toBe(isImage);
-    expect(response.body.data.Mission.cycle).toBe(cycle);
+    expect(response.body.data.missionId).toBe(missionId);
+    expect(response.body.data.mission.title).toBe(title);
+    expect(response.body.data.mission.isContent).toBe(isContent);
+    expect(response.body.data.mission.isImage).toBe(isImage);
+    expect(response.body.data.mission.cycle).toBe(cycle);
   });
 
   it('Put /api/v1/answers/{id} content and file', async () => {
@@ -167,15 +167,15 @@ describe('answers', () => {
     response = await putAnswer({ req, token, id, content, file });
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     expect(response.body.data.content).toBe(content);
     expect(response.body.data.imageUrl.length).toBeTruthy();
   });
 
   it('Post /api/v1/answers Exist', async () => {
     const content = 'aaa';
-    const existResponse = await postAnswer({ req, token, MissionId, content });
+    const existResponse = await postAnswer({ req, token, missionId, content });
     checkStatus(existResponse, 400);
     expect(existResponse.body.message).toBe('해당날짜에 답변이 존재합니다.');
   });
@@ -185,8 +185,8 @@ describe('answers', () => {
     response = await getAnswerByDate({ req, token });
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
     response = await getAnswerByDate({ req, date, token });
   });
 
@@ -196,8 +196,8 @@ describe('answers', () => {
     expect(response.body.data.today).toBeTruthy();
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data.answers[0]));
-    expect(hasMissionKeys(response.body.data.answers[0].Mission));
-    expect(hasFileKeys(response.body.data.answers[0].File));
+    expect(hasMissionKeys(response.body.data.answers[0].mission));
+    expect(hasFileKeys(response.body.data.answers[0].file));
   });
 
   it('Get /api/v1/answers/month', async () => {
@@ -206,8 +206,8 @@ describe('answers', () => {
     checkStatus(response);
     expect(response.body.data.date).toBe(firstDate);
     expect(hasAnswerKeys(response.body.data.monthAnswer[0][0]));
-    expect(hasMissionKeys(response.body.data.monthAnswer[0][0].Mission));
-    expect(hasFileKeys(response.body.data.monthAnswer[0][0].File));
+    expect(hasMissionKeys(response.body.data.monthAnswer[0][0].mission));
+    expect(hasFileKeys(response.body.data.monthAnswer[0][0].file));
   });
 
   it('Get /api/v1/answers/month?date={date}', async () => {
@@ -223,16 +223,16 @@ describe('answers', () => {
     response = await getAnswerByDate({ req, token });
     checkStatus(response);
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
   });
 
   it('Get /api/v1/answers/{id}', async () => {
     const { id } = response.body.data;
     response = await getAnswerById({ req, id, token });
     expect(hasAnswerKeys(response.body.data));
-    expect(hasMissionKeys(response.body.data.Mission));
-    expect(hasFileKeys(response.body.data.File));
+    expect(hasMissionKeys(response.body.data.mission));
+    expect(hasFileKeys(response.body.data.file));
   });
 
   it('Delete /api/v1/answers/{id}', async () => {
@@ -245,9 +245,9 @@ describe('answers', () => {
 
 const hasAnswerKeys = (data: Answer) => {
   if (!('id' in data)) throw new Error('missing id key');
-  if (!('UserId' in data)) throw new Error('missing UserId key');
-  if (!('MissionId' in data)) throw new Error('missing MissionId key');
-  if (!('FileId' in data)) throw new Error('missing FileId key');
+  if (!('userId' in data)) throw new Error('missing userId key');
+  if (!('missionId' in data)) throw new Error('missing missionId key');
+  if (!('fileId' in data)) throw new Error('missing fileId key');
   if (!('imageUrl' in data)) throw new Error('missing imageUrl key');
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');
@@ -269,13 +269,13 @@ const getAnswerById = async ({ req, id, token }: { req: Request; id: number; tok
 const postAnswer = async ({
   req,
   token,
-  MissionId,
+  missionId,
   content,
   file,
 }: {
   req: Request;
   token: string;
-  MissionId: number;
+  missionId: number;
   content?: string | null;
   file?: string | null;
 }) => {
@@ -284,7 +284,7 @@ const postAnswer = async ({
     return req
       .post('/api/v1/answers')
       .set('Authorization', token)
-      .field('MissionId', MissionId)
+      .field('missionId', missionId)
       .field('content', content)
       .attach('file', file);
     // content만 있는 경우
@@ -292,14 +292,14 @@ const postAnswer = async ({
     return req
       .post('/api/v1/answers')
       .set('Authorization', token)
-      .field('MissionId', MissionId)
+      .field('missionId', missionId)
       .field('content', content);
     // file만 있는 경우
   } else if (!content && !!file) {
     return req
       .post('/api/v1/answers')
       .set('Authorization', token)
-      .field('MissionId', MissionId)
+      .field('missionId', missionId)
       .attach('file', file);
   }
   throw 'content, file 둘 중 하나는 있어야 합니다.';

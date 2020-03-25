@@ -54,7 +54,7 @@ User.init(
   },
   {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
     tableName: 'users',
     charset: 'utf8mb4',
     // collate: 'Default Collation',

@@ -26,7 +26,7 @@ File.init(
   },
   {
     sequelize,
-    modelName: 'File',
+    modelName: 'file',
     tableName: 'files',
     charset: 'utf8mb4',
     // collate: 'Default Collation',

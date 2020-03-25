@@ -7,8 +7,8 @@ import { sequelize } from './sequelize';
 class Answer extends Model {
   public readonly id!: number;
   public userId!: number;
-  public MissionId!: number;
-  public FileId!: number;
+  public missionId!: number;
+  public fileId!: number;
   public imageUrl!: string;
   public content!: string;
   public date!: string;
@@ -37,13 +37,13 @@ Answer.init(
     no: {
       type: DataTypes.INTEGER,
     },
-    UserId: {
+    userId: {
       type: DataTypes.INTEGER,
     },
   },
   {
     sequelize,
-    modelName: 'Answer',
+    modelName: 'answer',
     tableName: 'answers',
     charset: 'utf8mb4',
     // collate: 'Default Collation',

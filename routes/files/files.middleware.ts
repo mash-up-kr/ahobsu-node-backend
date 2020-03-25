@@ -23,7 +23,7 @@ export const checkFile: RequestResponseNext = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const file = await getFileById(id);
   if (!file) {
-    return res.json(response({ status: 404, message: '존재하지않는 FileId.' }));
+    return res.json(response({ status: 404, message: '존재하지않는 fileId.' }));
   }
   next();
 };
