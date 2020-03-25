@@ -28,9 +28,6 @@ Answer.init(
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    userId: {
-      type: DataTypes.INTEGER,
-    },
     imageUrl: {
       type: DataTypes.STRING,
     },
