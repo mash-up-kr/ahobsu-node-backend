@@ -14,9 +14,9 @@ export const checkRequiredoneOfThem: RequestResponseNext = async (req, res, next
 };
 
 export const existAnswerByDateAndUserId: RequestResponseNext = async (req, res, next) => {
-  const userId = req.user!.id;
+  const UserId = req.user!.id;
   const date = getDateString({});
-  const answer = await getAnswerByDateAndUserId({ userId, date });
+  const answer = await getAnswerByDateAndUserId({ UserId, date });
   if (!!answer) {
     return res.json(response({ status: 400, message: '해당날짜에 답변이 존재합니다.' }));
   }
@@ -34,8 +34,8 @@ export const checkMissionId: RequestResponseNext = async (req, res, next) => {
 
 export const existAnswerByIdAndUserId: RequestResponseNext = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
-  const userId = req.user!.id;
-  const answer = await getAnswerByIdAndUserId({ id, userId });
+  const UserId = req.user!.id;
+  const answer = await getAnswerByIdAndUserId({ id, UserId });
   if (!answer) {
     return res.json(response({ status: 404, message: '존재하지않는 answerId.' }));
   }

@@ -2,10 +2,10 @@ import { Op } from 'sequelize';
 import db from '../../models';
 import Answer from '../../models/answer';
 
-export const getAnswerByUserId = async ({ userId }: { userId: number }): Promise<Answer> => {
+export const getAnswerByUserId = async ({ UserId }: { UserId: number }): Promise<Answer> => {
   return db.Answer.findOne({
     where: {
-      userId,
+      UserId,
     },
     order: [['setDate', 'DESC']],
     include: [{ all: true }],
@@ -14,15 +14,15 @@ export const getAnswerByUserId = async ({ userId }: { userId: number }): Promise
 export const getMonthAnswers = ({
   firstDate,
   lastDate,
-  userId,
+  UserId,
 }: {
   firstDate: string;
   lastDate: string;
-  userId: number;
+  UserId: number;
 }) => {
   return db.Answer.findAll({
     where: {
-      userId,
+      UserId,
       setDate: {
         [Op.gte]: firstDate,
         [Op.lte]: lastDate,
@@ -33,10 +33,10 @@ export const getMonthAnswers = ({
   });
 };
 
-export const getAnswerByDateAndUserId = async ({ userId, date }: { userId: number; date: string }) => {
+export const getAnswerByDateAndUserId = async ({ UserId, date }: { UserId: number; date: string }) => {
   return db.Answer.findOne({
     where: {
-      userId,
+      UserId,
       date,
     },
     include: [{ all: true }],
@@ -44,7 +44,7 @@ export const getAnswerByDateAndUserId = async ({ userId, date }: { userId: numbe
 };
 
 export const createAnswer = async ({
-  userId,
+  UserId,
   MissionId,
   imageUrl,
   FileId,
@@ -53,7 +53,7 @@ export const createAnswer = async ({
   setDate,
   no,
 }: {
-  userId: number;
+  UserId: number;
   MissionId: number;
   imageUrl: string;
   FileId: string;
@@ -63,7 +63,7 @@ export const createAnswer = async ({
   no: number;
 }) => {
   return db.Answer.create({
-    userId,
+    UserId,
     MissionId,
     imageUrl,
     FileId,
@@ -74,28 +74,28 @@ export const createAnswer = async ({
   });
 };
 
-export const getAnswerByIdAndUserId = async ({ id, userId }: { id: number; userId: number }) => {
+export const getAnswerByIdAndUserId = async ({ id, UserId }: { id: number; UserId: number }) => {
   return db.Answer.findOne({
-    where: { id, userId },
+    where: { id, UserId },
     include: [{ all: true }],
   });
 };
 
 export const updateAnswer = async ({
   id,
-  userId,
+  UserId,
   MissionId,
   imageUrl,
   content,
 }: {
   id: number;
-  userId: number;
+  UserId: number;
   MissionId: number;
   imageUrl: string;
   content: string;
 }) => {
   await db.Answer.update(
-    { userId, MissionId, imageUrl, content },
+    { UserId, MissionId, imageUrl, content },
     {
       where: {
         id,
@@ -112,10 +112,10 @@ export const deleteAnswer = async (id: number) => {
   });
 };
 
-export const getRecentAnswers = async ({ userId, setDate }: { userId: number; setDate: string }): Promise<Answer[]> => {
+export const getRecentAnswers = async ({ UserId, setDate }: { UserId: number; setDate: string }): Promise<Answer[]> => {
   return db.Answer.findAll({
     where: {
-      userId,
+      UserId,
       setDate,
     },
     include: [{ all: true }],
@@ -123,15 +123,15 @@ export const getRecentAnswers = async ({ userId, setDate }: { userId: number; se
 };
 
 export const getAnswersByUserIdAndDateRange = async ({
-  userId,
+  UserId,
   dateGt,
 }: {
-  userId: number;
+  UserId: number;
   dateGt: string;
 }): Promise<Answer[]> => {
   return db.Answer.findAll({
     where: {
-      userId,
+      UserId,
       date: {
         [Op.gt]: dateGt,
       },

@@ -61,4 +61,8 @@ User.init(
   },
 );
 
+export const associate = (db: dbType) => {
+  db.User.hasMany(db.Answer);
+};
+
 export default User;

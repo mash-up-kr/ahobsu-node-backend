@@ -18,11 +18,11 @@ import { getNo, getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday } f
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
-    const userId = req.user!.id;
-    const answers = await getAnswerByUserId({ userId });
-    // 여기있는 let도 지우고 싶다...
+    const UserId = req.user!.id;
+    const answers = await getAnswerByUserId({ UserId });
+    console.log(111, answers);
     const recentAnswers: Answer[] =
-      answers && answers.setDate ? await getRecentAnswers({ userId, setDate: answers.setDate }) : [];
+      answers && answers.setDate ? await getRecentAnswers({ UserId, setDate: answers.setDate }) : [];
     {
       // 6개의 파츠를 모두 모은 날이 오늘이 아니면 새로운 것을 준다
       const answers = !!recentAnswers && !hasSixParsAndNotToday(recentAnswers) ? recentAnswers : [];
@@ -40,8 +40,8 @@ const month: RequestResponseNext = async (req, res, next) => {
     const { date } = req.query;
     const now = getNow(date);
     const { firstDate, lastDate } = getMonthDate(now);
-    const userId = req.user!.id;
-    const notGorupAnswers = await getMonthAnswers({ firstDate, lastDate, userId });
+    const UserId = req.user!.id;
+    const notGorupAnswers = await getMonthAnswers({ firstDate, lastDate, UserId });
     const answers = notGorupAnswers.reduce(
       (acc: any, it: Answer) => ({ ...acc, [it.setDate!]: [...(acc[it.setDate!] || []), it] }),
       {},
@@ -55,26 +55,26 @@ const month: RequestResponseNext = async (req, res, next) => {
 };
 
 const date: RequestResponseNext = async (req, res, next) => {
-  const userId = req.user!.id;
+  const UserId = req.user!.id;
   const { date } = req.query;
-  const answer = date ? await getAnswerByDateAndUserId({ userId, date }) : await getAnswerByUserId({ userId });
+  const answer = date ? await getAnswerByDateAndUserId({ UserId, date }) : await getAnswerByUserId({ UserId });
   res.json(response({ data: answer }));
 };
 
 const get: RequestResponseNext = async (req, res, next) => {
-  const userId = req.user!.id;
+  const UserId = req.user!.id;
   const id = parseInt(req.params.id, 10);
-  const answer = await getAnswerByIdAndUserId({ id, userId });
+  const answer = await getAnswerByIdAndUserId({ id, UserId });
   res.json(response({ data: answer }));
 };
 
 const create: RequestResponseNext = async (req, res, next) => {
   try {
-    const userId = req.user!.id;
-    const lastAnswer = await getAnswerByUserId({ userId });
+    const UserId = req.user!.id;
+    const lastAnswer = await getAnswerByUserId({ UserId });
     // 데이터가 있어야 무언가를 할수가...
     const recentAnswers: Answer[] = hasSetDate(lastAnswer)
-      ? await getRecentAnswers({ userId, setDate: lastAnswer.setDate as string })
+      ? await getRecentAnswers({ UserId, setDate: lastAnswer.setDate as string })
       : [];
     // 6개의 파츠를 모두 모았다면 새로운 파츠를 시작한다.
     const setDate = getSetDate(recentAnswers);
@@ -91,9 +91,9 @@ const create: RequestResponseNext = async (req, res, next) => {
       return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     const date = getDateString({});
-    const { id } = await createAnswer({ userId, MissionId, imageUrl, FileId, content, date, setDate, no });
+    const { id } = await createAnswer({ UserId, MissionId, imageUrl, FileId, content, date, setDate, no });
     {
-      const answer = await getAnswerByIdAndUserId({ id, userId });
+      const answer = await getAnswerByIdAndUserId({ id, UserId });
       return res.json(response({ status: 201, data: answer }));
     }
   } catch (e) {
@@ -105,9 +105,9 @@ const create: RequestResponseNext = async (req, res, next) => {
 const update: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const userId = req.user!.id;
+    const UserId = req.user!.id;
     const { file } = req.body;
-    const answer = await getAnswerByIdAndUserId({ id, userId });
+    const answer = await getAnswerByIdAndUserId({ id, UserId });
     const imageUrl = file ? file : answer.imageUrl;
     const { content, MissionId } = req.body;
     if (!!answer.mission?.isImage && !imageUrl) {
@@ -116,9 +116,9 @@ const update: RequestResponseNext = async (req, res, next) => {
     if (!!answer.mission?.isContent && !content) {
       return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
-    await updateAnswer({ id, userId, MissionId, imageUrl, content });
+    await updateAnswer({ id, UserId, MissionId, imageUrl, content });
     {
-      const answer = await getAnswerByIdAndUserId({ id, userId });
+      const answer = await getAnswerByIdAndUserId({ id, UserId });
       return res.json(response({ data: answer }));
     }
   } catch (e) {

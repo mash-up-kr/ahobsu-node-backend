@@ -14,6 +14,7 @@ const checkToken: RequestResponseNext = async (req, res, next) => {
     );
   }
   try {
+    console.log('token', token);
     const result = (await jwt.verify(token, process.env.privateKey as string)) as {
       user: {
         id: number;

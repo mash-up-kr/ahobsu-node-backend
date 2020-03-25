@@ -53,6 +53,7 @@ Answer.init(
 export const associate = (db: dbType) => {
   db.Answer.belongsTo(db.Mission);
   db.Answer.belongsTo(db.File);
+  db.Answer.belongsTo(db.User);
 };
 
 export default Answer;
