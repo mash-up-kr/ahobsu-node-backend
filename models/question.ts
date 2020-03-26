@@ -23,7 +23,7 @@ Question.init(
     modelName: 'question',
     tableName: 'questions',
     charset: 'utf8mb4',
-    // collate: 'Default Collation',
+    collate: 'utf8mb4_general_ci',
   },
 );
 

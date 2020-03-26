@@ -57,7 +57,7 @@ User.init(
     modelName: 'user',
     tableName: 'users',
     charset: 'utf8mb4',
-    // collate: 'Default Collation',
+    collate: 'utf8mb4_general_ci',
   },
 );
 

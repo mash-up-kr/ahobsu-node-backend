@@ -45,7 +45,7 @@ Answer.init(
     modelName: 'answer',
     tableName: 'answers',
     charset: 'utf8mb4',
-    // collate: 'Default Collation',
+    collate: 'utf8mb4_general_ci',
   },
 );
 
