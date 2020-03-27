@@ -7,10 +7,10 @@ const create: RequestResponseNext = async (req, res, next) => {
     const { file: cardUrl, part: partString } = req.body;
     const part = parseInt(partString, 10);
     const file = await createFile({ cardUrl, part });
-    res.json(response({ status: 201, data: file }));
+    res.status(201).json(response({ status: 201, data: file }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const update: RequestResponseNext = async (req, res, next) => {
@@ -23,17 +23,17 @@ const update: RequestResponseNext = async (req, res, next) => {
     res.json(response({ data: file }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const destroy: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
     await deleteFile(id);
-    res.json(response({ status: 204, message: '파일을 삭제 했습니다.' }));
+    res.status(204).json(response({ status: 204, message: '파일을 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 export default {

@@ -2,11 +2,12 @@
 import jwt from 'jsonwebtoken';
 import response from '../lib/response';
 import { RequestResponseNext } from '../routes';
+import User from '../models/user';
 
 const checkToken: RequestResponseNext = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    return res.json(
+    return res.status(400).json(
       response({
         status: 400,
         message: '토큰이 필요합니다.',
@@ -21,7 +22,7 @@ const checkToken: RequestResponseNext = async (req, res, next) => {
       };
     };
     if (typeof result === 'object' && !('user' in result)) {
-      return res.json(
+      return res.status(400).json(
         response({
           status: 1100,
           message: '올바르지 못한 토큰 입니다.',
@@ -35,7 +36,7 @@ const checkToken: RequestResponseNext = async (req, res, next) => {
     next();
   } catch (e) {
     console.log(e);
-    return res.json(
+    return res.status(500).json(
       response({
         status: 1100,
         message: '올바르지 못한 토큰 입니다.',

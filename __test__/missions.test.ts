@@ -62,7 +62,6 @@ describe('missions', () => {
     const { id } = response.body.data;
     response = await deleteMission({ req, token, id });
     checkStatus(response, 204);
-    expect(response.body.message).toBe('문제를 삭제 했습니다.');
   });
 });
 

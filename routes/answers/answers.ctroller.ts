@@ -30,7 +30,7 @@ const week: RequestResponseNext = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    res.json(response({ status: 500, message: error.message }));
+    res.status(500).json(response({ status: 500, message: error.message }));
   }
 };
 
@@ -49,7 +49,7 @@ const month: RequestResponseNext = async (req, res, next) => {
     res.json(response({ data: { date: firstDate, monthAnswer } }));
   } catch (error) {
     console.log(error.message);
-    res.json(response({ status: 500, message: error.message }));
+    res.status(500).json(response({ status: 500, message: error.message }));
   }
 };
 
@@ -84,20 +84,20 @@ const create: RequestResponseNext = async (req, res, next) => {
     const { content, missionId, file: imageUrl } = req.body;
     const mission = await getMissionById(missionId);
     if (!!mission.isImage && !imageUrl) {
-      return res.json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
+      return res.status(400).json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
     }
     if (!!mission.isContent && !content) {
-      return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
+      return res.status(400).json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     const date = getDateString({});
     const { id } = await createAnswer({ userId, missionId, imageUrl, fileId, content, date, setDate, no });
     {
       const answer = await getAnswerByIdAnduserId({ id, userId });
-      return res.json(response({ status: 201, data: answer }));
+      return res.status(201).json(response({ status: 201, data: answer }));
     }
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
@@ -110,10 +110,10 @@ const update: RequestResponseNext = async (req, res, next) => {
     const imageUrl = file ? file : answer.imageUrl;
     const { content, missionId } = req.body;
     if (!!answer.mission?.isImage && !imageUrl) {
-      return res.json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
+      return res.status(400).json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
     }
     if (!!answer.mission?.isContent && !content) {
-      return res.json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
+      return res.status(400).json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     await updateAnswer({ id, userId, missionId, imageUrl, content });
     {
@@ -122,7 +122,7 @@ const update: RequestResponseNext = async (req, res, next) => {
     }
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
@@ -130,10 +130,10 @@ const destroy: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
     await deleteAnswer(id);
-    res.json(response({ status: 204, message: '답변을 삭제 했습니다.' }));
+    res.status(204).json(response({ status: 204, message: '답변을 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 

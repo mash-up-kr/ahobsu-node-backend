@@ -17,7 +17,7 @@ router.use('/users', usersRouter);
 
 export default router;
 
-export interface MyRequest extends Request {
+interface MyRequest extends Request {
   user?: {
     id: number;
   };

@@ -239,7 +239,6 @@ describe('answers', () => {
     const { id } = response.body.data;
     response = await deleteAnswerById({ req, id, token });
     checkStatus(response, 204);
-    expect(response.body.message).toBe('답변을 삭제 했습니다.');
   });
 });
 

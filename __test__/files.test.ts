@@ -44,7 +44,6 @@ describe('files', () => {
     const { id } = response.body.data;
     response = await deleteFileById({ req, token, id });
     checkStatus(response, 204);
-    expect(response.body.message).toBe('파일을 삭제 했습니다.');
   });
 });
 

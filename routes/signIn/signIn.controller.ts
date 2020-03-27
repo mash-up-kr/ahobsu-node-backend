@@ -9,18 +9,18 @@ const refresh: RequestResponseNext = async (req, res) => {
     const token = req.headers.authorization;
     const result = jwt.verify(token!, process.env.privateKey as string) as { snsId: string; snsType: string };
     if (isRequired(result)) {
-      return res.json(response({ status: 1100, message: '올바르지 못한 토큰 입니다.' }));
+      return res.status(400).json(response({ status: 1100, message: '올바르지 못한 토큰 입니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType(result);
     if (!user) {
-      return res.json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
+      return res.status(404).json(response({ status: 404, message: '유저가 존재하지 없습니다.' }));
     }
     const { accessToken, refreshToken } = await createToken(user);
     const signUp = isSignUp(user);
-    res.json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
+    res.status(201).json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 400, message: '올바르지 못한 토큰 입니다.' }));
+    return res.status(400).json(response({ status: 400, message: '올바르지 못한 토큰 입니다.' }));
   }
 };
 const create: RequestResponseNext = async (req, res) => {
@@ -45,15 +45,15 @@ const create: RequestResponseNext = async (req, res) => {
         : await jwt.decode(token!);
     const { sub: snsId, email } = snsData as { sub: string; email: string };
     if (!email || !snsId) {
-      return res.json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
+      return res.status(412).json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
     const signUp = isSignUp(newUser);
-    res.json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
+    res.status(201).json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
   } catch (e) {
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 export default {
