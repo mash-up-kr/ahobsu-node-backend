@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { RequestResponseNext } from '..';
+import { getDateString } from '../../lib/date';
 import response from '../../lib/response';
 import { getUserById } from '../users/users.repository';
 import {
@@ -10,8 +10,7 @@ import {
   setMissionsInUser,
   updateMission,
 } from './missions.repository';
-import { getNewMission, getOldMission, hasOldMissions, isRefresh, hasRefresh } from './missions.service';
-import { getDateString } from '../../lib/date';
+import { getNewMission, getOldMission, hasOldMissions, hasRefresh, isRefresh } from './missions.service';
 
 const missoins: RequestResponseNext = async (req, res) => {
   try {
@@ -27,7 +26,7 @@ const missoins: RequestResponseNext = async (req, res) => {
     res.json(response({ data: { refresh, missions } }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
@@ -37,14 +36,14 @@ const refresh: RequestResponseNext = async (req, res) => {
     const user = await getUserById(userId);
     const date = getDateString({});
     if (hasRefresh(user)) {
-      return res.json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
+      return res.status(400).json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
     }
     const missions = await getNewMission(userId);
     await setMissionsAndRefeshDateInUser({ missions, id: userId });
     res.json(response({ data: { refresh: false, missions } }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
@@ -55,17 +54,17 @@ const mission: RequestResponseNext = async (req, res) => {
     res.json(response({ data: mission }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
 const create: RequestResponseNext = async (req, res) => {
   try {
     const missions = await createMission(req.body);
-    res.json(response({ status: 201, data: missions }));
+    res.status(201).json(response({ status: 201, data: missions }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
@@ -77,7 +76,7 @@ const update: RequestResponseNext = async (req, res) => {
     res.json(response({ data: mission }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 
@@ -85,10 +84,10 @@ const destroy: RequestResponseNext = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     await deleteMission(id);
-    res.json(response({ status: 204, message: '문제를 삭제 했습니다.' }));
+    res.status(204).json(response({ status: 204, message: '문제를 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 

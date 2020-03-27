@@ -41,10 +41,7 @@ export default {
     name: 'Apache 2.0',
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html',
   },
-  schemes: [
-    // 'https',
-    'http',
-  ],
+  schemes: ['https', 'http'],
   paths,
   securityDefinitions: {
     apiKey: {

@@ -1,7 +1,7 @@
 import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-import { Mission } from '../models/mission';
+import Mission from '../models/mission';
 import { signin } from './signin.test';
 import { hasUserKeys, putUserRefresh } from './users.test';
 import { checkStatus, Request } from './util';
@@ -62,7 +62,6 @@ describe('missions', () => {
     const { id } = response.body.data;
     response = await deleteMission({ req, token, id });
     checkStatus(response, 204);
-    expect(response.body.message).toBe('문제를 삭제 했습니다.');
   });
 });
 
@@ -139,11 +138,21 @@ export const hasMissionKeys = (data: Mission) => {
   if (!('cycle' in data)) throw new Error('missing cycle key');
 };
 
-interface RequsetMission extends Mission {
+export const postMission = async ({
+  req,
+  token,
+  title,
+  isContent,
+  isImage,
+  cycle,
+}: {
   req: Request;
   token: string;
-}
-export const postMission = async ({ req, token, title, isContent, isImage, cycle }: RequsetMission) => {
+  title: string;
+  isContent: boolean;
+  isImage: boolean;
+  cycle: number;
+}) => {
   return req
     .post('/api/v1/missions')
     .set('Authorization', token)
@@ -154,7 +163,23 @@ const getMissionById = async ({ req, token, id }: { req: Request; token: string;
   return req.get(`/api/v1/missions/${id}`).set('Authorization', token);
 };
 
-const putMission = async ({ req, token, id, title, isContent, isImage, cycle }: RequsetMission) => {
+const putMission = async ({
+  req,
+  token,
+  id,
+  title,
+  isContent,
+  isImage,
+  cycle,
+}: {
+  req: Request;
+  token: string;
+  id: number;
+  title: string;
+  isContent: boolean;
+  isImage: boolean;
+  cycle: number;
+}) => {
   return req
     .put(`/api/v1/missions/${id}`)
     .set('Authorization', token)

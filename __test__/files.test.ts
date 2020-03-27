@@ -4,6 +4,7 @@ import app from '../app';
 import connectDB from '../connectDB';
 import { signin } from './signin.test';
 import { checkStatus, Request } from './util';
+import File from '../models/file';
 
 const file = path.join(__dirname, '../public/bigSizeimg.jpeg');
 const req = request(app);
@@ -43,7 +44,6 @@ describe('files', () => {
     const { id } = response.body.data;
     response = await deleteFileById({ req, token, id });
     checkStatus(response, 204);
-    expect(response.body.message).toBe('파일을 삭제 했습니다.');
   });
 });
 

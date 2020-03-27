@@ -8,7 +8,7 @@ const users: RequestResponseNext = async (req, res, next) => {
     res.json(response({ data: users }));
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const my: RequestResponseNext = async (req, res) => {
@@ -19,7 +19,7 @@ const my: RequestResponseNext = async (req, res) => {
     res.json(response({ data: user }));
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const user: RequestResponseNext = async (req, res) => {
@@ -29,7 +29,7 @@ const user: RequestResponseNext = async (req, res) => {
     res.json(response({ data: user }));
   } catch (e) {
     console.log(e);
-    return res.json(response({ status: 500, message: e.message }));
+    return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const update: RequestResponseNext = async (req, res) => {
@@ -40,7 +40,7 @@ const update: RequestResponseNext = async (req, res) => {
     res.json(response({ data: user }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const refresh: RequestResponseNext = async (req, res) => {
@@ -51,7 +51,7 @@ const refresh: RequestResponseNext = async (req, res) => {
     res.json(response({ data: user }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 const destroy: RequestResponseNext = async (req, res, next) => {
@@ -61,7 +61,7 @@ const destroy: RequestResponseNext = async (req, res, next) => {
     res.json(response({ message: '유저를 삭제 했습니다.' }));
   } catch (e) {
     console.log(e);
-    res.json(response({ status: 500, message: e.message }));
+    res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
 export default {

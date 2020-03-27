@@ -2,14 +2,13 @@
 
 유니큐와 유초코파이 노드로 탈주하다😎
 
-<h1 align="center">Welcome to ahobsu 👋</h1>
 <p>
   <img src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
 # MashUp Node JS Project
 
-### 💻 [API](http://ec2-54-175-1-15.compute-1.amazonaws.com/apiDocs/)
+### 💻 [API](https://moti.company/apiDocs/)
 
 ## 매일매일 미션을 수행하며 카드를 수집해 보자
 
@@ -80,8 +79,6 @@ cd Ahobsu-Node-Backend
 npm install
 ```
 
-- config/config.default.json를 config.json으로 변경
-
 - .env.default를 .env로 변경 후 키 설정
 
 ```env
@@ -90,6 +87,9 @@ AWSSecretKey=YOUR_AWSSecretKey
 buket=YOUR_buket
 privateKey=YOUR_privateKey
 TZ=Asia/Seoul
+DB_USERNAME=YOUR_DB_USERNAME
+DB_HOST=YOUR_DB_HOST
+DB_PASSWORD=YOUR_DB_PASSWORD
 ```
 
 - 개발 서버 시작

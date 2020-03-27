@@ -1,14 +1,13 @@
-import moment from 'moment';
 import path from 'path';
 import request, { Response } from 'supertest';
 import app from '../app';
 import connectDB from '../connectDB';
-import { Answers } from '../models/answer';
-import { postFile, hasFileKeys } from './files.test';
+import { getDateString, getFirstDate, getNow } from '../lib/date';
+import Answer from '../models/answer';
+import { hasFileKeys, postFile } from './files.test';
 import { hasMissionKeys, postMission } from './missions.test';
 import { signin } from './signin.test';
 import { checkStatus, Request } from './util';
-import { getDateString, getFirstDate, getNow } from '../lib/date';
 
 let token = '';
 const req = request(app);
@@ -219,7 +218,7 @@ describe('answers', () => {
     expect(haveDateResponse.body.data.monthAnswer.length).toBe(0);
   });
 
-  it('Get /api/v1/answers/{date}', async () => {
+  it('Get /api/v1/answers?date={date}', async () => {
     const date = getDateString({});
     response = await getAnswerByDate({ req, token });
     checkStatus(response);
@@ -240,14 +239,14 @@ describe('answers', () => {
     const { id } = response.body.data;
     response = await deleteAnswerById({ req, id, token });
     checkStatus(response, 204);
-    expect(response.body.message).toBe('답변을 삭제 했습니다.');
   });
 });
 
-const hasAnswerKeys = (data: Answers) => {
+const hasAnswerKeys = (data: Answer) => {
   if (!('id' in data)) throw new Error('missing id key');
   if (!('userId' in data)) throw new Error('missing userId key');
   if (!('missionId' in data)) throw new Error('missing missionId key');
+  if (!('fileId' in data)) throw new Error('missing fileId key');
   if (!('imageUrl' in data)) throw new Error('missing imageUrl key');
   if (!('content' in data)) throw new Error('missing content key');
   if (!('date' in data)) throw new Error('missing date key');

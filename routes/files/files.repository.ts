@@ -1,25 +1,25 @@
-import db from '../../models';
+import db, { sequelize } from '../../models';
 
 export const getFileByPart = async (part: number) => {
-  return db.files.findOne({
+  return db.File.findOne({
     where: {
       part,
     },
-    order: db.sequelize.random(),
+    order: sequelize.random(),
     limit: 1,
   });
 };
 
 export const getFileById = async (id: number) => {
-  return db.files.findOne({ where: { id } });
+  return db.File.findOne({ where: { id } });
 };
 
 export const createFile = async ({ cardUrl, part }: { cardUrl: string; part: number }) => {
-  return db.files.create({ cardUrl, part });
+  return db.File.create({ cardUrl, part });
 };
 
 export const updateFile = ({ id, cardUrl, part }: { id: number; cardUrl: string; part: number }) => {
-  db.files.update(
+  db.File.update(
     {
       cardUrl,
       part,
@@ -33,7 +33,7 @@ export const updateFile = ({ id, cardUrl, part }: { id: number; cardUrl: string;
 };
 
 export const deleteFile = async (id: number) => {
-  return db.files.destroy({
+  return db.File.destroy({
     where: {
       id,
     },
