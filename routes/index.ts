@@ -17,12 +17,12 @@ router.use('/users', usersRouter);
 
 export default router;
 
-interface MyRequest extends Request {
-  user?: {
-    id: number;
-  };
-}
+// interface MyRequest extends Request {
+//   user?: {
+//     id: number;
+//   };
+// }
 
 export interface RequestResponseNext {
-  (req: MyRequest, res: Response, next: NextFunction): any;
+  (req: Request, res: Response, next: NextFunction): any;
 }
