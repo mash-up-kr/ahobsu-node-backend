@@ -8,7 +8,8 @@ import swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 class App {
   app: Express;
