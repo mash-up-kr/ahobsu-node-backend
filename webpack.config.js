@@ -1,6 +1,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   // mode: process.env.NODE_ENV == 'production' ? 'production' : 'development',
