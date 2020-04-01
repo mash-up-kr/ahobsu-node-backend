@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 type Config = {
   username: string;

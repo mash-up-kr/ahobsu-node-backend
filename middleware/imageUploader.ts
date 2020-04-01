@@ -4,7 +4,9 @@ import fs from 'fs';
 import path from 'path';
 import { RequestResponseNext } from '../routes';
 import dotenv from 'dotenv';
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 

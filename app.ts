@@ -9,7 +9,9 @@ import connectDB from './connectDB';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
 import dotenv from 'dotenv';
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 class App {
   app: Express;

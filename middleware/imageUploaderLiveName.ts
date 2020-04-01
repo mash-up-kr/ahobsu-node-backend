@@ -3,7 +3,9 @@ import formidable from 'formidable';
 import fs from 'fs';
 import { RequestResponseNext } from '../routes';
 import dotenv from 'dotenv';
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 const imageUploaderLiveName: RequestResponseNext = async (req, res, next) => {
   const form = new formidable.IncomingForm();
