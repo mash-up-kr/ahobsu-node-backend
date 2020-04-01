@@ -3,6 +3,8 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { RequestResponseNext } from '../routes';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
