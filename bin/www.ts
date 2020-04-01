@@ -69,9 +69,9 @@ if (process.env.NODE_ENV === 'production') {
     server: 'https://acme-v02.api.letsencrypt.org/directory',
     approveDomains: (opts: { domains: string[]; email: string; agreeTos: boolean }, certs: any, cb: any) => {
       if (certs) {
-        opts.domains = ['example.com', 'www.example.com'];
+        opts.domains = ['moti.company', 'www.moti.company'];
       } else {
-        opts.email = 'example@example.com';
+        opts.email = 'lyh6425@gamil.com';
         opts.agreeTos = true;
       }
       cb(null, { options: opts, certs });
