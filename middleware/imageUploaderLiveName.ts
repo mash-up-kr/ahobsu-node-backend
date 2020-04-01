@@ -17,7 +17,6 @@ const imageUploaderLiveName: RequestResponseNext = async (req, res, next) => {
           accessKeyId: process.env.AWSAccessKeyId,
           secretAccessKey: process.env.AWSSecretKey,
         });
-        console.log(111, process.env.AWSAccessKeyId);
         const s3 = new AWS.S3();
         const key = file.name;
         s3.upload(
