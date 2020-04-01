@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   // mode: process.env.NODE_ENV == 'production' ? 'production' : 'development',
-  mode: 'development',
+  mode: 'production',
   entry: './bin/www.ts',
   target: 'node',
   output: {
@@ -28,5 +28,17 @@ module.exports = {
   },
   externals: [nodeExternals()],
   devtool: 'source-map',
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [
+    new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      AWSAccessKeyId: process.env.AWSAccessKeyId,
+      AWSSecretKey: process.env.AWSSecretKey,
+      buket: process.env.buket,
+      privateKey: process.env.privateKey,
+      TZ: process.env.TZ,
+      DB_USERNAME: process.env.DB_USERNAME,
+      DB_HOST: process.env.DB_HOST,
+      DB_PASSWORD: process.env.DB_PASSWORD,
+    }),
+  ],
 };
