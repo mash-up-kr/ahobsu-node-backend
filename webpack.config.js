@@ -1,7 +1,6 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
   // mode: process.env.NODE_ENV == 'production' ? 'production' : 'development',
@@ -29,17 +28,5 @@ module.exports = {
   },
   externals: [nodeExternals()],
   devtool: 'source-map',
-  plugins: [
-    new CleanWebpackPlugin(),
-    new webpack.DefinePlugin({
-      AWSAccessKeyId: process.env.AWSAccessKeyId,
-      AWSSecretKey: process.env.AWSSecretKey,
-      buket: process.env.buket,
-      privateKey: process.env.privateKey,
-      TZ: process.env.TZ,
-      DB_USERNAME: process.env.DB_USERNAME,
-      DB_HOST: process.env.DB_HOST,
-      DB_PASSWORD: process.env.DB_PASSWORD,
-    }),
-  ],
+  plugins: [new CleanWebpackPlugin()],
 };
