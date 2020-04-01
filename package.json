@@ -5,7 +5,7 @@
   "scripts": {
     "start": "env TZ='Asia/Seoul' nodemon --watch ./ --delay 1 --exec 'ts-node' ./bin/www.ts",
     "build": "rm -rf ./dist && npx webpack --progress",
-    "deploy": "git pull origin dev && npm install && npm run build && pm2 kill && env TZ='Asia/Seoul' NODE_ENV=production pm2 start ecosystem.config.js",
+    "deploy": "git pull origin dev && npm install && npm run build && pm2 kill && sudo su && env TZ='Asia/Seoul' NODE_ENV=production pm2 start ecosystem.config.js",
     "test": "NODE_ENV=test npx jest ./__test__/*.test.ts --detectOpenHandles --forceExit",
     "start:test": "NODE_ENV=test env TZ='Asia/Seoul' nodemon --watch ./ --delay 1 --exec 'ts-node' ./bin/www.ts",
     "build:tsc": "rm -rf ./dist && tsc ",
@@ -28,7 +28,7 @@
     "morgan": "~1.9.1",
     "mysql2": "^2.0.2",
     "nodemon": "^2.0.2",
-    "pm2": "^4.2.1",
+    "pm2": "^4.2.3",
     "redirect-https": "^1.3.0",
     "sequelize": "^5.21.5",
     "sequelize-cli": "^5.5.1",

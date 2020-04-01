@@ -13,10 +13,9 @@ module.exports = {
       //   NODE_ENV: 'staging',
       //   NODE_CONFIG_DIR: './config/',
       // },
-      // env_production: {
-      //   NODE_ENV: 'production',
-      //   NODE_CONFIG_DIR: './config/',
-      // },
+      env_production: {
+        NODE_ENV: 'production',
+      },
     },
   ],
 };

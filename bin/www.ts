@@ -92,7 +92,7 @@ if (process.env.NODE_ENV === 'production') {
   // };
 
   const server = http.createServer(app);
-  server.listen(process.env.PORT || port, () => console.log(`http://localhost:${port}`));
+  server.listen(process.env.PORT || port, () => console.log(`http://localhost:${port}, ${process.env.NODE_ENV}`));
   server.on('error', onError);
   // server.on('listening', onListening);
 }

@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   // mode: process.env.NODE_ENV == 'production' ? 'production' : 'development',
-  mode: 'development',
+  mode: 'production',
   entry: './bin/www.ts',
   target: 'node',
   output: {
