@@ -20,7 +20,7 @@
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "formidable": "^1.2.2",
-    "greenlock-express": "^3.1.1",
+    "greenlock-express": "^2.7.5",
     "http-errors": "~1.6.3",
     "husky": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
