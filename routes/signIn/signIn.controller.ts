@@ -48,9 +48,10 @@ const create: RequestResponseNext = async (req, res) => {
       return res.status(412).json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
+    const signUp = user ? true : false;
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
-    const signUp = isSignUp(newUser);
+    // const signUp = isSignUp(newUser);
     res.status(201).json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
   } catch (e) {
     return res.status(500).json(response({ status: 500, message: e.message }));
