@@ -54,6 +54,7 @@ const create: RequestResponseNext = async (req, res) => {
     // const signUp = isSignUp(newUser);
     res.status(201).json(response({ status: 201, data: { accessToken, refreshToken, signUp } }));
   } catch (e) {
+    console.log(e);
     return res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
