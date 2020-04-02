@@ -1,6 +1,5 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
 import logger from 'morgan';
@@ -10,10 +9,6 @@ import connectDB from './connectDB';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
-
 class App {
   app: Express;
 
@@ -77,7 +72,7 @@ class App {
   getRouting() {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-    this.app.get('/', (req, res, next) => {
+    this.app.get('/', async (req, res, next) => {
       res.json({ name: '유정' });
     });
 

@@ -11,9 +11,9 @@ class Insect extends Model {
   public readonly startTime!: number;
   public readonly endTime!: number;
 
-  public readonly ExtraPeriod!: string;
-  public readonly ExtraStartTime!: number;
-  public readonly ExtraEndTime!: number;
+  public readonly extraPeriod!: string;
+  public readonly extraStartTime!: number;
+  public readonly extraEndTime!: number;
 
   public readonly location!: string;
   public readonly price!: number;
@@ -39,9 +39,9 @@ Insect.init(
     period: { type: DataTypes.STRING },
     startTime: { type: DataTypes.INTEGER },
     endTime: { type: DataTypes.INTEGER },
-    ExtraPeriod: { type: DataTypes.STRING },
-    ExtraStartTime: { type: DataTypes.INTEGER },
-    ExtraEndTime: { type: DataTypes.INTEGER },
+    extraPeriod: { type: DataTypes.STRING },
+    extraStartTime: { type: DataTypes.INTEGER },
+    extraEndTime: { type: DataTypes.INTEGER },
     location: { type: DataTypes.STRING },
     price: { type: DataTypes.INTEGER },
   },

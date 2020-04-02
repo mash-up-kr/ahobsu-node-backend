@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import siginInRouter from './signIn';
-import usersRouter from './users';
 import citizensRouter from './citizens';
+import designsRouter from './designs';
 import fishsRouter from './fishs';
 import insectsRouter from './insects';
+import siginInRouter from './signIn';
+import usersRouter from './users';
 
 const router = Router();
 
+router.use('/designs', designsRouter);
 router.use('/citizens', citizensRouter);
 router.use('/fishs', fishsRouter);
 router.use('/insects', insectsRouter);
