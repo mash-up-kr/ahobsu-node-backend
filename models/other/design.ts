@@ -6,7 +6,7 @@ class Design extends Model {
   public readonly id!: number;
 
   public readonly title!: string;
-  public readonly imgUrl!: string;
+  public readonly imageUrl!: string;
   public readonly type!: string;
   public readonly code!: string;
 

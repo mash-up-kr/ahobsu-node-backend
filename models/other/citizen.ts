@@ -6,7 +6,7 @@ class Citizen extends Model {
   public readonly id!: number;
 
   public readonly name!: string;
-  public readonly imgUrl!: string;
+  public readonly imageUrl!: string;
   public readonly gender!: string;
   public readonly birthday!: number;
   public readonly character!: number;

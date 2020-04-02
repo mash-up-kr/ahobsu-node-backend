@@ -6,7 +6,7 @@ class Fish extends Model {
   public readonly id!: number;
 
   public readonly name!: string;
-  public readonly imgUrl!: string;
+  public readonly imageUrl!: string;
   public readonly period!: string;
   public readonly startTime!: number;
   public readonly endTime!: number;
