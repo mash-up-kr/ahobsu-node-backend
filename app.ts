@@ -1,14 +1,15 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { NextFunction, Request, Response, Express } from 'express';
+import dotenv from 'dotenv';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
 import logger from 'morgan';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
+import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-import dotenv from 'dotenv';
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
@@ -84,6 +85,7 @@ class App {
     this.app.get('/service-worker.js', function(req, res, next) {});
 
     this.app.use('/api/v1', reutes);
+    this.app.use('/api/v2', otherReutes);
   }
 
   status404() {
