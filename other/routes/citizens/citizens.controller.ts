@@ -3,7 +3,8 @@ import response from '../../../lib/response';
 import Citizen from '../../../models/other/citizen';
 
 const get: RequestResponseNext = async (req, res) => {
-  const citizens = await Citizen.findAll({});
+  const { type } = req.query;
+  const citizens = type ? await Citizen.findAll({ where: { type } }) : await Citizen.findAll({});
   res.json(response({ data: { citizens } }));
 };
 
