@@ -3,7 +3,8 @@ import response from '../../../lib/response';
 import Design from '../../../models/other/design';
 
 const get: RequestResponseNext = async (req, res) => {
-  const designs = await Design.findAll({});
+  const { type } = req.query;
+  const designs = type ? await Design.findAll({ where: { type } }) : await Design.findAll({});
   res.json(response({ data: { designs } }));
 };
 
