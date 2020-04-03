@@ -7,8 +7,21 @@ import Fish from './other/fish';
 import Insect from './other/insect';
 import Question from './question';
 import Design from './other/design';
+import OtherUser from './other/otherUser';
 import User, { associate as associateUser } from './user';
-const db = { Answer, File, Mission, Question, User, Fish, Insect, Citizen, Design };
+const db = {
+  Answer,
+  File,
+  Mission,
+  Question,
+  User,
+  // other
+  Fish,
+  Insect,
+  Citizen,
+  Design,
+  OtherUser,
+};
 
 export type dbType = typeof db;
 

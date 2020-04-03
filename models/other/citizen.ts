@@ -10,6 +10,7 @@ class Citizen extends Model {
   public readonly gender!: string;
   public readonly birthday!: number;
   public readonly character!: number;
+  public readonly type!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -32,6 +33,7 @@ Citizen.init(
     gender: { type: DataTypes.INTEGER },
     birthday: { type: DataTypes.STRING },
     character: { type: DataTypes.INTEGER },
+    type: { type: DataTypes.INTEGER },
   },
   {
     sequelize,
@@ -53,7 +55,7 @@ export default Citizen;
 // 5친절함(ふつう,Normal)
 // 6아이돌(元気,Peppy)
 // 7성숙함(オトナ,Snooty)
-// 8단순활발(アネキ,Uchi)
+// 9단순활발(アネキ,Uchi)
 // 10아이돌/단순활발
 // 11운동광/무뚝뚝
 // 12운동광/느끼함
@@ -63,3 +65,38 @@ export default Citizen;
 // 16무뚝뚝/느끼함
 // 17무뚝뚝/운동광
 // 18먹보/무뚝뚝
+
+// 1개
+// 2개구리
+// 3개미핥기
+// 4고릴라
+// 5고양이
+// 6곰
+// 7늑대
+// 8다람쥐
+// 9닭
+// 10독수리
+// 11돼지
+// 12말
+// 13문어
+// 14사슴
+// 15사자
+// 16새
+// 17소
+// 18아기곰
+// 19악어
+// 20양
+// 21염소
+// 22오리
+// 23원숭이
+// 24쥐
+// 25캥거루
+// 26코끼리
+// 27코뿔소
+// 28코알라
+// 29타조
+// 30토끼
+// 31펭귄
+// 32하마
+// 33햄스터
+// 34호랑이
