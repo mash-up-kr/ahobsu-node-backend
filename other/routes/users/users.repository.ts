@@ -1,7 +1,7 @@
 import db from '../../../models';
 
 export const getUserById = async (id: number) => {
-  return db.User.findOne({
+  return db.OtherUser.findOne({
     where: {
       id,
     },
@@ -9,22 +9,22 @@ export const getUserById = async (id: number) => {
 };
 
 export const getUserBySnsIdAndSnsType = async ({ snsId, snsType }: { snsId: string; snsType: string }) => {
-  return db.User.findOne({ where: { snsId, snsType } });
+  return db.OtherUser.findOne({ where: { snsId, snsType } });
 };
 
 export const createUser = async ({ snsId, snsType, email }: { snsId: string; snsType: string; email: string }) => {
-  return db.User.create({ snsId, snsType, email });
+  return db.OtherUser.create({ snsId, snsType, email });
 };
 
 export const getUsers = async () => {
-  return db.User.findAll();
+  return db.OtherUser.findAll();
 };
 
 export const updateUser = async (
   id: number,
   { name, birthday, gender }: { name: string; birthday: string; gender: string },
 ) => {
-  return db.User.update(
+  return db.OtherUser.update(
     { name, birthday, gender },
     {
       where: {
@@ -35,7 +35,7 @@ export const updateUser = async (
 };
 
 export const resetRefeshDateById = async (id: number) => {
-  return db.User.update(
+  return db.OtherUser.update(
     { refreshDate: null },
     {
       where: {
@@ -46,7 +46,7 @@ export const resetRefeshDateById = async (id: number) => {
 };
 
 export const deleteUser = async (id: number) => {
-  return db.User.destroy({
+  return db.OtherUser.destroy({
     where: {
       id,
     },
