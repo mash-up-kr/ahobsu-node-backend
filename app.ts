@@ -75,6 +75,7 @@ class App {
 
   setStatic() {
     this.app.use(express.static(path.join(__dirname, 'public')));
+    this.app.use('/static', express.static(__dirname + '/public'));
   }
 
   getRouting() {
