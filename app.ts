@@ -1,19 +1,19 @@
+import Axios from 'axios';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
 import logger from 'morgan';
 import path from 'path';
+import { Op } from 'sequelize';
 import swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
+import Citizen from './models/other/citizen';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-import Design from './models/other/design';
-import { where } from 'sequelize/types';
-import Fish from './models/other/fish';
-import Insect from './models/other/insect';
-import Citizen from './models/other/citizen';
+import https from 'https';
+import fs from 'fs';
 class App {
   app: Express;
 
@@ -78,15 +78,35 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
-      const fishs = await Fish.findAll({});
+      const citizen = await Citizen.findAll({
+        where: {
+          id: {
+            [Op.gte]: 801,
+            [Op.lte]: 905,
+          },
+        },
+      });
       await Promise.all(
-        fishs.map((f: Fish) => {
-          let name = f.name.replace(/\n/g, ''); //행바꿈제거
-          name = name.replace(/\r/g, ''); //엔터제거
-          Fish.update({ name }, { where: { id: f.id } });
+        citizen.map(async (f: Citizen) => {
+          const url = f.imageUrl;
+          var savepath = `./public/citizen/${f.name}.png`;
+
+          // 사용 모듈 정의
+
+          // 출력 지정
+          var outfile = fs.createWriteStream(savepath);
+
+          // 비동기로 URL의 파일 다운로드
+          https.get(url, function (res: any) {
+            res.pipe(outfile);
+            res.on('end', function () {
+              outfile.close();
+              console.log('ok');
+            });
+          });
         }),
       );
-      res.json({ name: '유정' });
+      res.json({ citizen });
     });
 
     this.app.get('/favicon.ico', function (req, res, next) {});
