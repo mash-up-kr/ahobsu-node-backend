@@ -10,6 +10,10 @@ import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
 import Design from './models/other/design';
+import { where } from 'sequelize/types';
+import Fish from './models/other/fish';
+import Insect from './models/other/insect';
+import Citizen from './models/other/citizen';
 class App {
   app: Express;
 
@@ -54,7 +58,7 @@ class App {
     this.app.use(cookieParser());
 
     // error handler
-    this.app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
+    this.app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
       // set locals, only providing error in development
       res.locals.message = err.message;
       res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -74,11 +78,19 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
+      const fishs = await Fish.findAll({});
+      await Promise.all(
+        fishs.map((f: Fish) => {
+          let name = f.name.replace(/\n/g, ''); //행바꿈제거
+          name = name.replace(/\r/g, ''); //엔터제거
+          Fish.update({ name }, { where: { id: f.id } });
+        }),
+      );
       res.json({ name: '유정' });
     });
 
-    this.app.get('/favicon.ico', function(req, res, next) {});
-    this.app.get('/service-worker.js', function(req, res, next) {});
+    this.app.get('/favicon.ico', function (req, res, next) {});
+    this.app.get('/service-worker.js', function (req, res, next) {});
 
     this.app.use('/api/v1', reutes);
     this.app.use('/api/v2', otherReutes);
@@ -86,7 +98,7 @@ class App {
 
   status404() {
     // catch 404 and forward to error handler
-    this.app.use(function(req, res, next) {
+    this.app.use(function (req, res, next) {
       next(createError(404));
     });
   }

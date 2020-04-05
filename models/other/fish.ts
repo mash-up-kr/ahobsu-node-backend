@@ -11,9 +11,9 @@ class Fish extends Model {
   public readonly startTime!: number;
   public readonly endTime!: number;
 
-  public readonly ExtraPeriod!: string;
-  public readonly ExtraStartTime!: number;
-  public readonly ExtraEndTime!: number;
+  public readonly extraPeriod!: string;
+  public readonly extraStartTime!: number;
+  public readonly extraEndTime!: number;
 
   public readonly location!: string;
   public readonly size!: number;
