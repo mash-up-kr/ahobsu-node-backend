@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Not Found | Nook's Island</title>
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta name="robots" content="noindex">
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161578206-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-161578206-1');
+	</script>
+	<script data-ad-client="ca-pub-9118125537881194" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+	<div class="has-background-success has-text-centered has-text-white has-text-weight-bold" style="padding:10px;">
+		<p>Nookpedia is now Nook's Island! Thank you for your continued support. Follow us on <a target="_blank" href="https://twitter.com/NooksIsland" class="has-text-white" style="text-decoration:underline;">Twitter</a> for the latest news.</p>
+	</div>
+	<header>
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="/"><img src="images/logo.png"></a>
+
+				<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar" onclick="toggleMenu()">
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+
+			<div id="navbar" class="navbar-menu">
+				<div class="navbar-start">
+					<a href="/insects" class="navbar-item has-text-weight-bold">Insects</a>
+					<a href="/fish" class="navbar-item has-text-weight-bold">Fish</a>
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a href="/designs" class="navbar-link has-text-weight-bold">Designs</a>
+
+						<div class="navbar-dropdown">
+							<a href="/designs" class="navbar-item">Browse Designs</a>
+							<a href="/submit-design" class="navbar-item">Submit Design</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</nav>
+</header>
+
+<main><section class="section">
+	<div class="container">
+		<div class="box">
+			<p>Sorry, we couldn't find what you're looking for.</p>
+		</div>
+	</div>
+</section>	</main>
+	<footer class="footer">
+		<div class="content has-text-centered has-text-weight-bold">
+			<p>Nook's Island is a fan-made website and is in no way affiliated with Nintendo.</p>
+		</div>
+
+		<div class="content has-text-centered">
+			<a href="/privacy-policy">Privacy Policy</a>
+			<span>|</span>
+			<a href="/contact">Contact</a>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+		function toggleMenu(){
+			document.getElementById('navbar').classList.toggle('is-active');
+		}
+	</script>
+
+</body>
+</html>

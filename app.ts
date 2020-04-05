@@ -14,6 +14,7 @@ import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
 import https from 'https';
 import fs from 'fs';
+import Design from './models/other/design';
 class App {
   app: Express;
 
@@ -78,35 +79,38 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
-      const citizen = await Citizen.findAll({
-        where: {
-          id: {
-            [Op.gte]: 801,
-            [Op.lte]: 905,
+      let i = 1;
+      while (i < 3800) {
+        const citizen = await Design.findAll({
+          where: {
+            id: i,
           },
-        },
-      });
-      await Promise.all(
-        citizen.map(async (f: Citizen) => {
-          const url = f.imageUrl;
-          var savepath = `./public/citizen/${f.name}.png`;
+        });
+        i = i + 1;
+        await Promise.all(
+          citizen.map((f: Design) => {
+            const url = f.imageUrl;
+            var savepath = `./public/design/${f.code}.png`;
 
-          // 사용 모듈 정의
+            // 사용 모듈 정의
 
-          // 출력 지정
-          var outfile = fs.createWriteStream(savepath);
+            // 출력 지정
+            var outfile = fs.createWriteStream(savepath);
 
-          // 비동기로 URL의 파일 다운로드
-          https.get(url, function (res: any) {
-            res.pipe(outfile);
-            res.on('end', function () {
-              outfile.close();
-              console.log('ok');
+            // 비동기로 URL의 파일 다운로드
+            https.get(url, function (res: any) {
+              res.pipe(outfile);
+              res.on('end', function () {
+                outfile.close();
+                console.log('ok');
+                return 1;
+              });
             });
-          });
-        }),
-      );
-      res.json({ citizen });
+          }),
+        );
+      }
+
+      res.json({ a: 'ㅋㅋ' });
     });
 
     this.app.get('/favicon.ico', function (req, res, next) {});
