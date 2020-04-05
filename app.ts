@@ -81,12 +81,32 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
-      const fishs = await Fish.findAll({});
+      // const fishs = await Fish.findAll({});
+      // await Promise.all(
+      //   fishs.map((f: Fish) => {
+      //     Fish.update({ imageUrl: `https://moti.company/fishs/${f.name}.png` }, { where: { id: f.id } });
+      //   }),
+      // );
       const designs = await Design.findAll({});
-      const citizens = await Citizen.findAll({});
-      const insects = await Insect.findAll({});
+      await Promise.all(
+        designs.map((f: Design) => {
+          Design.update({ imageUrl: `https://moti.company/designs/${f.code}.png` }, { where: { id: f.id } });
+        }),
+      );
+      // const citizens = await Citizen.findAll({});
+      // await Promise.all(
+      //   citizens.map((f: Citizen) => {
+      //     Citizen.update({ imageUrl: `https://moti.company/citizens/${f.name}.png` }, { where: { id: f.id } });
+      //   }),
+      // );
+      // const insects = await Insect.findAll({});
+      // await Promise.all(
+      //   fishs.map((f: Insect) => {
+      //     Insect.update({ imageUrl: `https://moti.company/insects/${f.name}.png` }, { where: { id: f.id } });
+      //   }),
+      // );
 
-      res.json({ fishs, designs, citizens, insects });
+      res.json({});
     });
 
     this.app.get('/favicon.ico', function (req, res, next) {});
