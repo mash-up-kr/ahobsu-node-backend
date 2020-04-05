@@ -15,6 +15,8 @@ import swaggerDocument from './swagger/swagger';
 import https from 'https';
 import fs from 'fs';
 import Design from './models/other/design';
+import Fish from './models/other/fish';
+import Insect from './models/other/insect';
 class App {
   app: Express;
 
@@ -79,38 +81,12 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
-      let i = 1;
-      while (i < 3800) {
-        const citizen = await Design.findAll({
-          where: {
-            id: i,
-          },
-        });
-        i = i + 1;
-        await Promise.all(
-          citizen.map((f: Design) => {
-            const url = f.imageUrl;
-            var savepath = `./public/design/${f.code}.png`;
+      const fishs = await Fish.findAll({});
+      const designs = await Design.findAll({});
+      const citizens = await Citizen.findAll({});
+      const insects = await Insect.findAll({});
 
-            // 사용 모듈 정의
-
-            // 출력 지정
-            var outfile = fs.createWriteStream(savepath);
-
-            // 비동기로 URL의 파일 다운로드
-            https.get(url, function (res: any) {
-              res.pipe(outfile);
-              res.on('end', function () {
-                outfile.close();
-                console.log('ok');
-                return 1;
-              });
-            });
-          }),
-        );
-      }
-
-      res.json({ a: 'ㅋㅋ' });
+      res.json({ fishs, designs, citizens, insects });
     });
 
     this.app.get('/favicon.ico', function (req, res, next) {});
