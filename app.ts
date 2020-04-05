@@ -17,6 +17,8 @@ import fs from 'fs';
 import Design from './models/other/design';
 import Fish from './models/other/fish';
 import Insect from './models/other/insect';
+import { get } from './copy';
+
 class App {
   app: Express;
 
@@ -81,6 +83,39 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
+      for (let i = 1; i < 50; i++) {
+        const data = await get(i);
+        data.map(async (d: Design) => {
+          const design = await Design.findOne({ where: { code: d.code } });
+          if (design) {
+          } else {
+            const url = 'https://nooksisland.com' + d.imageUrl;
+
+            // 저장할 위치를 지정
+            const savepath = './public/designs/' + d.code + '.png';
+
+            // 출력 지정
+            const outfile = fs.createWriteStream(savepath);
+
+            // 비동기로 URL의 파일 다운로드
+            https.get(url, function (res: any) {
+              res.pipe(outfile);
+              res.on('end', function () {
+                outfile.close();
+                console.log('ok');
+              });
+            });
+
+            await Design.create({
+              title: d.title,
+              code: d.code,
+              imageUrl: encodeURI(`https://moti.company/designs/${d.code}.png`),
+              type: d.type,
+            });
+          }
+        });
+      }
+
       res.json({});
     });
 
