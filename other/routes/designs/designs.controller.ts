@@ -5,8 +5,8 @@ import Design from '../../../models/other/design';
 const get: RequestResponseNext = async (req, res) => {
   const { type } = req.query;
   const designs = type
-    ? await Design.findAll({ where: { type }, order: [['id', 'DESC']] })
-    : await Design.findAll({ order: [['id', 'DESC']] });
+    ? await Design.findAll({ where: { type }, order: [['code', 'ASC']] })
+    : await Design.findAll({ order: [['code', 'ASC']] });
   res.json(response({ data: { designs } }));
 };
 
