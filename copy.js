@@ -1,14 +1,14 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-export const getHtml = async (page) => {
+export const getHtml = async (page, type) => {
   try {
-    return await axios.get(`https://nookpedia.com/designs?page=${page}&type=Pattern`);
+    return await axios.get(encodeURI(`https://nookpedia.com/designs?page=${page}&type=${type}`));
   } catch (error) {
     console.error(error);
   }
 };
-export const get = async (page) => {
+export const get = async (page, type) => {
   const html = await getHtml(page);
   let ulList = [];
   const $ = cheerio.load(html.data);
@@ -19,7 +19,7 @@ export const get = async (page) => {
       title: $(this).find('h2.is-4').text(),
       code: $(this).find('h3.is-5').text(),
       imageUrl: $(this).find('a').attr('href'),
-      type: 'Pattern',
+      type,
     };
 
     const data = ulList.filter((n) => n.title);
