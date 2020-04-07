@@ -8,6 +8,7 @@ import Insect from './other/insect';
 import Question from './question';
 import Design from './other/design';
 import OtherUser from './other/otherUser';
+import Music from './other/music';
 import User, { associate as associateUser } from './user';
 const db = {
   Answer,
@@ -21,6 +22,7 @@ const db = {
   Citizen,
   Design,
   OtherUser,
+  Music,
 };
 
 export type dbType = typeof db;

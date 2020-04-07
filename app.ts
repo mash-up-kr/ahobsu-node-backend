@@ -9,6 +9,7 @@ import connectDB from './connectDB';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
+import Music from './models/other/music';
 // import { get } from './copy';
 
 class App {

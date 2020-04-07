@@ -3,11 +3,13 @@ import citizensRouter from './citizens';
 import designsRouter from './designs';
 import fishsRouter from './fishs';
 import insectsRouter from './insects';
+import musicsRouter from './musics';
 import siginInRouter from './signIn';
 import usersRouter from './users';
 
 const router = Router();
 
+router.use('/musics', musicsRouter);
 router.use('/designs', designsRouter);
 router.use('/citizens', citizensRouter);
 router.use('/fishs', fishsRouter);
