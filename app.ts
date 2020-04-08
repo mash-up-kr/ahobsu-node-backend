@@ -76,6 +76,16 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
+      const musics = await Music.findAll({});
+      musics.map((m: Music) => {
+        Music.update(
+          {
+            imageUrl: encodeURI(`https://moti.company/musics/images/${m.title}.png`),
+            musicUrl: encodeURI(`https://moti.company/musics/${m.title}.mp3`),
+          },
+          { where: { id: m.id } },
+        );
+      });
       // const types = [
       //   'Pattern',
       //   'Tank top',
