@@ -7,6 +7,7 @@ class Music extends Model {
 
   public readonly title!: string;
   public readonly imageUrl!: string;
+  public readonly musicUrl!: string;
   public readonly type!: string;
 
   public readonly createdAt!: Date;
@@ -25,6 +26,9 @@ Music.init(
       type: DataTypes.STRING,
     },
     imageUrl: {
+      type: DataTypes.STRING,
+    },
+    musicUrl: {
       type: DataTypes.STRING,
     },
     type: { type: DataTypes.STRING },

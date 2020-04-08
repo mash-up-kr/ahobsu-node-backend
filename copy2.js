@@ -14,18 +14,18 @@ const get = async (type) => {
   const html = await getHtml(type);
   let ulList = [];
   const $ = cheerio.load(html.data);
-  const $bodyList = $('tbody').children('tr:nth-child(2)');
+  const $bodyList = $('tbody').children('tr');
 
   $bodyList.each(function (i, elem) {
     ulList[i] = {
-      title: $(this).find('td:first-child button').attr('onclick'),
+      title: $(this).find('.image-thumbnail img').attr('src'),
     };
 
     const data = ulList.filter((n) => n.title);
     return data;
   });
   // console.log(ulList);
-  return !!ulList[2] && !!ulList[2].title && ulList[2].title.split('"videoUrl":"')[1].split('"')[0];
+  return !!ulList[1] && ulList[1].title;
 };
 
 const fetch = async () => {
@@ -133,12 +133,10 @@ const fetch = async () => {
       console.log(a);
       return;
     } else {
-      // 저장할 위치를 지정
-      const savepath = './public/musics/' + a + '.ogg';
-
+      // // 저장할 위치를 지정
+      const savepath = './public/musics/images/' + a + '.png';
       // 출력 지정
       const outfile = fs.createWriteStream(savepath);
-
       // 비동기로 URL의 파일 다운로드
       https.get(url, function (res) {
         res.pipe(outfile);
