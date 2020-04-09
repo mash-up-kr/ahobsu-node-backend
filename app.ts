@@ -10,7 +10,10 @@ import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
 import Music from './models/other/music';
-// import { get } from './copy';
+import { get } from './copy';
+import https from 'https';
+import fs from 'fs';
+import Design from './models/other/design';
 
 class App {
   app: Express;
@@ -76,68 +79,58 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
-      const musics = await Music.findAll({});
-      musics.map((m: Music) => {
-        Music.update(
-          {
-            imageUrl: encodeURI(`https://moti.company/musics/images/${m.title}.png`),
-            musicUrl: encodeURI(`https://moti.company/musics/${m.title}.mp3`),
-          },
-          { where: { id: m.id } },
-        );
+      const types = [
+        //   'Pattern',
+        //   'Tank top',
+        //   'Short-sleeve tee',
+        'Long-sleeve dress shirt',
+        //   'Sweater',
+        //   'Hoodie',
+        //   'Coat',
+        //   'Sleeveless dress',
+        //   'Short-sleeve dress',
+        //   'Long-sleeve dress',
+        //   'Round dress',
+        //   'Balloon-hem dress',
+        //   'Robe',
+        //   'Brimmed cap',
+        //   'Knit cap',
+        //   'Brimmed hat',
+      ];
+      types.map(async (type) => {
+        for (let i = 1; i < 29; i++) {
+          const data = await get(i, type);
+          data.map(async (d: Design) => {
+            const design = await Design.findOne({ where: { code: d.code } });
+            if (design) {
+            } else {
+              const url = 'https://nooksisland.com' + d.imageUrl;
+
+              // 저장할 위치를 지정
+              const savepath = './public/designs/' + d.code + '.png';
+
+              // 출력 지정
+              const outfile = fs.createWriteStream(savepath);
+
+              // 비동기로 URL의 파일 다운로드
+              https.get(url, function (res: any) {
+                res.pipe(outfile);
+                res.on('end', function () {
+                  outfile.close();
+                  console.log('ok');
+                });
+              });
+
+              await Design.create({
+                title: d.title,
+                code: d.code,
+                imageUrl: encodeURI(`https://moti.company/designs/${d.code}.png`),
+                type: d.type,
+              });
+            }
+          });
+        }
       });
-      // const types = [
-      //   'Pattern',
-      //   'Tank top',
-      //   'Short-sleeve tee',
-      //   'Long-sleeve dress shirt',
-      //   'Sweater',
-      //   'Hoodie',
-      //   'Coat',
-      //   'Sleeveless dress',
-      //   'Short-sleeve dress',
-      //   'Long-sleeve dress',
-      //   'Round dress',
-      //   'Balloon-hem dress',
-      //   'Robe',
-      //   'Brimmed cap',
-      //   'Knit cap',
-      //   'Brimmed hat',
-      // ];
-      // types.map(async (type) => {
-      //   for (let i = 1; i < 50; i++) {
-      //     const data = await get(i, type);
-      //     data.map(async (d: Design) => {
-      //       const design = await Design.findOne({ where: { code: d.code } });
-      //       if (design) {
-      //       } else {
-      //         const url = 'https://nooksisland.com' + d.imageUrl;
-
-      //         // 저장할 위치를 지정
-      //         const savepath = './public/designs/' + d.code + '.png';
-
-      //         // 출력 지정
-      //         const outfile = fs.createWriteStream(savepath);
-
-      //         // 비동기로 URL의 파일 다운로드
-      //         https.get(url, function (res: any) {
-      //           res.pipe(outfile);
-      //           res.on('end', function () {
-      //             outfile.close();
-      //             console.log('ok');
-      //           });
-      //         });
-
-      //         await Design.create({
-      //           title: d.title,
-      //           code: d.code,
-      //           imageUrl: encodeURI(`https://moti.company/designs/${d.code}.png`),
-      //           type: d.type,
-      //         });
-      //       }
-      //     });
-      //   }
-      // });
 
       res.json({});
     });

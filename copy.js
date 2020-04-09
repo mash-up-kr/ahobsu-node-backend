@@ -9,7 +9,7 @@ export const getHtml = async (page, type) => {
   }
 };
 export const get = async (page, type) => {
-  const html = await getHtml(page);
+  const html = await getHtml(page, type);
   let ulList = [];
   const $ = cheerio.load(html.data);
   const $bodyList = $('.has-text-centered').children('.is-half-tablet');
