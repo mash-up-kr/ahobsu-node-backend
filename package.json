@@ -8,7 +8,7 @@
     "deploy": "git pull origin dev && npm install && npm run build && cp  && env TZ='Asia/Seoul' NODE_ENV=production pm2 start ecosystem.config.js",
     "test": "NODE_ENV=test npx jest ./__test__/*.test.ts --detectOpenHandles --forceExit",
     "start:test": "NODE_ENV=test env TZ='Asia/Seoul' nodemon --watch ./ --delay 1 --exec 'ts-node' ./bin/www.ts",
-    "build:tsc": "rm -rf ./dist && tsc ",
+    "build:tsc": "tsc ",
     "deploy:ts": "git pull origin dev && npm install && env TZ='Asia/Seoul' NODE_ENV=production pm2 start ts-node -- -P tsconfig.json ./bin/www.ts",
     "test:co": "NODE_ENV=test jest ./__test__/*.test.ts --forceExit --coverage"
   },
