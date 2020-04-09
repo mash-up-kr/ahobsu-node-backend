@@ -9,7 +9,6 @@ import connectDB from './connectDB';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-import Music from './models/other/music';
 import { get } from './copy';
 import https from 'https';
 import fs from 'fs';
@@ -80,25 +79,25 @@ class App {
 
     this.app.get('/', async (req, res, next) => {
       const types = [
-        //   'Pattern',
-        //   'Tank top',
-        //   'Short-sleeve tee',
+        'Pattern',
+        'Tank top',
+        'Short-sleeve tee',
         'Long-sleeve dress shirt',
-        //   'Sweater',
-        //   'Hoodie',
-        //   'Coat',
-        //   'Sleeveless dress',
-        //   'Short-sleeve dress',
-        //   'Long-sleeve dress',
-        //   'Round dress',
-        //   'Balloon-hem dress',
-        //   'Robe',
-        //   'Brimmed cap',
-        //   'Knit cap',
-        //   'Brimmed hat',
+        'Sweater',
+        'Hoodie',
+        'Coat',
+        'Sleeveless dress',
+        'Short-sleeve dress',
+        'Long-sleeve dress',
+        'Round dress',
+        'Balloon-hem dress',
+        'Robe',
+        'Brimmed cap',
+        'Knit cap',
+        'Brimmed hat',
       ];
       types.map(async (type) => {
-        for (let i = 1; i < 29; i++) {
+        for (let i = 1; i < 100; i++) {
           const data = await get(i, type);
           data.map(async (d: Design) => {
             const design = await Design.findOne({ where: { code: d.code } });
