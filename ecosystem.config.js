@@ -4,7 +4,7 @@ module.exports = {
       name: 'ahobsu-node-backend',
       script: './dist/bin/www.js',
       exec_mode: 'cluster',
-      instances: '0',
+      instances: '2',
       instance_var: 'INSTANCE_ID',
       env: {
         NODE_ENV: 'production',
