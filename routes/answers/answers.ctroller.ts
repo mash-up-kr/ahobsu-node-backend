@@ -15,6 +15,7 @@ import {
   updateAnswer,
 } from './answers.repository';
 import { getNo, getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday } from './answers.service';
+import File from '../../models/file';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
@@ -72,21 +73,21 @@ const create: RequestResponseNext = async (req, res, next) => {
     const userId = req.user!.id;
     const lastAnswer = await getAnswerByuserId({ userId });
     // 데이터가 있어야 무언가를 할수가...
-    const recentAnswers: Answer[] = hasSetDate(lastAnswer)
-      ? await getRecentAnswers({ userId, setDate: lastAnswer.setDate as string })
+    const recentAnswers: Answer[] = hasSetDate(lastAnswer!)
+      ? await getRecentAnswers({ userId, setDate: lastAnswer?.setDate as string })
       : [];
     // 6개의 파츠를 모두 모았다면 새로운 파츠를 시작한다.
     const setDate = getSetDate(recentAnswers);
     const no = getNo(recentAnswers);
     const partNumber = getPartNumber(recentAnswers);
     const cardFile = await getFileByPart(partNumber);
-    const { id: fileId } = cardFile;
+    const { id: fileId = 1 } = (cardFile as unknown) as File;
     const { content, missionId, file: imageUrl } = req.body;
     const mission = await getMissionById(missionId);
-    if (!!mission.isImage && !imageUrl) {
+    if (!!mission?.isImage && !imageUrl) {
       return res.status(400).json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
     }
-    if (!!mission.isContent && !content) {
+    if (!!mission?.isContent && !content) {
       return res.status(400).json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     const date = getDateString({});
@@ -107,12 +108,12 @@ const update: RequestResponseNext = async (req, res, next) => {
     const userId = req.user!.id;
     const { file } = req.body;
     const answer = await getAnswerByIdAnduserId({ id, userId });
-    const imageUrl = file ? file : answer.imageUrl;
+    const imageUrl = file ? file : answer?.imageUrl;
     const { content, missionId } = req.body;
-    if (!!answer.mission?.isImage && !imageUrl) {
+    if (!!answer?.mission?.isImage && !imageUrl) {
       return res.status(400).json(response({ status: 400, message: 'file이 필요한 미션 입니다.' }));
     }
-    if (!!answer.mission?.isContent && !content) {
+    if (!!answer?.mission?.isContent && !content) {
       return res.status(400).json(response({ status: 400, message: 'content가 필요한 미션 입니다.' }));
     }
     await updateAnswer({ id, userId, missionId, imageUrl, content });

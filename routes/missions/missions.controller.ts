@@ -16,8 +16,8 @@ const missoins: RequestResponseNext = async (req, res) => {
   try {
     const userId = req.user!.id;
     const user = await getUserById(userId);
-    const oldMission = getOldMission(user);
-    const refresh = isRefresh(user);
+    const oldMission = getOldMission(user!);
+    const refresh = isRefresh(user!);
     if (hasOldMissions(oldMission)) {
       return res.json(response({ data: { refresh, missions: oldMission.missions } }));
     }
@@ -35,7 +35,7 @@ const refresh: RequestResponseNext = async (req, res) => {
     const userId = req.user!.id;
     const user = await getUserById(userId);
     const date = getDateString({});
-    if (hasRefresh(user)) {
+    if (hasRefresh(user!)) {
       return res.status(400).json(response({ status: 400, message: '갱신 횟수가 모자랍니다.' }));
     }
     const missions = await getNewMission(userId);

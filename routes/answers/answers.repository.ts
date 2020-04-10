@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import db from '../../models';
 import Answer from '../../models/answer';
 
-export const getAnswerByuserId = async ({ userId }: { userId: number }): Promise<Answer> => {
+export const getAnswerByuserId = async ({ userId }: { userId: number }): Promise<Answer | null> => {
   return db.Answer.findOne({
     where: {
       userId,
@@ -56,7 +56,7 @@ export const createAnswer = async ({
   userId: number;
   missionId: number;
   imageUrl: string;
-  fileId: string;
+  fileId: number;
   content: string;
   date: string;
   setDate: string;

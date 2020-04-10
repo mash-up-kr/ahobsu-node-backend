@@ -4,8 +4,8 @@ import designsRouter from './designs';
 import fishsRouter from './fishs';
 import insectsRouter from './insects';
 import musicsRouter from './musics';
-import siginInRouter from './signIn';
-import usersRouter from './users';
+// import siginInRouter from './signIn';
+// import usersRouter from './users';
 
 const router = Router();
 
@@ -14,8 +14,8 @@ router.use('/designs', designsRouter);
 router.use('/citizens', citizensRouter);
 router.use('/fishs', fishsRouter);
 router.use('/insects', insectsRouter);
-router.use('/signIn', siginInRouter);
-router.use('/users', usersRouter);
+// router.use('/signIn', siginInRouter);
+// router.use('/users', usersRouter);
 
 export default router;
 
