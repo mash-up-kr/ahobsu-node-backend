@@ -12,6 +12,8 @@
 
 ### [iOS APP](https://apps.apple.com/kr/app/moti/id1496912171)
 
+[![moti](https://img.youtube.com/vi/m91rLvwMmXo/0.jpg)](https://www.youtube.com/watch?v=m91rLvwMmXo)
+
 ## 매일매일 미션을 수행하며 카드를 수집해 보자
 
 ### 소개글
