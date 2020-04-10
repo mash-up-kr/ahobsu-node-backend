@@ -10,6 +10,8 @@
 
 ### 💻 [API](https://moti.company/apiDocs/)
 
+### [iOS APP](https://apps.apple.com/kr/app/moti/id1496912171)
+
 ## 매일매일 미션을 수행하며 카드를 수집해 보자
 
 ### 소개글
