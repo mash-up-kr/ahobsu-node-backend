@@ -3,6 +3,7 @@ import { RequestResponseNext } from '..';
 import response from '../../lib/response';
 import { createUser, getUserBySnsIdAndSnsType } from '../users/users.repository';
 import { isRequired, createToken, isSignUp } from './signIn.service';
+import axios from 'axios';
 
 const refresh: RequestResponseNext = async (req, res) => {
   try {
@@ -27,23 +28,33 @@ const create: RequestResponseNext = async (req, res) => {
   try {
     const { snsType } = req.body;
     const token = req.headers.authorization;
+    let snsId, email;
+    if (snsType === 'apple') {
+      const snsData =
+        process.env.NODE_ENV === 'test'
+          ? {
+              iss: 'https://appleid.apple.com',
+              aud: 'com.mashup.ahobsu.Ahobsu',
+              exp: 1581254790,
+              iat: 1581254190,
+              sub: '001813.71f97bef48324fb29451a33e05d2cf5d.0908',
+              c_hash: 'KB0W75zvIFEcY9zW-79uxQ',
+              email: 'j5vvd9xtrb@privaterelay.appleid.com',
+              email_verified: 'true',
+              is_private_email: 'true',
+              auth_time: 1581254190,
+            }
+          : ((await jwt.decode(token!)) as { sub: string; email: string });
+      snsId = snsData.sub;
+      email = snsData.email;
+    } else if (snsType === 'google') {
+      const { data: snsData } = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`);
+      snsId = snsData.id;
+      email = snsData.email;
+    } else {
+      return res.status(400).json(response({ status: 400, message: 'snsType가 잘못 되었습니다.' }));
+    }
 
-    const snsData =
-      process.env.NODE_ENV === 'test'
-        ? {
-            iss: 'https://appleid.apple.com',
-            aud: 'com.mashup.ahobsu.Ahobsu',
-            exp: 1581254790,
-            iat: 1581254190,
-            sub: '001813.71f97bef48324fb29451a33e05d2cf5d.0908',
-            c_hash: 'KB0W75zvIFEcY9zW-79uxQ',
-            email: 'j5vvd9xtrb@privaterelay.appleid.com',
-            email_verified: 'true',
-            is_private_email: 'true',
-            auth_time: 1581254190,
-          }
-        : await jwt.decode(token!);
-    const { sub: snsId, email } = snsData as { sub: string; email: string };
     if (!email || !snsId) {
       return res.status(412).json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
     }
