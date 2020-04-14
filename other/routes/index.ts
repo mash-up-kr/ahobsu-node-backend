@@ -4,13 +4,13 @@ import designsRouter from './designs';
 import fishsRouter from './fishs';
 import insectsRouter from './insects';
 import musicsRouter from './musics';
-import fossilRouter from './fossil';
+import fossilRouter from './fossils';
 // import siginInRouter from './signIn';
 // import usersRouter from './users';
 
 const router = Router();
 
-router.use('/fossil', fossilRouter);
+router.use('/fossils', fossilRouter);
 router.use('/musics', musicsRouter);
 router.use('/designs', designsRouter);
 router.use('/citizens', citizensRouter);
