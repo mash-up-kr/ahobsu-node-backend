@@ -9,9 +9,12 @@ import connectDB from './connectDB';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
+import { get } from './copy3';
+import { data } from './fossil';
+import Fossil from './models/other/fossil';
 // import { get } from './copy';
-// import https from 'https';
-// import fs from 'fs';
+import https from 'https';
+import fs from 'fs';
 // import Design from './models/other/design';
 
 class App {
@@ -132,7 +135,6 @@ class App {
       //     );
       //   }
       // });
-
       res.json({});
     });
 
