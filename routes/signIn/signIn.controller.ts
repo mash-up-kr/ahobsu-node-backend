@@ -4,6 +4,7 @@ import response from '../../lib/response';
 import { createUser, getUserBySnsIdAndSnsType } from '../users/users.repository';
 import { isRequired, createToken, isSignUp } from './signIn.service';
 import axios from 'axios';
+import User from '../../models/user';
 
 const refresh: RequestResponseNext = async (req, res) => {
   try {
@@ -59,7 +60,7 @@ const create: RequestResponseNext = async (req, res) => {
       return res.status(412).json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
-    const signUp = user ? true : false;
+    const signUp = !user ?  false : !!(user as User).name ? true : false;
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
     // const signUp = isSignUp(newUser);
