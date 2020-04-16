@@ -25,7 +25,7 @@ export const updateUser = async (
   { name, birthday, gender }: { name: string; birthday: string; gender: string },
 ) => {
   return db.User.update(
-    { name, birthday, gender },
+    { name: name.slice(0, 8), birthday, gender },
     {
       where: {
         id,
