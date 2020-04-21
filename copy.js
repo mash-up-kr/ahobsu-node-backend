@@ -18,7 +18,7 @@ export const get = async (page, type) => {
     ulList[i] = {
       title: $(this).find('h2.is-4').text(),
       code: $(this).find('h3.is-5').text(),
-      imageUrl: $(this).find('a').attr('href'),
+      imageUrl: $(this).find('img').attr('src'),
       type,
     };
 
