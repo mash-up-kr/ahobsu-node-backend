@@ -83,62 +83,65 @@ class App {
 
     this.app.get('/', async (req, res, next) => {
       try {
-        //const types = [
-        //  'Pattern',
-        //  'Tank top',
-        //  'Short-sleeve tee',
-        //  'Long-sleeve dress shirt',
-        //  'Sweater',
-        //  'Hoodie',
-        //  'Coat',
-        //  'Sleeveless dress',
-        //  'Short-sleeve dress',
-        //  'Long-sleeve dress',
-        //  'Round dress',
-        //  'Balloon-hem dress',
-        //  'Robe',
-        //  'Brimmed cap',
-        //  'Knit cap',
-        //  'Brimmed hat',
-        //];
-        //types.map(async (type) => {
-        //  for (let i = 1; i < 100; i++) {
-        //    const data = await get(i, type);
-        //    console.log(data)
-        //    await Promise.all(
-        //      data.map(async (d: Design) => {
-        //        const design = await Design.findOne({ where: { code: d.code } });
-        //        if (design) {
-        //        } else if(!!d.imageUrl){
-        //          console.log(111, d.imageUrl)
-        //          const url = 'https://nooksisland.com' + d.imageUrl;
+        const types = [
+          'Pattern',
+          'Tank top',
+          'Short-sleeve tee',
+          'Long-sleeve dress shirt',
+          'Sweater',
+          'Hoodie',
+          'Coat',
+          'Sleeveless dress',
+          'Short-sleeve dress',
+          'Long-sleeve dress',
+          'Round dress',
+          'Balloon-hem dress',
+          'Robe',
+          'Brimmed cap',
+          'Knit cap',
+          'Brimmed hat',
+        ];
+        types.map(async (type) => {
+          for (let i = 1; i < 100; i++) {
+            const data = await get(i, type);
+            console.log(data)
+            await Promise.all(
+              data.map(async (d: Design) => {
+                const design = await Design.findOne({ where: { code: d.code } });
+                if (design) {
+                  if(!design.title){
+                    await Design.update({title: d.title}, {where: {id:design.id}})
+                  }
+                } else if(!!d.imageUrl){
+                  console.log(111, d.imageUrl)
+                  const url = 'https://nooksisland.com' + d.imageUrl;
  
-        //          // 저장할 위치를 지정
-        //          const savepath = './public/designs/' + d.code + '.jpg';
+                  // 저장할 위치를 지정
+                  const savepath = './public/designs/' + d.code + '.jpg';
  
-        //          // 출력 지정
-        //          const outfile = fs.createWriteStream(savepath);
+                  // 출력 지정
+                  const outfile = fs.createWriteStream(savepath);
  
-        //          // 비동기로 URL의 파일 다운로드
-        //          await https.get(url, function (res: any) {
-        //            res.pipe(outfile);
-        //            res.on('end', function () {
-        //              outfile.close();
-        //              console.log('ok');
-        //            });
-        //          });
+                  // 비동기로 URL의 파일 다운로드
+                  await https.get(url, function (res: any) {
+                    res.pipe(outfile);
+                    res.on('end', function () {
+                      outfile.close();
+                      console.log('ok');
+                    });
+                  });
  
-        //          await Design.create({
-        //            title: d.title,
-        //            code: d.code,
-        //            imageUrl: encodeURI(`https://moti.company/designs/${d.code}.jpg`),
-        //            type: d.type,
-        //          });
-        //        }
-        //      }),
-        //    );
-        //  }
-        //});
+                  await Design.create({
+                    title: d.title,
+                    code: d.code,
+                    imageUrl: encodeURI(`https://moti.company/designs/${d.code}.jpg`),
+                    type: d.type,
+                  });
+                }
+              }),
+            );
+          }
+        });
        
       } catch(e) {
         console.log(e)

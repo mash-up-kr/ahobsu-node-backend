@@ -16,7 +16,7 @@ export const get = async (page, type) => {
 
   $bodyList.each(function (i, elem) {
     ulList[i] = {
-      title: $(this).find('h2.is-4').text(),
+      title: $(this).find('h3.is-4').text(),
       code: $(this).find('h3.is-5').text(),
       imageUrl: $(this).find('img').attr('src'),
       type,
