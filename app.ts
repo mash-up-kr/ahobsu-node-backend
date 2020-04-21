@@ -115,6 +115,7 @@ class App {
                 } else if(!!d.imageUrl){
                   console.log(111, d.imageUrl)
                   const url = 'https://nooksisland.com' + d.imageUrl;
+                  
  
                   // 저장할 위치를 지정
                   const savepath = './public/designs/' + d.code + '.jpg';
