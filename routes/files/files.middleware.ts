@@ -4,8 +4,8 @@ import { getFileById } from './files.repository';
 import { isRequired } from './files.service';
 
 export const checkRequire: RequestResponseNext = (req, res, next) => {
-  const { file: cardUrl, part } = req.body;
-  if (isRequired({ cardUrl, part })) {
+  const { file: cardUrl } = req.body;
+  if (isRequired({ cardUrl })) {
     return res.status(412).json(response({ status: 412, message: '필수 파라미터가 없습니다.' }));
   }
   next();

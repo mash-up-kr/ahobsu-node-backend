@@ -5,7 +5,7 @@ import { createFile, deleteFile, getFileById, updateFile } from './files.reposit
 const create: RequestResponseNext = async (req, res, next) => {
   try {
     const { file: cardUrl, part: partString } = req.body;
-    const part = parseInt(partString, 10);
+    const part = partString ? parseInt(partString, 10) : parseInt(cardUrl.split('.pdf')[0].split('_').pop(), 10);
     const file = await createFile({ cardUrl, part });
     res.status(201).json(response({ status: 201, data: file }));
   } catch (e) {

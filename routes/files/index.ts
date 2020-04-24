@@ -7,7 +7,7 @@ import { checkFile, checkPart, checkRequire } from './files.middleware';
 const router = Router();
 
 // router.get('/:date', checkToken, ctrl.date);
-router.post('/', imageUploaderLiveName, checkPart, checkRequire, filesController.create);
+router.post('/', imageUploaderLiveName, checkRequire, filesController.create);
 router.put('/:id', imageUploaderLiveName, checkId, checkPart, checkRequire, checkFile, filesController.update);
 router.delete('/:id', checkId, checkFile, imageUploaderLiveName, filesController.destroy);
 

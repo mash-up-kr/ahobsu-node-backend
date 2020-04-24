@@ -1,3 +1,3 @@
-export const isRequired = ({ cardUrl, part }: { cardUrl: string; part: number }) => {
-  return !cardUrl || !part;
+export const isRequired = ({ cardUrl }: { cardUrl: string; }) => {
+  return !cardUrl;
 };
