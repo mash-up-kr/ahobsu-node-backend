@@ -11,11 +11,12 @@ import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
 import { data } from './fossil';
 import Fossil from './models/other/fossil';
- import { get } from './copy';
 import https from 'https';
 import fs from 'fs';
 import Design from './models/other/design';
 import { Op } from 'sequelize';
+import { get } from './art';
+import Art from './models/other/art';
 // import Design from './models/other/design';
 
 class App {
@@ -115,14 +116,14 @@ class App {
         //        } else if(!!d.imageUrl){
         //          console.log(111, d.imageUrl)
         //          const url = 'https://nooksisland.com' + d.imageUrl;
-                  
- 
+
+
         //          // 저장할 위치를 지정
         //          const savepath = './public/designs/' + d.code + '.jpg';
- 
+
         //          // 출력 지정
         //          const outfile = fs.createWriteStream(savepath);
- 
+
         //          // 비동기로 URL의 파일 다운로드
         //          await https.get(url, function (res: any) {
         //            res.pipe(outfile);
@@ -131,7 +132,7 @@ class App {
         //              console.log('ok');
         //            });
         //          });
- 
+
         //          await Design.create({
         //            title: d.title,
         //            code: d.code,
@@ -143,15 +144,47 @@ class App {
         //    );
         //  }
         //});
-       
-      } catch(e) {
+        const arts = await Art.findAll({})
+        arts.map(async (art: Art) => {
+          if (art.fakeImageUrl) {
+            const { fakeImageUrl } = art
+
+            console.log(111, fakeImageUrl)
+
+
+            // 저장할 위치를 지정
+            //const savepath = './public/arts/fake/' + art.name + '.png';
+
+            //// 출력 지정
+            //const outfile = fs.createWriteStream(savepath);
+
+            //// 비동기로 URL의 파일 다운로드
+            //await https.get(fakeImageUrl, function (res: any) {
+            //  res.pipe(outfile);
+            //  res.on('end', function () {
+            //    outfile.close();
+            //    console.log('ok');
+            //  });
+            //});
+
+            await Art.update({
+              realImageUrl: encodeURI(`https://moti.company/arts/real/${art.name}.png`),
+              fakeImageUrl: encodeURI(`https://moti.company/arts/fake/${art.name}.png`),
+            }, { where: { id: art.id } });
+          }
+        });
+        //const arts = await get();
+        //arts.map(async ({ name, realImageUrl, fakeImageUrl, realComment, fakeComment }) => {
+        //  await Art.create({ name, realImageUrl, fakeImageUrl, realComment, fakeComment })
+        //})
+      } catch (e) {
         console.log(e)
       }
-      res.json({}); 
+      res.json({});
     });
 
-    this.app.get('/favicon.ico', function (req, res, next) {});
-    this.app.get('/service-worker.js', function (req, res, next) {});
+    this.app.get('/favicon.ico', function (req, res, next) { });
+    this.app.get('/service-worker.js', function (req, res, next) { });
 
     this.app.use('/api/v1', reutes);
     this.app.use('/api/v2', otherReutes);
