@@ -24,7 +24,7 @@ import Tool from './other/tool';
 import Top from './other/top';
 import Bottom from './other/bottom';
 import DressUp from './other/dressUp';
-import Headwear from './other/Headwear';
+import Headwear from './other/headwear';
 
 import User, { associate as associateUser } from './user';
 const db = {
