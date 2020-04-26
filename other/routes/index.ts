@@ -5,11 +5,13 @@ import fishsRouter from './fishs';
 import insectsRouter from './insects';
 import musicsRouter from './musics';
 import fossilRouter from './fossils';
+import artRouter from './arts';
 // import siginInRouter from './signIn';
 // import usersRouter from './users';
 
 const router = Router();
 
+router.use('/arts', artRouter);
 router.use('/fossils', fossilRouter);
 router.use('/musics', musicsRouter);
 router.use('/designs', designsRouter);
