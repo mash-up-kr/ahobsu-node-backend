@@ -9,15 +9,9 @@ import connectDB from './connectDB';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-import { data } from './fossil';
-import Fossil from './models/other/fossil';
-import https from 'https';
-import fs from 'fs';
-import Design from './models/other/design';
-import { Op } from 'sequelize';
-import { get } from './art';
-import Art from './models/other/art';
 // import Design from './models/other/design';
+const xlsx = require('xlsx');
+
 
 class App {
   app: Express;
@@ -148,6 +142,7 @@ class App {
         //arts.map(async ({ name, realImageUrl, fakeImageUrl, realComment, fakeComment }) => {
         //  await Art.create({ name, realImageUrl, fakeImageUrl, realComment, fakeComment })
         //})
+
       } catch (e) {
         console.log(e)
       }

@@ -34,7 +34,7 @@ const config: IConfigGroup = {
       min: 0,
       max: 10,
       idle: 10000,
-      acquire: 10000,
+      acquire: 1000000,
     },
     logging: true,
   },
