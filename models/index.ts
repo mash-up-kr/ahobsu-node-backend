@@ -2,14 +2,15 @@ export * from './sequelize';
 import Answer, { associate as associateAnswer } from './answer';
 import File, { associate as associateFile } from './file';
 import Mission, { associate as associateMission } from './mission';
+import Art from './other/art';
 import Citizen from './other/citizen';
-import Fish from './other/fish';
-import Insect from './other/insect';
-import Question from './question';
 import Design from './other/design';
-import OtherUser from './other/otherUser';
-import Music from './other/music';
+import Fish from './other/fish';
 import Fossil from './other/fossil';
+import Insect from './other/insect';
+import Music from './other/music';
+import OtherUser from './other/otherUser';
+import Question from './question';
 import User, { associate as associateUser } from './user';
 const db = {
   Answer,
@@ -25,6 +26,7 @@ const db = {
   OtherUser,
   Music,
   Fossil,
+  Art,
 };
 
 export type dbType = typeof db;
