@@ -144,35 +144,6 @@ class App {
         //    );
         //  }
         //});
-        const arts = await Art.findAll({})
-        arts.map(async (art: Art) => {
-          if (art.fakeImageUrl) {
-            const { fakeImageUrl } = art
-
-            console.log(111, fakeImageUrl)
-
-
-            // 저장할 위치를 지정
-            //const savepath = './public/arts/fake/' + art.name + '.png';
-
-            //// 출력 지정
-            //const outfile = fs.createWriteStream(savepath);
-
-            //// 비동기로 URL의 파일 다운로드
-            //await https.get(fakeImageUrl, function (res: any) {
-            //  res.pipe(outfile);
-            //  res.on('end', function () {
-            //    outfile.close();
-            //    console.log('ok');
-            //  });
-            //});
-
-            await Art.update({
-              realImageUrl: encodeURI(`https://moti.company/arts/real/${art.name}.png`),
-              fakeImageUrl: encodeURI(`https://moti.company/arts/fake/${art.name}.png`),
-            }, { where: { id: art.id } });
-          }
-        });
         //const arts = await get();
         //arts.map(async ({ name, realImageUrl, fakeImageUrl, realComment, fakeComment }) => {
         //  await Art.create({ name, realImageUrl, fakeImageUrl, realComment, fakeComment })
