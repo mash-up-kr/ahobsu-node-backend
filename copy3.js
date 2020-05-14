@@ -5,7 +5,9 @@ const cheerio = require('cheerio');
 
 const getHtml = async () => {
   try {
-    return await axios.get(encodeURI(`https://animalcrossing.fandom.com/wiki/Fossils_(New_Horizons)`));
+    return await axios.get(
+      encodeURI(`https://animalcrossing.fandom.com/wiki/Villager_list_(New_Horizons)?mobile-app=false`),
+    );
   } catch (error) {
     console.error(error);
   }
@@ -18,9 +20,10 @@ export const get = async () => {
 
   $bodyList.each(function (i, elem) {
     ulList[i] = {
-      title: $(this).find('td:nth-child(1)').text(),
-      imageUrl: $(this).find('td:nth-child(2) a').attr('href'),
-      price: $(this).find('td:nth-child(3)').text(),
+      title: $(this).find('td:nth-child(1)').text().split('\n')[0],
+      catchphrase: $(this).find('td:nth-child(6)').text().split('"')[1],
+      //imageUrl: $(this).find('td:nth-child(2) a').attr('href'),
+      //price: $(this).find('td:nth-child(3)').text(),
     };
 
     const data = ulList.filter((n) => n.title);

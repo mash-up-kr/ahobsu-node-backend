@@ -11,6 +11,7 @@ class Citizen extends Model {
   public readonly birthday!: number;
   public readonly character!: number;
   public readonly type!: number;
+  public readonly catchphrase!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -34,6 +35,7 @@ Citizen.init(
     birthday: { type: DataTypes.STRING },
     character: { type: DataTypes.INTEGER },
     type: { type: DataTypes.INTEGER },
+    catchphrase: { type: DataTypes.STRING },
   },
   {
     sequelize,
@@ -44,7 +46,7 @@ Citizen.init(
   },
 );
 
-export const associate = (db: dbType) => {};
+export const associate = (db: dbType) => { };
 
 export default Citizen;
 

@@ -9,6 +9,8 @@ import connectDB from './connectDB';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
+import { get } from './copy3';
+import Citizen from './models/other/citizen';
 // import Design from './models/other/design';
 const xlsx = require('xlsx');
 
@@ -142,7 +144,6 @@ class App {
         //arts.map(async ({ name, realImageUrl, fakeImageUrl, realComment, fakeComment }) => {
         //  await Art.create({ name, realImageUrl, fakeImageUrl, realComment, fakeComment })
         //})
-
       } catch (e) {
         console.log(e)
       }
