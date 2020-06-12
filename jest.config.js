@@ -7,7 +7,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   globals: {
     'ts-jest': {
-      compiler: 'ttypescript',
+      compiler: 'typescript',
       tsConfig: {
         importHelpers: true,
       },
