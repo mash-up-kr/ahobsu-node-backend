@@ -1,6 +1,6 @@
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { createFile, deleteFile, getFileById, updateFile } from './files.repository';
+import { createFile, deleteFile, getFileById, updateFile, updateSvgFile } from './files.repository';
 
 const create: RequestResponseNext = async (req, res, next) => {
   try {
@@ -26,6 +26,19 @@ const update: RequestResponseNext = async (req, res, next) => {
     res.status(500).json(response({ status: 500, message: e.message }));
   }
 };
+const updateSvg: RequestResponseNext = async (req, res, next) => {
+  try {
+    const { file: cardSvgUrl, part: partString } = req.body;
+    const id = parseInt(req.params.id, 10);
+    const part = parseInt(partString, 10);
+    await updateSvgFile({ id, cardSvgUrl, part });
+    const file = await getFileById(id);
+    res.json(response({ data: file }));
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(response({ status: 500, message: e.message }));
+  }
+};
 const destroy: RequestResponseNext = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
@@ -39,5 +52,6 @@ const destroy: RequestResponseNext = async (req, res, next) => {
 export default {
   create,
   update,
+  updateSvg,
   destroy,
 };

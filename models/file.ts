@@ -5,6 +5,7 @@ import { sequelize } from './sequelize';
 class File extends Model {
   public readonly id!: number;
   public cardUrl!: string;
+  public cardSvgUrl!: string;
   public part!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -18,6 +19,9 @@ File.init(
       type: DataTypes.INTEGER,
     },
     cardUrl: {
+      type: DataTypes.STRING,
+    },
+    cardSvgUrl: {
       type: DataTypes.STRING,
     },
     part: {

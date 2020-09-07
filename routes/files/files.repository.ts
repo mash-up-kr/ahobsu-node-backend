@@ -32,6 +32,21 @@ export const updateFile = ({ id, cardUrl, part }: { id: number; cardUrl: string;
   );
 };
 
+
+export const updateSvgFile = ({ id, cardSvgUrl, part }: { id: number; cardSvgUrl: string; part: number }) => {
+  db.File.update(
+    {
+      cardSvgUrl,
+      part,
+    },
+    {
+      where: {
+        id,
+      },
+    },
+  );
+};
+
 export const deleteFile = async (id: number) => {
   return db.File.destroy({
     where: {
