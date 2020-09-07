@@ -6,6 +6,7 @@ class File extends Model {
   public readonly id!: number;
   public cardUrl!: string;
   public cardSvgUrl!: string;
+  public cardPngUrl!: string;
   public part!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -22,6 +23,9 @@ File.init(
       type: DataTypes.STRING,
     },
     cardSvgUrl: {
+      type: DataTypes.STRING,
+    },
+    cardPngUrl: {
       type: DataTypes.STRING,
     },
     part: {

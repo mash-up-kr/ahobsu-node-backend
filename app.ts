@@ -11,6 +11,7 @@ import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
 import { get } from './copy3';
 import Citizen from './models/other/citizen';
+import db from './models';
 // import Design from './models/other/design';
 const xlsx = require('xlsx');
 
@@ -80,6 +81,16 @@ class App {
 
     this.app.get('/', async (req, res, next) => {
       try {
+        await db.File.update(
+          {
+            cardPngUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/6_8.png',
+          },
+          {
+            where: {
+              part: 6,
+            },
+          },
+        );
         //const types = [
         //  'Pattern',
         //  'Tank top',
