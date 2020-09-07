@@ -82,6 +82,56 @@ module.exports = {
   //     },
   //   },
   // },
+  '/api/v1/files/svg/{id}': {
+    put: {
+      tags: ['files'],
+      summary: 'file 수정',
+      consumes: ['multipart/form-data'],
+      produces: ['application/json'],
+      parameters: [
+        {
+          name: 'file',
+          in: 'formData',
+          description: 'file to upload',
+          required: false,
+          type: 'file',
+        },
+        {
+          name: 'part',
+          in: 'formData',
+          description: 'file to upload',
+          required: false,
+          type: 'text',
+        },
+        {
+          name: 'id',
+          in: 'path',
+          type: 'integer',
+          default: 2,
+          description: '파일 ID',
+          required: true,
+        },
+      ],
+      responses: {
+        200: {
+          schema: {
+            type: 'object',
+            example: {
+              status: 200,
+              message: '',
+              data: {
+                id: 1,
+                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+                part: 1,
+                createdAt: '2020-01-12 19:50:35',
+                updatedAt: '2020-01-12 19:54:15',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   '/api/v1/files/{id}': {
     put: {
       tags: ['files'],
@@ -113,7 +163,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -146,7 +196,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -182,7 +232,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -198,7 +248,7 @@ module.exports = {
             },
           },
         },
-        '500': {
+        500: {
           schema: {
             type: 'object',
             example: {
