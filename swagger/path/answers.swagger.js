@@ -22,7 +22,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -95,7 +95,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -132,7 +132,7 @@ module.exports = {
             },
           },
         },
-        '404': {
+        404: {
           schema: {
             type: 'object',
             example: {
@@ -171,7 +171,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -249,7 +249,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -312,7 +312,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -342,7 +342,129 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
+          schema: {
+            type: 'object',
+            example: {
+              status: 200,
+              message: '',
+              data: {
+                status: 200,
+                message: '',
+                data: {
+                  today: '2020-02-28',
+                  answers: [
+                    {
+                      id: 40,
+                      userId: 121,
+                      missionId: 1,
+                      fileId: 7,
+                      imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
+                      content: '2134',
+                      date: '2020-02-27',
+                      setDate: '2020-02-27',
+                      createdAt: '2020-02-27 23:22:14',
+                      updatedAt: '2020-02-27 23:22:14',
+                      mission: {
+                        id: 1,
+                        title: '좋아하는 디저트가 있나요?',
+                        isContent: true,
+                        isImage: true,
+                        cycle: 3,
+                        createdAt: '2020-01-12 20:54:34',
+                        updatedAt: '2020-01-12 20:54:34',
+                      },
+                      file: {
+                        id: 7,
+                        cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/710Cz1v5.pdf',
+                        part: 1,
+                        createdAt: '2020-01-27 18:07:22',
+                        updatedAt: '2020-01-27 18:07:22',
+                      },
+                    },
+                    {
+                      id: 87,
+                      userId: 121,
+                      missionId: 1,
+                      fileId: 7,
+                      imageUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/LZZnJefh.jpeg',
+                      content: '2134',
+                      date: '2020-02-27',
+                      setDate: '2020-02-27',
+                      createdAt: '2020-02-27 23:22:14',
+                      updatedAt: '2020-02-27 23:22:14',
+                      mission: {
+                        id: 1,
+                        title: '좋아하는 디저트가 있나요?',
+                        isContent: true,
+                        isImage: true,
+                        cycle: 3,
+                        createdAt: '2020-01-12 20:54:34',
+                        updatedAt: '2020-01-12 20:54:34',
+                      },
+                      file: {
+                        id: 7,
+                        cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/710Cz1v5.pdf',
+                        part: 1,
+                        createdAt: '2020-01-27 18:07:22',
+                        updatedAt: '2020-01-27 18:07:22',
+                      },
+                    },
+                    {
+                      id: 88,
+                      userId: 121,
+                      missionId: 1,
+                      fileId: 3,
+                      imageUrl: null,
+                      content: '335',
+                      date: '2020-02-28',
+                      setDate: '2020-02-27',
+                      createdAt: '2020-02-28 00:08:15',
+                      updatedAt: '2020-02-28 00:08:15',
+                      mission: {
+                        id: 1,
+                        title: '좋아하는 디저트가 있나요?',
+                        isContent: true,
+                        isImage: true,
+                        cycle: 3,
+                        createdAt: '2020-01-12 20:54:34',
+                        updatedAt: '2020-01-12 20:54:34',
+                      },
+                      file: {
+                        id: 3,
+                        cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/J9smJXN7.pdf',
+                        part: 3,
+                        createdAt: '2020-01-27 18:05:56',
+                        updatedAt: '2020-01-27 18:05:56',
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  '/api/v1/answers/list': {
+    get: {
+      tags: ['answers'],
+      summary: '일주일치 데이터',
+      produces: ['application/json'],
+      parameters: [
+        {
+          name: 'Authorization',
+          in: 'header',
+          type: 'string',
+          description: 'API 인증 키',
+          default:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+          required: true,
+        },
+      ],
+      responses: {
+        200: {
           schema: {
             type: 'object',
             example: {
@@ -470,7 +592,7 @@ module.exports = {
         },
       ],
       responses: {
-        '200': {
+        200: {
           schema: {
             type: 'object',
             example: {

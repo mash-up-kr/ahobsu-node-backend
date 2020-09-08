@@ -3,6 +3,7 @@ import { getDateString, getMonthDate, getNow } from '../../lib/date';
 import response from '../../lib/response';
 import Answer from '../../models/answer';
 import { getFileByPart } from '../files/files.repository';
+import { Op } from 'sequelize';
 import { getMissionById } from '../missions/missions.repository';
 import {
   createAnswer,
@@ -16,6 +17,7 @@ import {
 } from './answers.repository';
 import { getNo, getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday } from './answers.service';
 import File from '../../models/file';
+import db from '../../models';
 
 const week: RequestResponseNext = async (req, res, next) => {
   try {
@@ -53,6 +55,56 @@ const month: RequestResponseNext = async (req, res, next) => {
     res.status(500).json(response({ status: 500, message: error.message }));
   }
 };
+
+const list: RequestResponseNext = async (req, res, next) => {
+  const userId = req.user!.id;
+  let { answerId } = req.query;
+  let answer;
+  let answers = [];
+  for(let i = 0; i < 4; i++) {
+    if(answerId) {
+      answer = await db.Answer.findOne({
+        where: {
+          userId,
+          id: {
+            [Op.lt]: answerId,
+          },
+        },
+        order: [['id', 'DESC']],
+      })
+    } else {
+      answer = await db.Answer.findOne({
+        where: {
+          userId,
+        },
+        order: [['id', 'DESC']],
+      })
+    }
+    if(!answer) {
+      break;
+    }
+    answers[i] = await db.Answer.findAll({
+      where: {
+        userId,
+        setDate: answer.setDate,
+      },
+      order: [['id', 'DESC']],
+    })
+    answerId = answers[i][answers[i].length -1].id
+  }
+  
+  
+  res.json(response({ data: answers }));
+  //const answer = await db.Answer.findOne({
+  //  where: {
+  //    userId,
+  //    id: {
+  //      [Op.lte]: answerId,
+  //    },
+  //  },
+  //  include: [{ all: true }],
+  //});
+}
 
 const date: RequestResponseNext = async (req, res, next) => {
   const userId = req.user!.id;
@@ -143,6 +195,7 @@ export default {
   month,
   date,
   get,
+  list,
   create,
   update,
   destroy,

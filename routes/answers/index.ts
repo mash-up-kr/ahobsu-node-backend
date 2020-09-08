@@ -13,6 +13,7 @@ import {
 const router = Router();
 
 router.get('/week', checkToken, answersController.week);
+router.get('/list', checkToken, answersController.list);
 router.get('/month', checkToken, answersController.month);
 router.get('/', checkToken, answersController.date);
 router.post(
