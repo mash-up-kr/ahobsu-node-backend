@@ -55,7 +55,7 @@ const onError = (error: any) => {
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '8080');
+const port = normalizePort(process.env.PORT || '8000');
 app.set('port', port);
 
 /**

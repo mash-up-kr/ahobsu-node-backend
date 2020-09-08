@@ -10,6 +10,8 @@ const imageUploader: RequestResponseNext = async (req, res, next) => {
   const form = new formidable.IncomingForm();
   const file = await new Promise(function(resolve, reject) {
     form.parse(req, async (err, fields, files) => {
+      console.log('err', err)
+      console.log(5555, fields, files)
       try {
         req.body = fields;
         const { file } = files;

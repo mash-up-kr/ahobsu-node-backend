@@ -7,6 +7,7 @@ import { isRequiredoneOfThem } from './answers.service';
 
 export const checkRequiredoneOfThem: RequestResponseNext = async (req, res, next) => {
   const { file: imageUrl, content } = req.body;
+  console.log('412' ,imageUrl, content)
   if (isRequiredoneOfThem({ imageUrl, content })) {
     return res.status(412).json(response({ status: 412, message: '필수 파라미터가 부족합니다.' }));
   }
