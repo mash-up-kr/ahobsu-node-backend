@@ -89,6 +89,7 @@ const list: RequestResponseNext = async (req, res, next) => {
         setDate: answer.setDate,
       },
       order: [['id', 'DESC']],
+      include: [{ all: true }],
     })
     answerId = answers[i][answers[i].length -1].id
   }
