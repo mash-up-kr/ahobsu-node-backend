@@ -6,5 +6,7 @@ const router = Router();
 
 router.post('/refresh', checkToken, ctrl.refresh);
 router.post('/', checkToken, checkBody, ctrl.create);
+router.get('/google', ctrl.googleCallback);
+
 
 export default router;

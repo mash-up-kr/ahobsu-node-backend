@@ -26,6 +26,7 @@
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "formidable": "^1.2.2",
+    "googleapis": "^59.0.0",
     "greenlock-express": "^2.7.5",
     "http-errors": "~1.6.3",
     "husky": "^4.2.0",
@@ -42,6 +43,7 @@
     "swagger-ui-express": "^4.1.2",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
+    "url": "^0.11.0",
     "webpack": "^4.41.6",
     "webpack-node-externals": "^1.7.2",
     "xlsx": "^0.15.6"
