@@ -13,7 +13,7 @@ const googleCallback: RequestResponseNext = async (req, res) => {
     const oauth2Client = new google.auth.OAuth2(
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET,
-      'https://yuni-q.github.io'
+      'https://yuni-q.herokuapp.com/'
     );
     // res.end('Authentication successful! Please return to the console.');
     // server.destroy();
