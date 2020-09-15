@@ -31,7 +31,7 @@ const googleCallback: RequestResponseNext = async (req, res) => {
     })
     console.log(result.data.data.accessToken);
     res.cookie('token', result.data.data.accessToken);
-    res.redirect(302, 'https://yuni-q.herokuapp.com/')
+    res.redirect(302, 'http://localhost:8080/')
   } catch (e) {
     console.log(e);
     return res.status(400).json(response({ status: 400, message: '에러가 발생했습니다.' }));

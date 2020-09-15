@@ -53,7 +53,10 @@ class App {
   }
 
   setMiddleWare() {
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: true,
+      credentials: true
+    }));
     this.app.use(logger('dev'));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
