@@ -1,38 +1,10 @@
+import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { RequestResponseNext } from '..';
 import response from '../../lib/response';
-import { createUser, getUserBySnsIdAndSnsType } from '../users/users.repository';
-import { isRequired, createToken, isSignUp } from './signIn.service';
-import axios from 'axios';
 import User from '../../models/user';
-import {google} from 'googleapis';
-
-const googleCallback: RequestResponseNext = async (req, res) => {
-  try {
-    // const plus = google.plus('v1');
-    const oauth2Client = new google.auth.OAuth2(
-      process.env.CLIENT_ID,
-      process.env.CLIENT_SECRET,
-      'https://yuni-q.herokuapp.com/'
-    );
-    // res.end('Authentication successful! Please return to the console.');
-    // server.destroy();
-    const { code } = req.body
-    console.log('code', code)
-    const {tokens: {access_token}} = await oauth2Client.getToken(code || '');
-    // oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
-    // resolve(oauth2Client);
-    const result = await axios.post(`${process.env.NODE_ENV === 'production' ? 'https://moti.company' : 'http://localhost:8000'}/api/v1/signin`, {snsType: 'google'}, {
-      headers: { Authorization: access_token },
-    })
-    console.log(result.data.data.accessToken);
-    res.cookie('token', result.data.data.accessToken);
-    res.status(201).json(response({ status: 201, data: { accessToken: result.data.data.accessToken } }));
-  } catch (e) {
-    console.log(e);
-    return res.status(400).json(response({ status: 400, message: '에러가 발생했습니다.' }));
-  }
-};
+import { createUser, getUserBySnsIdAndSnsType } from '../users/users.repository';
+import { createToken, isRequired, isSignUp } from './signIn.service';
 
 const refresh: RequestResponseNext = async (req, res) => {
   try {
@@ -101,5 +73,4 @@ const create: RequestResponseNext = async (req, res) => {
 export default {
   refresh,
   create,
-  googleCallback,
 };
