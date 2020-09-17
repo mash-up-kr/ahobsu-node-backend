@@ -111,9 +111,7 @@ const listId: RequestResponseNext = async (req, res, next) => {
       const answer = await db.Answer.findOne({
           where: {
             userId,
-            id: {
-              [Op.lt]: id,
-            },
+            id,
           },
           order: [['id', 'DESC']],
         })
