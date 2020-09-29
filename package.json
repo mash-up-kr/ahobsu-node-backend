@@ -24,6 +24,7 @@
     "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
@@ -50,6 +51,7 @@
     "typescript": "^3.8.3",
     "webpack": "^4.41.6",
     "webpack-node-externals": "^1.7.2",
+    "winston": "^3.3.3",
     "xlsx": "^0.15.6"
   },
   "devDependencies": {
