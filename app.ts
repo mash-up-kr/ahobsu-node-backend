@@ -6,15 +6,15 @@ import logger from 'morgan';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
+import db from './models';
 import otherReutes from './other/routes';
 import reutes from './routes';
 import swaggerDocument from './swagger/swagger';
-import { get } from './copy3';
-import Citizen from './models/other/citizen';
-import db from './models';
-// import Design from './models/other/design';
-const xlsx = require('xlsx');
+import helmet from 'helmet';
+import hpp from 'hpp';
+import session from 'express-session';
 
+const xlsx = require('xlsx');
 
 class App {
   app: Express;
@@ -28,11 +28,11 @@ class App {
     // 뷰 템플릿 엔진 셋팅
     // this.setViewEngine();
 
-    // 세션 셋팅
-    // this.setSession();
-
     // 미들웨어 셋팅
     this.setMiddleWare();
+
+    // 세션 셋팅
+    // this.setSession();
 
     // 정적 디렉토리 추가
     this.setStatic();
@@ -52,15 +52,40 @@ class App {
     connectDB();
   }
 
+  setSession() {
+    const sessionOption = {
+      resave: false,
+      saveUninitialized: false,
+      secret: process.env.COOKIE_SECRET || '',
+      cookie: {
+        httpOnly: true,
+        secure: false,
+      },
+      proxy: false,
+    }
+    if(process.env.NODE_ENV == 'production') {
+      sessionOption.proxy = true;
+      // sessionOption.cookie.secure = true;
+    }
+    this.app.use(session(sessionOption));
+  }
+
   setMiddleWare() {
     this.app.use(cors({
       origin: true,
       credentials: true
     }));
-    this.app.use(logger('dev'));
+    if(process.env.NODE_ENV === 'production') {
+      this.app.enabled('trust proxy');
+      this.app.use(logger('combined'));
+      this.app.use(helmet({contentSecurityPolicy: false}));
+      this.app.use(hpp());
+    } else {
+      this.app.use(logger('dev'));
+    }
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(cookieParser());
+    this.app.use(cookieParser(process.env.COOKIE_SECRET || ''));
 
     // error handler
     this.app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
