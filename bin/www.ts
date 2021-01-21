@@ -62,30 +62,30 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-if (process.env.NODE_ENV === 'production') {
-  const lex = require('greenlock-express').create({
-    version: 'draft-11', // 버전2
-    configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
-    server: 'https://acme-v02.api.letsencrypt.org/directory',
-    approveDomains: (opts: { domains: string[]; email: string; agreeTos: boolean }, certs: any, cb: any) => {
-      if (certs) {
-        opts.domains = ['moti.company', 'www.moti.company'];
-      } else {
-        opts.email = 'lyh6425@gamil.com';
-        opts.agreeTos = true;
-      }
-      cb(null, { options: opts, certs });
-    },
-    renewWithin: 81 * 24 * 60 * 60 * 1000,
-    renewBy: 80 * 24 * 60 * 60 * 1000,
-  });
-  https
-    .createServer(lex.httpsOptions, lex.middleware(app))
-    .listen(process.env.SSL_PORT || 443, () =>
-      console.log(`http://localhost:${process.env.SSL_PORT}, ${process.env.NODE_ENV}`),
-    );
-  http.createServer(lex.middleware(require('redirect-https')())).listen(process.env.PORT || 80);
-} else {
+// if (process.env.NODE_ENV === 'production') {
+//   const lex = require('greenlock-express').create({
+//     version: 'draft-11', // 버전2
+//     configDir: '/etc/letsencrypt', // 또는 ~/letsencrypt/etc
+//     server: 'https://acme-v02.api.letsencrypt.org/directory',
+//     approveDomains: (opts: { domains: string[]; email: string; agreeTos: boolean }, certs: any, cb: any) => {
+//       if (certs) {
+//         opts.domains = ['moti.company', 'www.moti.company'];
+//       } else {
+//         opts.email = 'lyh6425@gamil.com';
+//         opts.agreeTos = true;
+//       }
+//       cb(null, { options: opts, certs });
+//     },
+//     renewWithin: 81 * 24 * 60 * 60 * 1000,
+//     renewBy: 80 * 24 * 60 * 60 * 1000,
+//   });
+//   https
+//     .createServer(lex.httpsOptions, lex.middleware(app))
+//     .listen(process.env.SSL_PORT || 443, () =>
+//       console.log(`http://localhost:${process.env.SSL_PORT}, ${process.env.NODE_ENV}`),
+//     );
+//   http.createServer(lex.middleware(require('redirect-https')())).listen(process.env.PORT || 80);
+// } else {
   /**
    * Event listener for HTTP server "listening" event.
    */
@@ -99,7 +99,7 @@ if (process.env.NODE_ENV === 'production') {
   server.listen(process.env.PORT || port, () => console.log(`http://localhost:${port}, ${process.env.NODE_ENV}`));
   server.on('error', onError);
   // server.on('listening', onListening);
-}
+// }
 
 /**
  * Listen on provided port, on all network interfaces.
