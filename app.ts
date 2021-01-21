@@ -193,7 +193,7 @@ class App {
     this.app.get('/service-worker.js', function (req, res, next) { });
 
     this.app.use('/api/v1', reutes);
-    this.app.use('/api/v2', otherReutes);
+    // this.app.use('/api/v2', otherReutes);
   }
 
   status404() {
