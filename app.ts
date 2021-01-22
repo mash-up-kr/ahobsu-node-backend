@@ -111,7 +111,7 @@ class App {
       try {
         await db.File.update(
           {
-            cardPngUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/6_8.png',
+            cardPngUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/6_8.png',
           },
           {
             where: {

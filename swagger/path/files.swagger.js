@@ -25,7 +25,7 @@ module.exports = {
   //             data: [
   //               {
   //                 id: 1,
-  //                 cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+  //                 cardUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
   //                 date: '2020-01-12',
   //                 createdAt: '2020-01-12 19:50:35',
   //                 updatedAt: '2020-01-12 19:54:15',
@@ -71,7 +71,7 @@ module.exports = {
   //             message: '',
   //             data: {
   //               id: 1,
-  //               cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+  //               cardUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
   //               date: '2020-01-12',
   //               createdAt: '2020-01-12 19:50:35',
   //               updatedAt: '2020-01-12 19:54:15',
@@ -121,7 +121,7 @@ module.exports = {
               message: '',
               data: {
                 id: 1,
-                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+                cardUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
                 part: 1,
                 createdAt: '2020-01-12 19:50:35',
                 updatedAt: '2020-01-12 19:54:15',
@@ -171,7 +171,7 @@ module.exports = {
               message: '',
               data: {
                 id: 1,
-                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
+                cardUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/GbGLWobK.jpg',
                 part: 1,
                 createdAt: '2020-01-12 19:50:35',
                 updatedAt: '2020-01-12 19:54:15',
@@ -240,7 +240,7 @@ module.exports = {
               message: '',
               data: {
                 id: 1,
-                cardUrl: 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/yzjOM7m5.jpg',
+                cardUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/yzjOM7m5.jpg',
                 part: 1,
                 updatedAt: '2020-01-12T10:50:35.282Z',
                 createdAt: '2020-01-12T10:50:35.282Z',
