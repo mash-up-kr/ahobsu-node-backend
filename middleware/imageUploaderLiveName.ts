@@ -36,7 +36,7 @@ const imageUploaderLiveName: RequestResponseNext = async (req, res, next) => {
 
         // unlink tmp files
         fs.unlinkSync(file.path);
-        const baseUrl = 'https://yuchocopie.s3.ap-northeast-2.amazonaws.com/';
+        const baseUrl = 'https://moti-media.s3.ap-northeast-2.amazonaws.com/';
         const imageUrl = baseUrl + key;
         resolve(imageUrl);
       } catch (error) {
