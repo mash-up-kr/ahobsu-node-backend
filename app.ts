@@ -7,8 +7,7 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import connectDB from './connectDB';
 import db from './models';
-import otherReutes from './other/routes';
-import reutes from './routes';
+import routers from './routers';
 import swaggerDocument from './swagger/swagger';
 import helmet from 'helmet';
 import hpp from 'hpp';
@@ -62,8 +61,8 @@ class App {
         secure: false,
       },
       proxy: false,
-    }
-    if(process.env.NODE_ENV == 'production') {
+    };
+    if (process.env.NODE_ENV == 'production') {
       sessionOption.proxy = true;
       // sessionOption.cookie.secure = true;
     }
@@ -71,14 +70,16 @@ class App {
   }
 
   setMiddleWare() {
-    this.app.use(cors({
-      origin: true,
-      credentials: true
-    }));
-    if(process.env.NODE_ENV === 'production') {
+    this.app.use(
+      cors({
+        origin: true,
+        credentials: true,
+      }),
+    );
+    if (process.env.NODE_ENV === 'production') {
       this.app.enabled('trust proxy');
       this.app.use(logger('combined'));
-      this.app.use(helmet({contentSecurityPolicy: false}));
+      this.app.use(helmet({ contentSecurityPolicy: false }));
       this.app.use(hpp());
     } else {
       this.app.use(logger('dev'));
@@ -108,92 +109,13 @@ class App {
     this.app.use('/apiDocs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.get('/', async (req, res, next) => {
-      try {
-        await db.File.update(
-          {
-            cardPngUrl: 'https://moti-media.s3.ap-northeast-2.amazonaws.com/6_8.png',
-          },
-          {
-            where: {
-              part: 6,
-            },
-          },
-        );
-        //const types = [
-        //  'Pattern',
-        //  'Tank top',
-        //  'Short-sleeve tee',
-        //  'Long-sleeve dress shirt',
-        //  'Sweater',
-        //  'Hoodie',
-        //  'Coat',
-        //  'Sleeveless dress',
-        //  'Short-sleeve dress',
-        //  'Long-sleeve dress',
-        //  'Round dress',
-        //  'Balloon-hem dress',
-        //  'Robe',
-        //  'Brimmed cap',
-        //  'Knit cap',
-        //  'Brimmed hat',
-        //];
-        //types.map(async (type) => {
-        //  for (let i = 1; i < 100; i++) {
-        //    const data = await get(i, type);
-        //    console.log(data)
-        //    await Promise.all(
-        //      data.map(async (d: Design) => {
-        //        const design = await Design.findOne({ where: { code: d.code } });
-        //        if (design) {
-        //          if(!design.title || design.title.length < 2){
-        //            await Design.update({title: d.title}, {where: {id:design.id}})
-        //          }
-        //        } else if(!!d.imageUrl){
-        //          console.log(111, d.imageUrl)
-        //          const url = 'https://nooksisland.com' + d.imageUrl;
-
-
-        //          // 저장할 위치를 지정
-        //          const savepath = './public/designs/' + d.code + '.jpg';
-
-        //          // 출력 지정
-        //          const outfile = fs.createWriteStream(savepath);
-
-        //          // 비동기로 URL의 파일 다운로드
-        //          await https.get(url, function (res: any) {
-        //            res.pipe(outfile);
-        //            res.on('end', function () {
-        //              outfile.close();
-        //              console.log('ok');
-        //            });
-        //          });
-
-        //          await Design.create({
-        //            title: d.title,
-        //            code: d.code,
-        //            imageUrl: encodeURI(`https://moti.company/designs/${d.code}.jpg`),
-        //            type: d.type,
-        //          });
-        //        }
-        //      }),
-        //    );
-        //  }
-        //});
-        //const arts = await get();
-        //arts.map(async ({ name, realImageUrl, fakeImageUrl, realComment, fakeComment }) => {
-        //  await Art.create({ name, realImageUrl, fakeImageUrl, realComment, fakeComment })
-        //})
-      } catch (e) {
-        console.log(e)
-      }
       res.json({});
     });
 
-    this.app.get('/favicon.ico', function (req, res, next) { });
-    this.app.get('/service-worker.js', function (req, res, next) { });
+    this.app.get('/favicon.ico', function (req, res, next) {});
+    this.app.get('/service-worker.js', function (req, res, next) {});
 
-    this.app.use('/api/v1', reutes);
-    // this.app.use('/api/v2', otherReutes);
+    this.app.use('/api/v1', routers);
   }
 
   status404() {

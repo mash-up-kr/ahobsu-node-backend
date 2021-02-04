@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk';
 import formidable from 'formidable';
 import fs from 'fs';
-import { RequestResponseNext } from '../routes';
+import { RequestResponseNext } from '../routers';
 
 const imageUploaderLiveName: RequestResponseNext = async (req, res, next) => {
   const form = new formidable.IncomingForm();
-  const file = await new Promise(function(resolve, reject) {
+  const file = await new Promise(function (resolve, reject) {
     form.parse(req, async (err, fields, files) => {
       try {
         req.body = fields;

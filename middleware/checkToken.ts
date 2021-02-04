@@ -1,7 +1,7 @@
 // import jwt from 'jsonwebtoken';
 import jwt from 'jsonwebtoken';
 import response from '../lib/response';
-import { RequestResponseNext } from '../routes';
+import { RequestResponseNext } from '../routers';
 import User from '../models/user';
 
 const checkToken: RequestResponseNext = async (req, res, next) => {
