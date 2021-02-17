@@ -8,14 +8,22 @@ import signInRouter from './signIn';
 import usersRouter from './users';
 
 const router = Router();
-router.use('*', (req, res, next) => {
-  if (req.headers.test === 'test') {
+router.use('/', (req, res, next) => {
+  try {
+    if (req.headers.test === 'test') {
+      next();
+      return;
+    }
+    if (
+      !!(req.headers.appVersion || req.headers.appversion) &&
+      parseInt((req.headers.appVersion || req.headers.appversion) as string, 10) <= 2
+    ) {
+      res.status(200).json(response({ status: 1200, message: '앱 버전 업데이트가 필요합니다.' }));
+      return;
+    }
+  } catch (error) {
+    console.log(error);
     next();
-    return;
-  }
-  if (!!req.headers.appVersion && parseInt(req.headers.appVersion as string, 10) <= 2) {
-    res.status(200).json(response({ status: 1200, message: '앱 버전 업데이트가 필요합니다.' }));
-    return;
   }
   next();
 });

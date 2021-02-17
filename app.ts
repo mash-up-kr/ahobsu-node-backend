@@ -12,6 +12,7 @@ import swaggerDocument from './swagger/swagger';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import session from 'express-session';
+import response from './lib/response';
 
 const xlsx = require('xlsx');
 
@@ -114,7 +115,6 @@ class App {
 
     this.app.get('/favicon.ico', function (req, res, next) {});
     this.app.get('/service-worker.js', function (req, res, next) {});
-
     this.app.use('/api/v1', routers);
   }
 
