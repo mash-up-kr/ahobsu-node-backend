@@ -25,6 +25,9 @@ const refresh: RequestResponseNext = async (req, res) => {
     return res.status(400).json(response({ status: 400, message: '올바르지 못한 토큰 입니다.' }));
   }
 };
+
+// TODO : iss로 클라이언트 구분
+// TODO : google jwt로 적용
 const create: RequestResponseNext = async (req, res) => {
   try {
     const { snsType } = req.body;
@@ -35,6 +38,7 @@ const create: RequestResponseNext = async (req, res) => {
         process.env.NODE_ENV === 'test'
           ? {
               iss: 'https://appleid.apple.com',
+              // "iss": "https://accounts.google.com",
               aud: 'com.mashup.ahobsu.Ahobsu',
               exp: 1581254790,
               iat: 1581254190,
@@ -60,7 +64,7 @@ const create: RequestResponseNext = async (req, res) => {
       return res.status(412).json(response({ status: 412, message: '토큰에 필수 정보가 없습니다.' }));
     }
     const user = await getUserBySnsIdAndSnsType({ snsId, snsType });
-    const signUp = !user ?  false : !!(user as User).name ? true : false;
+    const signUp = !user ? false : !!(user as User).name ? true : false;
     const newUser = user ? user : await createUser({ snsId, snsType, email });
     const { accessToken, refreshToken } = await createToken(newUser);
     // const signUp = isSignUp(newUser);
