@@ -14,7 +14,7 @@ router.use('*', (req, res, next) => {
     return;
   }
   if (!!req.headers.appVersion && parseInt(req.headers.appVersion as string, 10) <= 2) {
-    res.status(400).json(response({ status: 1200, message: '앱 버전 업데이트가 필요합니다.' }));
+    res.status(200).json(response({ status: 1200, message: '앱 버전 업데이트가 필요합니다.' }));
     return;
   }
   next();
