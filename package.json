@@ -15,6 +15,8 @@
     "test:co": "NODE_ENV=test jest ./__test__/*.test.ts --forceExit --coverage"
   },
   "dependencies": {
+    "@sentry/node": "^6.2.0",
+    "@sentry/tracing": "^6.2.0",
     "@types/bluebird": "^3.5.30",
     "@types/express-session": "^1.17.0",
     "@types/hpp": "^0.2.1",
