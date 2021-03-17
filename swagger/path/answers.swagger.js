@@ -770,13 +770,13 @@ module.exports = {
               "status": 200,
               "message": "",
               "data": {
-                "lastId": "3420",
-                "direction": "1",
+                "lastId": 3420,
+                "direction": 1,
                 "answers": [
                   {
                     "id": 3788,
                     "imageUrl": null,
-                    "content": "ㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\n",
+                    "content": "",
                     "date": "2021-01-17",
                     "setDate": "2021-01-17",
                     "no": 2,
@@ -806,13 +806,13 @@ module.exports = {
                     "user": {
                       "id": 119,
                       "birthday": "미입력",
-                      "email": "9pxx2sqy8k@privaterelay.appleid.com",
-                      "name": "11111111",
+                      "email": "",
+                      "name": "",
                       "gender": "미입력",
                       "refreshDate": null,
                       "refreshToken": null,
                       "mission": "{\"date\":\"2021-01-17\",\"missions\":[{\"id\":3,\"title\":\"지금 떠오르는 내가 좋아하는 것 5가지만 이야기 해보아요.\",\"isContent\":true,\"isImage\":false,\"cycle\":14,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":7,\"title\":\"오늘 당신의 패션을 알려주세요!\",\"isContent\":true,\"isImage\":true,\"cycle\":3,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":24,\"title\":\"요즘 삶의 낙이 무엇인가요?\",\"isContent\":true,\"isImage\":false,\"cycle\":20,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"}]}",
-                      "snsId": "000252.cd6ccffeaea547f6b2d0215e7d7c4f5a.0437",
+                      "snsId": "1",
                       "snsType": "apple",
                       "createdAt": "2020-04-17 13:49:35",
                       "updatedAt": "2021-01-17 22:21:54"
@@ -821,7 +821,7 @@ module.exports = {
                   {
                     "id": 3420,
                     "imageUrl": null,
-                    "content": "❤️❤️",
+                    "content": "",
                     "date": "2020-12-28",
                     "setDate": "2020-04-17",
                     "no": 1,
@@ -851,13 +851,13 @@ module.exports = {
                     "user": {
                       "id": 119,
                       "birthday": "미입력",
-                      "email": "9pxx2sqy8k@privaterelay.appleid.com",
-                      "name": "11111111",
+                      "email": "@privaterelay.appleid.com",
+                      "name": "",
                       "gender": "미입력",
                       "refreshDate": null,
                       "refreshToken": null,
                       "mission": "{\"date\":\"2021-01-17\",\"missions\":[{\"id\":3,\"title\":\"지금 떠오르는 내가 좋아하는 것 5가지만 이야기 해보아요.\",\"isContent\":true,\"isImage\":false,\"cycle\":14,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":7,\"title\":\"오늘 당신의 패션을 알려주세요!\",\"isContent\":true,\"isImage\":true,\"cycle\":3,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":24,\"title\":\"요즘 삶의 낙이 무엇인가요?\",\"isContent\":true,\"isImage\":false,\"cycle\":20,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"}]}",
-                      "snsId": "000252.cd6ccffeaea547f6b2d0215e7d7c4f5a.0437",
+                      "snsId": "1",
                       "snsType": "apple",
                       "createdAt": "2020-04-17 13:49:35",
                       "updatedAt": "2021-01-17 22:21:54"
