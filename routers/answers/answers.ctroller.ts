@@ -221,7 +221,9 @@ const destroy: RequestResponseNext = async (req, res, next) => {
 
 const diary: RequestResponseNext = async (req, res, next) => {
   try {
-    const { lastId, limit, direction } = req.query;
+    const lastId = parseInt(req.query.lastId, 10);
+    const limit = parseInt(req.query.limit, 10);
+    const direction = parseInt(req.query.direction, 10);
     const userId = req.user!.id;
     const answers = lastId ? await getAnswersDiaryByLastId({ userId, lastId, limit: limit ? limit : 100, direction: direction ? direction : 0 })
       : await await getAnswersDiary({ userId, limit: limit ? limit : 100 });
