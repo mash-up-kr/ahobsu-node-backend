@@ -725,4 +725,150 @@ module.exports = {
       },
     },
   },
+  '/api/v1/answers/diary': {
+    get: {
+      tags: ['answers'],
+      summary: '일기 형식으로 답변 조회',
+      produces: ['application/json'],
+      parameters: [
+        {
+          name: 'Authorization',
+          in: 'header',
+          type: 'string',
+          description: 'API 인증 키',
+          default:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJiaXJ0aGRheSI6IjE5OTctMDEtMTYiLCJlbWFpbCI6Inl1Y2hvY29waWVAZ21haWwuY29tIiwibmFtZSI6IuycoOyglSIsImdlbmRlciI6IuyXrCIsInJlZnJlc2hEYXRlIjpudWxsLCJyZWZyZXNoVG9rZW4iOm51bGwsIm1pc3Npb24iOm51bGwsInNuc0lkIjoiMSIsInNuc1R5cGUiOiJnb29nbGUiLCJjcmVhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIwLTAxLTAzVDE3OjM0OjM3LjAwMFoifSwiaWF0IjoxNTc4MDcyODc5LCJleHAiOjE1Nzg2Nzc2Nzl9.4jBy8Wrj9IukT2H2OU0UdqQjehNXMGio1KAd01z3DvE',
+          required: true,
+        },
+        {
+          name: 'lastId',
+          in: 'query',
+          type: 'integer',
+          description: '기준이 되는 답변 Id, default : 최근 Id',
+          required: false,
+        },
+        {
+          name: 'limit',
+          in: 'query',
+          type: 'integer',
+          description: '조회할 갯수, default : 100',
+          required: false,
+        },
+        {
+          name: 'direction',
+          in: 'query',
+          type: 'integer',
+          description: '0 : 과거 데이터, 1 : 최신 데이터 방향으로 조회, default : 0',
+          required: false,
+        },
+      ],
+      responses: {
+        200: {
+          schema: {
+            type: 'object',
+            example: {
+              "status": 200,
+              "message": "",
+              "data": {
+                "lastId": "3420",
+                "direction": "1",
+                "answers": [
+                  {
+                    "id": 3788,
+                    "imageUrl": null,
+                    "content": "ㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\nㅇ\n",
+                    "date": "2021-01-17",
+                    "setDate": "2021-01-17",
+                    "no": 2,
+                    "createdAt": "2021-01-17 22:23:39",
+                    "updatedAt": "2021-01-17 22:23:39",
+                    "missionId": 3,
+                    "fileId": 37,
+                    "userId": 119,
+                    "mission": {
+                      "id": 3,
+                      "title": "지금 떠오르는 내가 좋아하는 것 5가지만 이야기 해보아요.",
+                      "isContent": true,
+                      "isImage": false,
+                      "cycle": 14,
+                      "createdAt": "2020-04-01 14:14:17",
+                      "updatedAt": "2020-04-01 14:14:17"
+                    },
+                    "file": {
+                      "id": 37,
+                      "cardUrl": "https://moti-media.s3.ap-northeast-2.amazonaws.com/parts/1-7.pdf",
+                      "cardSvgUrl": "https://moti-media.s3.ap-northeast-2.amazonaws.com/parts/1-7.svg",
+                      "cardPngUrl": "https://moti-media.s3.ap-northeast-2.amazonaws.com/parts/1-7.png",
+                      "part": 1,
+                      "createdAt": "2020-04-01 15:53:10",
+                      "updatedAt": "2020-09-07 22:08:34"
+                    },
+                    "user": {
+                      "id": 119,
+                      "birthday": "미입력",
+                      "email": "9pxx2sqy8k@privaterelay.appleid.com",
+                      "name": "11111111",
+                      "gender": "미입력",
+                      "refreshDate": null,
+                      "refreshToken": null,
+                      "mission": "{\"date\":\"2021-01-17\",\"missions\":[{\"id\":3,\"title\":\"지금 떠오르는 내가 좋아하는 것 5가지만 이야기 해보아요.\",\"isContent\":true,\"isImage\":false,\"cycle\":14,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":7,\"title\":\"오늘 당신의 패션을 알려주세요!\",\"isContent\":true,\"isImage\":true,\"cycle\":3,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":24,\"title\":\"요즘 삶의 낙이 무엇인가요?\",\"isContent\":true,\"isImage\":false,\"cycle\":20,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"}]}",
+                      "snsId": "000252.cd6ccffeaea547f6b2d0215e7d7c4f5a.0437",
+                      "snsType": "apple",
+                      "createdAt": "2020-04-17 13:49:35",
+                      "updatedAt": "2021-01-17 22:21:54"
+                    }
+                  },
+                  {
+                    "id": 3420,
+                    "imageUrl": null,
+                    "content": "❤️❤️",
+                    "date": "2020-12-28",
+                    "setDate": "2020-04-17",
+                    "no": 1,
+                    "createdAt": "2020-12-28 18:11:34",
+                    "updatedAt": "2020-12-28 18:11:34",
+                    "missionId": 9,
+                    "fileId": 18,
+                    "userId": 119,
+                    "mission": {
+                      "id": 9,
+                      "title": "일주일간 치킨은 몇마리나 드셨나요?",
+                      "isContent": true,
+                      "isImage": false,
+                      "cycle": 90,
+                      "createdAt": "2020-04-01 14:14:17",
+                      "updatedAt": "2020-04-01 14:14:17"
+                    },
+                    "file": {
+                      "id": 18,
+                      "cardUrl": "https://moti-media.s3.ap-northeast-2.amazonaws.com/parts/6_3.pdf",
+                      "cardSvgUrl": "https://moti-media.s3.ap-northeast-2.amazonaws.com/parts/6_3.svg",
+                      "cardPngUrl": "https://moti-media.s3.ap-northeast-2.amazonaws.com/parts/6_3.png",
+                      "part": 6,
+                      "createdAt": "2020-04-01 15:51:24",
+                      "updatedAt": "2021-01-24 03:47:04"
+                    },
+                    "user": {
+                      "id": 119,
+                      "birthday": "미입력",
+                      "email": "9pxx2sqy8k@privaterelay.appleid.com",
+                      "name": "11111111",
+                      "gender": "미입력",
+                      "refreshDate": null,
+                      "refreshToken": null,
+                      "mission": "{\"date\":\"2021-01-17\",\"missions\":[{\"id\":3,\"title\":\"지금 떠오르는 내가 좋아하는 것 5가지만 이야기 해보아요.\",\"isContent\":true,\"isImage\":false,\"cycle\":14,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":7,\"title\":\"오늘 당신의 패션을 알려주세요!\",\"isContent\":true,\"isImage\":true,\"cycle\":3,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"},{\"id\":24,\"title\":\"요즘 삶의 낙이 무엇인가요?\",\"isContent\":true,\"isImage\":false,\"cycle\":20,\"createdAt\":\"2020-04-01 14:14:17\",\"updatedAt\":\"2020-04-01 14:14:17\"}]}",
+                      "snsId": "000252.cd6ccffeaea547f6b2d0215e7d7c4f5a.0437",
+                      "snsType": "apple",
+                      "createdAt": "2020-04-17 13:49:35",
+                      "updatedAt": "2021-01-17 22:21:54"
+                    }
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
