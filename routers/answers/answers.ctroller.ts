@@ -226,7 +226,7 @@ const diary: RequestResponseNext = async (req, res, next) => {
     const direction = parseInt(req.query.direction || 0, 10);
     const userId = req.user!.id;
     const answers = lastId ? await getAnswersDiaryByLastId({ userId, lastId, limit, direction })
-      : await await getAnswersDiary({ userId, limit: limit ? limit : 100 });
+      : await await getAnswersDiary({ userId, limit });
     res.json(response({ data: { lastId, limit, direction, answers } }));
   } catch (error) {
     console.log(error.message);
