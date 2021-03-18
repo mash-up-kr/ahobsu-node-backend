@@ -14,6 +14,8 @@ import {
   getMonthAnswers,
   getRecentAnswers,
   updateAnswer,
+  getAnswersDiary,
+  getAnswersDiaryByLastId,
 } from './answers.repository';
 import { getNo, getPartNumber, getSetDate, hasSetDate, hasSixParsAndNotToday } from './answers.service';
 import File from '../../models/file';
@@ -217,6 +219,21 @@ const destroy: RequestResponseNext = async (req, res, next) => {
   }
 };
 
+const diary: RequestResponseNext = async (req, res, next) => {
+  try {
+    const lastId = parseInt(req.query.lastId, 10);
+    const limit = parseInt(req.query.limit || 100, 10);
+    const direction = parseInt(req.query.direction || 0, 10);
+    const userId = req.user!.id;
+    const answers = lastId ? await getAnswersDiaryByLastId({ userId, lastId, limit, direction })
+      : await await getAnswersDiary({ userId, limit });
+    res.json(response({ data: { lastId, limit, direction, answers } }));
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json(response({ status: 500, message: error.message }));
+  }
+};
+
 export default {
   week,
   month,
@@ -227,4 +244,5 @@ export default {
   create,
   update,
   destroy,
+  diary,
 };

@@ -139,3 +139,33 @@ export const getAnswersByuserIdAndDateRange = async ({
     include: [{ all: true }],
   });
 };
+
+export const getAnswersDiary = async ({ userId, limit }: { userId: number; limit: number }): Promise<Answer[]> => {
+  return db.Answer.findAll({
+    where: {
+      userId,
+    },
+    limit: limit,
+    order: [
+      ['id', 'DESC'],
+    ],
+    include: [{ all: true }],
+  });
+};
+
+export const getAnswersDiaryByLastId = async ({ userId, lastId, limit, direction }: { userId: number; lastId: number; limit: number; direction: number }): Promise<Answer[]> => {
+  const directionSymbol = direction === 0 ? Op.lt : Op.gt;
+  return db.Answer.findAll({
+    where: {
+      id: {
+        [directionSymbol]: lastId,
+      },
+      userId,
+    },
+    limit: limit,
+    order: [
+      ['id', 'DESC'],
+    ],
+    include: [{ all: true }],
+  });
+};

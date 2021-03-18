@@ -12,6 +12,7 @@ import {
 
 const router = Router();
 
+router.get('/diary', checkToken, answersController.diary);
 router.get('/week', checkToken, answersController.week);
 router.get('/list', checkToken, answersController.list);
 router.get('/list/:id', checkToken,checkId, answersController.listId);
