@@ -154,7 +154,7 @@ export const getAnswersDiary = async ({ userId, limit }: { userId: number; limit
 };
 
 export const getAnswersDiaryByLastId = async ({ userId, lastId, limit, direction }: { userId: number; lastId: number; limit: number; direction: number }): Promise<Answer[]> => {
-  const directionSymbol = direction === 0 ? Op.lte : Op.gte;
+  const directionSymbol = direction === 0 ? Op.lt : Op.gt;
   console.log(direction);
   return db.Answer.findAll({
     where: {
