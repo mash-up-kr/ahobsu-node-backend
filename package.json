@@ -21,7 +21,7 @@
     "@types/express-session": "^1.17.0",
     "@types/hpp": "^0.2.1",
     "@types/validator": "^13.0.0",
-    "aws-sdk": "^2.630.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "^1.4.5",
