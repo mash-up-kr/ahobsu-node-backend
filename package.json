@@ -39,7 +39,7 @@
     "http-errors": "~1.6.3",
     "husky": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "morgan": "~1.9.1",
     "mysql2": "^2.0.2",
     "nodemon": "^2.0.2",
